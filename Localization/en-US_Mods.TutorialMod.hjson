@@ -1,0 +1,54 @@
+# This file will automatically update with entries for new content after a build and reload
+
+Items: {
+	TutorialSword: {
+		DisplayName: Tutorial Sword
+		Tooltip: ""
+	}
+
+	Explosiverang: {
+		Tooltip: ""
+		DisplayName: Boom-erang
+	}
+
+	Andromeda: {
+		DisplayName: Andromeda
+		Tooltip: Holding down the mouse button charges a bigger, more powerful barrage of stars!
+	}
+
+	ProminenceRevolt: {
+		DisplayName: Prominence Revolt
+		Tooltip:
+			'''
+			Enemies burst into a pillar of flame on hit
+			Right click to throw the spear at the cost of lower damage
+			'''
+	}
+
+	WaxQuail: {
+		DisplayName: Wax Quail
+		Tooltip:
+			'''
+			Allows the holder to double jump
+			Jumping boosts your speed
+			'''
+	}
+
+	RelogicFeather: {
+		Tooltip:
+			'''
+			Allows the holder to double jump
+			Grants permanent featherfall effect
+			'''
+		DisplayName: Re-Logic Feather
+	}
+}
+
+Projectiles: {
+	ExplosiverangProjectile.DisplayName: Explosiverang Projectile
+	ExplosiverangExplosion.DisplayName: Explosiverang Explosion
+	AndromedaProjectile.DisplayName: Andromeda Projectile
+	GrowerProjectile.DisplayName: Grower Projectile
+	ProminenceRevoltProjectile.DisplayName: Prominence Revolt Projectile
+	ProminenceRevoltProjectileAlt.DisplayName: Prominence Revolt Projectile Alt
+}
