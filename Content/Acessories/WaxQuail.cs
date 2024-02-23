@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
@@ -14,7 +13,7 @@ namespace TutorialMod.Content.Acessories
 		public override void SetDefaults() {
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(1, 30));
 			ItemID.Sets.AnimatesAsSoul[Item.type] = true; 
-			Item.DefaultToAccessory(34, 28);
+			Item.DefaultToAccessory(34, 29);
 			Item.SetShopValues(ItemRarityColor.Green2, Item.buyPrice(silver: 50));
 		}
 

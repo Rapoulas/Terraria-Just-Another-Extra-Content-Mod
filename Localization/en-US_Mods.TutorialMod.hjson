@@ -42,6 +42,11 @@ Items: {
 			'''
 		DisplayName: Re-Logic Feather
 	}
+
+	ZetaReference: {
+		Tooltip: you should PISS yourself... NOW!!!
+		DisplayName: Zeta Reference
+	}
 }
 
 Projectiles: {
@@ -51,4 +56,5 @@ Projectiles: {
 	GrowerProjectile.DisplayName: Grower Projectile
 	ProminenceRevoltProjectile.DisplayName: Prominence Revolt Projectile
 	ProminenceRevoltProjectileAlt.DisplayName: Prominence Revolt Projectile Alt
+	ZetaReferenceProjectile.DisplayName: Zeta Reference Projectile
 }
