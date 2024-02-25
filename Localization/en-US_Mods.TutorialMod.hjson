@@ -47,6 +47,15 @@ Items: {
 		Tooltip: you should PISS yourself... NOW!!!
 		DisplayName: Zeta Reference
 	}
+
+	MeatShield: {
+		DisplayName: Meat Shield
+		Tooltip:
+			'''
+			Absorbs {0}% of damage done to players on your team when above {1}% life
+			Taking damage increases your life regen and damage for a short time
+			'''
+	}
 }
 
 Projectiles: {
@@ -57,4 +66,16 @@ Projectiles: {
 	ProminenceRevoltProjectile.DisplayName: Prominence Revolt Projectile
 	ProminenceRevoltProjectileAlt.DisplayName: Prominence Revolt Projectile Alt
 	ZetaReferenceProjectile.DisplayName: Zeta Reference Projectile
+}
+
+Buffs: {
+	MeatShieldAbsorb: {
+		Description: "{0}% of damage taken will be redirected to another player"
+		DisplayName: Protected
+	}
+
+	MeatShieldDmgRegen: {
+		DisplayName: En Garde!
+		Description: Life regen and Damage increased
+	}
 }

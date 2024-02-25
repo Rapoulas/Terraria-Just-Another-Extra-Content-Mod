@@ -16,7 +16,7 @@ namespace TutorialMod.Content.Acessories
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
-			player.GetModPlayer<MyPlayer>().ZetaReference = Item;
+			player.GetModPlayer<MyPlayer>().hasZetaReference = Item;
 		}
 
         public override void AddRecipes() {
