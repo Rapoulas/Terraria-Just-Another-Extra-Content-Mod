@@ -20,7 +20,7 @@ namespace TutorialMod.Content.Acessories
 		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(DamageAbsorptionPercent, DamageAbsorptionAbilityLifeThresholdPercent);
 
 		public override void SetDefaults() {
-			Item.width = 28;
+			Item.width = 36;
 			Item.height = 38;
 			Item.accessory = true;
 			Item.rare = ItemRarityID.Cyan;
@@ -47,14 +47,14 @@ namespace TutorialMod.Content.Acessories
 			recipe.AddIngredient(ItemID.PaladinsShield, 1);
 			recipe.AddIngredient(ItemID.FleshBlock, 20);
 			recipe.AddIngredient(ItemID.CharmofMyths, 1);
-			recipe.AddTile(TileID.WorkBenches);
+			recipe.AddTile(TileID.TinkerersWorkbench);
 			recipe.Register();
 
 			Recipe recipeSecond = CreateRecipe();
 			recipeSecond.AddIngredient(ItemID.PaladinsShield, 1);
 			recipeSecond.AddIngredient(ItemID.LesionBlock, 20);
 			recipeSecond.AddIngredient(ItemID.CharmofMyths, 1);
-			recipeSecond.AddTile(TileID.WorkBenches);
+			recipeSecond.AddTile(TileID.TinkerersWorkbench);
 			recipeSecond.Register();
 		}
 

@@ -56,6 +56,11 @@ Items: {
 			Taking damage increases your life regen and damage for a short time
 			'''
 	}
+
+	Linoge: {
+		DisplayName: Linoge
+		Tooltip: "[c/FF2020:My name is Legion, for we are many.]"
+	}
 }
 
 Projectiles: {
