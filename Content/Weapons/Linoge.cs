@@ -38,7 +38,7 @@ namespace TutorialMod.Content.Weapons{
 			if (player.altFunctionUse != 2){
 				SoundEngine.PlaySound(SoundID.Item11, player.Center);
 				Vector2 muzzleOffset = Vector2.Normalize(velocity) * 25f;
-
+				
 				if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0)) {
 					position += muzzleOffset;
 				}

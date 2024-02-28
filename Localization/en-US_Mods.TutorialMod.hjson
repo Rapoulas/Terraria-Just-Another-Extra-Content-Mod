@@ -59,7 +59,16 @@ Items: {
 
 	Linoge: {
 		DisplayName: Linoge
-		Tooltip: "[c/FF2020:My name is Legion, for we are many.]"
+		Tooltip:
+			'''
+			[c/FF2020:My name is Legion, for we are many.]
+			[c/FFBF00:Mayhem Level 10]
+			'''
+	}
+
+	Ultrakill: {
+		DisplayName: Ultrakill
+		Tooltip: ""
 	}
 }
 
@@ -71,6 +80,8 @@ Projectiles: {
 	ProminenceRevoltProjectile.DisplayName: Prominence Revolt Projectile
 	ProminenceRevoltProjectileAlt.DisplayName: Prominence Revolt Projectile Alt
 	ZetaReferenceProjectile.DisplayName: Zeta Reference Projectile
+	UltrakillCoin.DisplayName: Ultrakill Coin
+	UltrakillBullet.DisplayName: Ultrakill Bullet
 }
 
 Buffs: {
