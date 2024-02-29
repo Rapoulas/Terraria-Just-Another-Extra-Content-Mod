@@ -9,7 +9,9 @@ namespace TutorialMod.Content.Projectiles
 {
     public class UltrakillCoin : ModProjectile
     {
-        
+        public override void SetStaticDefaults() {
+			Main.projFrames[Projectile.type] = 8;
+		}
         public override void SetDefaults() {
             Projectile.width = 15;
             Projectile.height = 15;
@@ -36,6 +38,12 @@ namespace TutorialMod.Content.Projectiles
             }
 
             Projectile.ai[0]++;
+
+            if (++Projectile.frameCounter >= 20) {
+				Projectile.frameCounter = 0;
+				if (++Projectile.frame >= Main.projFrames[Projectile.type])
+					Projectile.frame = 0;
+			}
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
