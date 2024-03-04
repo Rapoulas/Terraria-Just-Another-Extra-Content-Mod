@@ -3,17 +3,18 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using TutorialMod.Content.Acessories;
-using TutorialMod.Content.Weapons;
-using TutorialMod.Content.Projectiles;
-using TutorialMod.Content.Buffs;
+using RappleMod.Content.Acessories;
+using RappleMod.Content.Weapons;
+using RappleMod.Content.Projectiles;
+using RappleMod.Content.Buffs;
 using Terraria.DataStructures;
 
-namespace TutorialMod{
+namespace RappleMod{
     public class MyPlayer : ModPlayer {
         #region item field
         public Item hasZetaReference;
 		public Item hasMeatShield;
+		public Item hasBuffer;
         #endregion
 
         public bool hasAbsorbTeamDamageEffect;

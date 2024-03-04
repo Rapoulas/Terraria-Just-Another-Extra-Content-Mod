@@ -1,0 +1,45 @@
+TutorialSword: {
+}
+
+Explosiverang: {
+}
+
+Andromeda: {
+}
+
+ProminenceRevolt: {
+}
+
+WaxQuail: {
+}
+
+RelogicFeather: {
+}
+
+ZetaReference: {
+}
+
+MeatShield: {
+}
+
+Linoge: {
+}
+
+Ultrakill: {
+}
+
+Items.Kylie.DispalyName: Kylie
+
+Projectiles: {
+	GrowerProjectile.DisplayName: Grower Projectile
+	ZetaReferenceProjectile.DisplayName: Zeta Reference Projectile
+	UltrakillBulletCopy.DisplayName: Ultrakill Bullet Copy
+}
+
+Buffs: {
+	MeatShieldAbsorb: {
+	}
+
+	MeatShieldDmgRegen: {
+	}
+}

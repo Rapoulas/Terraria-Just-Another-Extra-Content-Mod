@@ -7,9 +7,9 @@ using Terraria.ModLoader;
 using Terraria.Audio;
 using Terraria.GameContent;
 using ReLogic.Content;
-using TutorialMod.Content.Projectiles;
+using RappleMod.Content.Projectiles;
 
-namespace TutorialMod.Content.Weapons
+namespace RappleMod.Content.Weapons
 {
 	public class Andromeda : ModItem
 	{

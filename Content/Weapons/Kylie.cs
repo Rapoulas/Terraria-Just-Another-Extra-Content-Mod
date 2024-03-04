@@ -5,10 +5,8 @@ using RappleMod.Content.Projectiles;
 
 namespace RappleMod.Content.Weapons
 {
-	public class Explosiverang : ModItem
+	public class Kylie : ModItem
 	{
-        // The Display Name and Tooltip of this item can be edited in the Localization/en-US_Mods.TutorialMod.hjson file.
-
 		public override void SetDefaults()
 		{
 			Item.damage = 50;
@@ -25,8 +23,8 @@ namespace RappleMod.Content.Weapons
 			Item.autoReuse = true;
             Item.noUseGraphic = true;
             Item.noMelee = true;
-			Item.shootSpeed = 15f; 
-			Item.shoot = ModContent.ProjectileType<ExplosiverangProjectile>();
+			Item.shootSpeed = 20f; 
+			Item.shoot = ModContent.ProjectileType<KylieProjectile>();
 		}
 
 		public override void AddRecipes()

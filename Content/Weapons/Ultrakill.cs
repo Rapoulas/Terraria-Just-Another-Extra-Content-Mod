@@ -5,9 +5,9 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using TutorialMod.Content.Projectiles;
+using RappleMod.Content.Projectiles;
 
-namespace TutorialMod.Content.Weapons{
+namespace RappleMod.Content.Weapons{
     
     public class Ultrakill : ModItem
     {
@@ -40,7 +40,7 @@ namespace TutorialMod.Content.Weapons{
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             if (player.altFunctionUse == 2){
-                SoundStyle coinToss = new($"{nameof(TutorialMod)}/Assets/Sounds/CoinToss") {
+                SoundStyle coinToss = new($"{nameof(RappleMod)}/Assets/Sounds/CoinToss") {
 				Volume = 0.9f,
 				PitchVariance = 0.2f
 			    };

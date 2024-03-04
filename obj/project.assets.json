@@ -36,11 +36,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Rafael\\Documents\\my games\\Terraria\\tModLoader\\ModSources\\TutorialMod\\TutorialMod.csproj",
-      "projectName": "TutorialMod",
-      "projectPath": "C:\\Users\\Rafael\\Documents\\my games\\Terraria\\tModLoader\\ModSources\\TutorialMod\\TutorialMod.csproj",
+      "projectUniqueName": "C:\\Users\\Rafael\\Documents\\my games\\Terraria\\tModLoader\\ModSources\\RappleMod\\RappleMod.csproj",
+      "projectName": "RappleMod",
+      "projectPath": "C:\\Users\\Rafael\\Documents\\my games\\Terraria\\tModLoader\\ModSources\\RappleMod\\RappleMod.csproj",
       "packagesPath": "C:\\Users\\Rafael\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Rafael\\Documents\\my games\\Terraria\\tModLoader\\ModSources\\TutorialMod\\obj\\",
+      "outputPath": "C:\\Users\\Rafael\\Documents\\my games\\Terraria\\tModLoader\\ModSources\\RappleMod\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Rafael\\AppData\\Roaming\\NuGet\\NuGet.Config",

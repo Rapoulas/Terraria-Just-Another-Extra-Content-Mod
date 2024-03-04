@@ -1,26 +1,22 @@
-using System;
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using TutorialMod.Content.Weapons;
-using XPT.Core.Audio.MP3Sharp.Decoding.Decoders.LayerIII;
+using Terraria.Audio;
 
 
-namespace TutorialMod.Content.Projectiles
-{
+namespace RappleMod.Content.Projectiles
+{   
     public class UltrakillBullet : ModProjectile
     {
         int amountCoinsHit = 0;
         bool hitFirstCoin = false;
-        bool noMoreCoinLeft = false;
-        bool alreadySpawnedText;
-
+        bool noCoinLeft = false;
+        bool alreadySpawnedText = false;
+        
         public override void SetDefaults() {
-            Projectile.width = 15;
-            Projectile.height = 15;
+            Projectile.width = 36;
+            Projectile.height = 2;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.penetrate = -1;
@@ -31,39 +27,36 @@ namespace TutorialMod.Content.Projectiles
         }
 
         public override void AI(){
+            Player player = Main.player[Projectile.owner];
             float maxEnemyHomeRange = 2000f;
             float maxCoinHomeRange = 4000f;
 
             Projectile.rotation = Projectile.velocity.ToRotation();
 
             for (int i=0; i < Main.maxProjectiles; i++){
-                if (Main.projectile[i].type == 1302 && Main.projectile[i].active){
+                if (Main.projectile[i].type == ModContent.ProjectileType<UltrakillCoin>() && Main.projectile[i].active){
                     if (Main.projectile[i].Hitbox.Intersects(Projectile.Hitbox)){
                         amountCoinsHit++;
                         hitFirstCoin = true;
                         Projectile.tileCollide = false;
 
-                        Main.projectile[i].Kill();
-                        for (int j = 0; j < 6; j++){
-                            Dust.NewDust(Projectile.Center, 0, 0, DustID.TreasureSparkle, 0f, 0f, 0, Color.Transparent);
-                        }
                         SoundStyle coinHit = new($"Terraria/Sounds/Item_35") {
                             Volume = 2f,
                             PitchVariance = 0.2f,
-                            Pitch = 0.9f
+                            Pitch = 0.4f + (amountCoinsHit * 0.15f)
                         };
                         SoundEngine.PlaySound(coinHit, Projectile.Center);
 
+                        Main.projectile[i].Kill();
+
                         Projectile closestCoin = FindClosestCoin(maxCoinHomeRange);
                         if (closestCoin != null){
-                            Projectile.velocity = (closestCoin.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 3f * (1+ amountCoinsHit/2);
-			                Projectile.rotation = Projectile.velocity.ToRotation();
+                            Projectile.velocity = (closestCoin.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 3f * (1+ amountCoinsHit);
                         }
                         else {
                             NPC closestNPC = FindClosestNPC(maxEnemyHomeRange);
                             if (closestNPC != null){
-                                Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 5f;
-                                Projectile.rotation = Projectile.velocity.ToRotation();
+                                Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 6f;
                             }
                         }
                     }
@@ -71,35 +64,37 @@ namespace TutorialMod.Content.Projectiles
             }
             Projectile.ai[2]++;
             if (Projectile.ai[2] % 3 == 0 && hitFirstCoin){
-                Projectile.ai[1]++;
-
-                
-                    int bulletTrail = Dust.NewDust(Projectile.Center, 0, 0, DustID.Firework_Yellow, 0f, 0f, 0, Color.Transparent);
-                    Main.dust[bulletTrail].position = Projectile.Center;
-                    Main.dust[bulletTrail].velocity = Projectile.velocity;
-                    Main.dust[bulletTrail].scale = 1f;
-                    Main.dust[bulletTrail].noGravity = true;
+                int bulletTrail = Dust.NewDust(Projectile.Center, 0, 0, DustID.Firework_Yellow, 0f, 0f, 0, Color.Transparent);
+                Main.dust[bulletTrail].position = Projectile.Center;
+                Main.dust[bulletTrail].velocity = Projectile.velocity;
+                Main.dust[bulletTrail].scale = 1f;
+                Main.dust[bulletTrail].noGravity = true;
             }
+        }
+
+        public override Color? GetAlpha(Color lightColor)
+        {
+            return Color.White;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {   
             Player player = Main.player[Projectile.owner];
-            noMoreCoinLeft = player.ownedProjectileCounts[ModContent.ProjectileType<UltrakillCoin>()] == 0;
+            noCoinLeft = player.ownedProjectileCounts[ModContent.ProjectileType<UltrakillCoin>()] == 0;
 
-            if (amountCoinsHit == 4 && noMoreCoinLeft && !alreadySpawnedText){
+            if (amountCoinsHit == 4 && noCoinLeft && !alreadySpawnedText){
                 CombatText.NewText(player.getRect(), Color.Gold, "ULTRAKILL!!!", true, false);
                 alreadySpawnedText = true;
             }
-            else if (amountCoinsHit == 3 && noMoreCoinLeft && !alreadySpawnedText){
+            else if (amountCoinsHit == 3 && noCoinLeft && !alreadySpawnedText){
                 CombatText.NewText(player.getRect(), Color.Red, "SUPREME!!", true, false);
                 alreadySpawnedText = true;
             }
-            else if (amountCoinsHit == 2 && noMoreCoinLeft && !alreadySpawnedText){
+            else if (amountCoinsHit == 2 && noCoinLeft && !alreadySpawnedText){
                 CombatText.NewText(player.getRect(), Color.LimeGreen, "CHAOTIC!", false, false);
                 alreadySpawnedText = true;
             }
-            else if (amountCoinsHit == 1 && noMoreCoinLeft && !alreadySpawnedText){
+            else if (amountCoinsHit == 1 && noCoinLeft && !alreadySpawnedText){
                 CombatText.NewText(player.getRect(), Color.Blue, "DESTRUCTIVE", false, false);
                 alreadySpawnedText = true;
             }
@@ -114,7 +109,7 @@ namespace TutorialMod.Content.Projectiles
 			for (int k = 0; k < Main.maxProjectiles; k++) {
 				Projectile target = Main.projectile[k];
 				
-				if (target.type == 1302 && target.active) {
+				if (target.type == ModContent.ProjectileType<UltrakillCoin>() && target.active) {
 					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
 
 					if (sqrDistanceToTarget < sqrMaxDetectDistance) {
@@ -143,8 +138,7 @@ namespace TutorialMod.Content.Projectiles
 					}
 				}
 			}
-
-			return closestNPC;
+            return closestNPC;
         }
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)

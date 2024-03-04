@@ -1,10 +1,10 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
-using TutorialMod.Content.Buffs;
+using RappleMod.Content.Buffs;
 using Terraria.ModLoader;
 
-namespace TutorialMod.Content.Acessories
+namespace RappleMod.Content.Acessories
 {
 	[AutoloadEquip(EquipType.Shield)]
 	public class MeatShield : ModItem

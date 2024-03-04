@@ -5,10 +5,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 
-namespace TutorialMod.Content.Projectiles
+namespace RappleMod.Content.Projectiles
 {
     public class UltrakillCoin : ModProjectile
-    {
+    {      
         public override void SetStaticDefaults() {
 			Main.projFrames[Projectile.type] = 8;
 		}
@@ -27,7 +27,8 @@ namespace TutorialMod.Content.Projectiles
 
         public override void AI()
         {
-            
+            Player player = Main.player[Projectile.owner];
+
             if (Projectile.ai[0] >= 100 && Projectile.ai[0] < 300){
                 if (Projectile.ai[0] % 10 == 0){
                     Projectile.velocity *= 1-(Projectile.ai[0]/1500);
@@ -46,6 +47,26 @@ namespace TutorialMod.Content.Projectiles
 			}
         }
 
+        public override Color? GetAlpha(Color lightColor)
+        {
+            return Color.White;
+        }
+
+        public override void OnKill(int timeLeft)
+        {   
+            SoundStyle coinHit = new($"Terraria/Sounds/Item_35") {
+                Volume = 2f,
+                PitchVariance = 0.2f,
+                Pitch = 1f
+            };
+
+            if (timeLeft == 0) SoundEngine.PlaySound(coinHit, Projectile.Center);
+            for (int j = 0; j < 6; j++){
+                Dust.NewDust(Projectile.Center, 5, 5, DustID.TreasureSparkle, 0f, 0f, 0, Color.Transparent);
+            }
+            base.OnKill(timeLeft);
+        }
+        
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             Vector2 velocity = Projectile.velocity;

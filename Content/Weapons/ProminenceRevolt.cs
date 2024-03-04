@@ -1,4 +1,4 @@
-using TutorialMod.Content.Projectiles;
+using RappleMod.Content.Projectiles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;
@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 using System.Linq;
 
 
-namespace TutorialMod.Content.Weapons
+namespace RappleMod.Content.Weapons
 {
 	public class ProminenceRevolt : ModItem
 	{

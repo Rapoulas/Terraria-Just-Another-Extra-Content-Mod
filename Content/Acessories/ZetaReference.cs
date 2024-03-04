@@ -5,7 +5,7 @@ using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace TutorialMod.Content.Acessories
+namespace RappleMod.Content.Acessories
 {
     public class ZetaReference : ModItem
 	{   

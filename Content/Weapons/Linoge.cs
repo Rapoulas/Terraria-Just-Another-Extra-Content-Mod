@@ -5,7 +5,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace TutorialMod.Content.Weapons{
+namespace RappleMod.Content.Weapons{
     
     public class Linoge : ModItem
     {

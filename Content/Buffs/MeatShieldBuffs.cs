@@ -1,11 +1,11 @@
-using TutorialMod.Content.Acessories;
+using RappleMod.Content.Acessories;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using TutorialMod;
+using RappleMod;
 using Terraria.ID;
 
-namespace TutorialMod.Content.Buffs
+namespace RappleMod.Content.Buffs
 {
 	public class MeatShieldAbsorb : ModBuff
 	{

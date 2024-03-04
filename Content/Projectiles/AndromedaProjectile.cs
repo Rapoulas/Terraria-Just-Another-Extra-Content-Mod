@@ -11,7 +11,7 @@ using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace TutorialMod.Content.Projectiles
+namespace RappleMod.Content.Projectiles
 {
     public class AndromedaProjectile : ModProjectile
     {	
