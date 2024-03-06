@@ -108,6 +108,7 @@ Mods: {
 			ProminenceRevoltProjectileAlt.DisplayName: Prominence Revolt Projectile Alt
 			UltrakillBullet.DisplayName: Ultrakill Bullet
 			UltrakillCoin.DisplayName: Ultrakill Coin
+			NecroFossilBone.DisplayName: Necro Fossil Bone
 		}
 	}
 }

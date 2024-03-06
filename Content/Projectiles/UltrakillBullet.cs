@@ -71,7 +71,7 @@ namespace RappleMod.Content.Projectiles
                 Main.dust[bulletTrail].noGravity = true;
             }
         }
-
+        
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;

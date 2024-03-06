@@ -8,6 +8,7 @@ using RappleMod.Content.Weapons;
 using RappleMod.Content.Projectiles;
 using RappleMod.Content.Buffs;
 using Terraria.DataStructures;
+using Terraria.UI;
 
 namespace RappleMod{
     public class MyPlayer : ModPlayer {
@@ -19,10 +20,11 @@ namespace RappleMod{
 
         public bool hasAbsorbTeamDamageEffect;
 		public bool defendedByAbsorbTeamDamageEffect;
-
+		public bool NecroFossilSet;
         public override void ResetEffects(){
             hasAbsorbTeamDamageEffect = false;
 			defendedByAbsorbTeamDamageEffect = false;
+			NecroFossilSet = false;
         }
 
         public override void ModifyHurt(ref Player.HurtModifiers modifiers) {
@@ -47,7 +49,26 @@ namespace RappleMod{
 			}
         }
 
-		private void MeatShieldOnHurt(Player.HurtInfo info){
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (!NecroFossilSet) return;
+
+			Player player = Main.LocalPlayer;
+			
+			if (proj.DamageType == DamageClass.Ranged && hit.Crit && NecroFossilSet && proj.type != 21){
+				for (int i = 0; i < 3; i++){
+					Vector2 velocity = new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1));
+					velocity.Normalize();
+					velocity *= 10f;
+					float newDamage = hit.Damage/5;
+					
+					Projectile.NewProjectile(proj.GetSource_FromThis(), target.Center, velocity, ModContent.ProjectileType<NecroFossilBone>(), (int)newDamage, hit.Knockback, player.whoAmI, target.whoAmI, target.whoAmI, target.whoAmI);
+				}
+				target.AddBuff(BuffID.Slow, 120);
+			}
+        }
+
+        private void MeatShieldOnHurt(Player.HurtInfo info){
 			if (hasMeatShield == null) return;
 			
 			Player.AddBuff(ModContent.BuffType<MeatShieldDmgRegen>(), 240);
