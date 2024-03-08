@@ -30,7 +30,7 @@ namespace RappleMod.Content.SetBonusChanges
         public override void UpdateArmorSet(Player player, string set)
         {
             player.setBonus = "Critical hits with ranged projectiles slow down enemies and spawn bones in random directions";
-            player.GetModPlayer<MyPlayer>().NecroFossilSet = true;
+            player.GetModPlayer<SetBonusChangesPlayer>().NecroFossilSet = true;
         }
     }
 }

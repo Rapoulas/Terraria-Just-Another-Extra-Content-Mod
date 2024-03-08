@@ -1,14 +1,10 @@
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using RappleMod.Content.Acessories;
-using RappleMod.Content.Weapons;
-using RappleMod.Content.Projectiles;
 using RappleMod.Content.Buffs;
 using Terraria.DataStructures;
-using Terraria.UI;
 
 namespace RappleMod{
     public class MyPlayer : ModPlayer {
@@ -20,11 +16,9 @@ namespace RappleMod{
 
         public bool hasAbsorbTeamDamageEffect;
 		public bool defendedByAbsorbTeamDamageEffect;
-		public bool NecroFossilSet;
         public override void ResetEffects(){
             hasAbsorbTeamDamageEffect = false;
 			defendedByAbsorbTeamDamageEffect = false;
-			NecroFossilSet = false;
         }
 
         public override void ModifyHurt(ref Player.HurtModifiers modifiers) {
@@ -46,23 +40,6 @@ namespace RappleMod{
 				if (damage > 0) {
 					localPlayer.Hurt(PlayerDeathReason.LegacyEmpty(), damage, 0);
 				}
-			}
-        }
-
-        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
-        {
-			Player player = Main.LocalPlayer;
-			
-			if (proj.DamageType == DamageClass.Ranged && hit.Crit && NecroFossilSet && proj.type != ModContent.ProjectileType<NecroFossilBone>()){
-				for (int i = 0; i < 3; i++){
-					Vector2 velocity = new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 0));
-					velocity.Normalize();
-					velocity *= Main.rand.NextFloat(10, 15);
-					float newDamage = hit.Damage/3;
-					
-					Projectile.NewProjectile(proj.GetSource_FromThis(), target.Center, velocity, ModContent.ProjectileType<NecroFossilBone>(), (int)newDamage, hit.Knockback, player.whoAmI, 0, target.whoAmI, target.whoAmI);
-				}
-				target.AddBuff(BuffID.Slow, 120);
 			}
         }
 
