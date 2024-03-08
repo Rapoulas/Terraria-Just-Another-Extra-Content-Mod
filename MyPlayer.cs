@@ -51,18 +51,16 @@ namespace RappleMod{
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (!NecroFossilSet) return;
-
 			Player player = Main.LocalPlayer;
 			
-			if (proj.DamageType == DamageClass.Ranged && hit.Crit && NecroFossilSet && proj.type != 21){
+			if (proj.DamageType == DamageClass.Ranged && hit.Crit && NecroFossilSet && proj.type != ModContent.ProjectileType<NecroFossilBone>()){
 				for (int i = 0; i < 3; i++){
-					Vector2 velocity = new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1));
+					Vector2 velocity = new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 0));
 					velocity.Normalize();
-					velocity *= 10f;
-					float newDamage = hit.Damage/5;
+					velocity *= Main.rand.NextFloat(10, 15);
+					float newDamage = hit.Damage/3;
 					
-					Projectile.NewProjectile(proj.GetSource_FromThis(), target.Center, velocity, ModContent.ProjectileType<NecroFossilBone>(), (int)newDamage, hit.Knockback, player.whoAmI, target.whoAmI, target.whoAmI, target.whoAmI);
+					Projectile.NewProjectile(proj.GetSource_FromThis(), target.Center, velocity, ModContent.ProjectileType<NecroFossilBone>(), (int)newDamage, hit.Knockback, player.whoAmI, 0, target.whoAmI, target.whoAmI);
 				}
 				target.AddBuff(BuffID.Slow, 120);
 			}

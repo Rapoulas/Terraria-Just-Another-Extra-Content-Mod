@@ -20,9 +20,13 @@ namespace RappleMod.Content.Projectiles
             Projectile.hostile = false;
         }
 
+        public override void AI()
+        {
+            Projectile.ai[0]++;
+        }
         public override bool? CanHitNPC(NPC target)
         {
-			if (target.whoAmI == Projectile.ai[1]){
+			if (target.whoAmI == Projectile.ai[1] && Projectile.ai[0] < 60){
 				return false;
 			}
             return null;
