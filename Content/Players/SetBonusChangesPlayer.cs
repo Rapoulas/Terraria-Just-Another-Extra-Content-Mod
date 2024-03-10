@@ -37,11 +37,11 @@ namespace RappleMod{
 
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {	
-			if (MeleeCobaltPalladiumFrostSet && Main.rand.Next(1, 5) == 1){
-				target.AddBuff(BuffID.Frostburn, 180);
+			if (MeleeCobaltPalladiumFrostSet && Main.rand.NextBool(5)){
+				target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(3, 6));
 			}
-			if (MeleeCobaltPalladiumFrostSet && Main.rand.Next(1, 5) == 1){
-				target.AddBuff(BuffID.Frostburn2, 180);
+			if (MeleeCobaltPalladiumFrostSet && Main.rand.NextBool(5)){
+				target.AddBuff(BuffID.Frostburn2, 60 * Main.rand.Next(3, 6));
 			}
         }
 

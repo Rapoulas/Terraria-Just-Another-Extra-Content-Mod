@@ -44,8 +44,13 @@ Mods: {
 			}
 
 			ZetaReference: {
-				Tooltip: you should PISS yourself... NOW!!!
-				DisplayName: Zeta Reference
+				Tooltip:
+					'''
+					Taking damage confuses nearby enemies and applies ichor
+
+					'Oh fuck oh shit ugh'
+					'''
+				DisplayName: Spilled Beer
 			}
 
 			MeatShield: {
@@ -100,6 +105,16 @@ Mods: {
 			BufferLifeDegen: {
 				DisplayName: Buffer
 				Description: Damage taken is dealt over time
+			}
+
+			FrostbiteCopy: {
+				DisplayName: Frostbite Copy
+				Description: Mods.RappleMod.Buffs.FrostbiteCopy.Description
+			}
+
+			FrostburnCopy: {
+				DisplayName: Frostburn Copy
+				Description: Mods.RappleMod.Buffs.FrostburnCopy.Description
 			}
 		}
 
