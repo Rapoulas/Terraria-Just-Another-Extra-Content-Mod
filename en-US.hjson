@@ -67,8 +67,12 @@ Mods: {
 			}
 
 			Ultrakill: {
-				DisplayName: Ultrakill
-				Tooltip: ""
+				DisplayName: Pricemaker
+				Tooltip:
+					'''
+					Right click to throw coins
+					Pricemaker's bullets ricochet between coins and towards enemies, increasing the damage with each coin hit
+					'''
 			}
 
 			Kylie: {

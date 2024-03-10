@@ -15,8 +15,8 @@ namespace RappleMod.Content.Projectiles
 {
     public class AndromedaProjectile : ModProjectile
     {	
-        private const string ChainTexturePath = "TutorialMod/Content/Projectiles/AndromedaProjectileChain";
-        private const string ChainTextureExtraPath = "TutorialMod/Content/Projectiles/AndromedaProjectileChainExtra";  // This texture and related code is optional and used for a unique effect
+        private const string ChainTexturePath = "RappleMod/Content/Projectiles/AndromedaProjectileChain";
+        private const string ChainTextureExtraPath = "RappleMod/Content/Projectiles/AndromedaProjectileChainExtra";  // This texture and related code is optional and used for a unique effect
 
         private enum AIState
 		{

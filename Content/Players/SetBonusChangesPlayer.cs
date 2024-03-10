@@ -9,11 +9,13 @@ namespace RappleMod{
     public class SetBonusChangesPlayer : ModPlayer{
 
         public bool NecroFossilSet;
-		public bool CobaltPalladiumFrostSet;
+		public bool RangedCobaltPalladiumFrostSet;
+		public bool MeleeCobaltPalladiumFrostSet;
 
         public override void ResetEffects(){
 			NecroFossilSet = false;
-			CobaltPalladiumFrostSet = false;
+			RangedCobaltPalladiumFrostSet = false;
+			MeleeCobaltPalladiumFrostSet = false;
         }
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
@@ -33,9 +35,19 @@ namespace RappleMod{
 			}
         }
 
+        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+        {	
+			if (MeleeCobaltPalladiumFrostSet && Main.rand.Next(1, 5) == 1){
+				target.AddBuff(BuffID.Frostburn, 180);
+			}
+			if (MeleeCobaltPalladiumFrostSet && Main.rand.Next(1, 5) == 1){
+				target.AddBuff(BuffID.Frostburn2, 180);
+			}
+        }
+
         public override void PostUpdateEquips()
         {
-			if (CobaltPalladiumFrostSet){
+			if (RangedCobaltPalladiumFrostSet){
 				for (int i = 0; i < Main.maxProjectiles; i++){
 					if (Main.projectile[i].owner == Main.myPlayer){
 						NPC closestNPC = FindClosestNPC(96, Main.projectile[i].Center);

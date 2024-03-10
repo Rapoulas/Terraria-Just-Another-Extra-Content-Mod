@@ -24,7 +24,7 @@ namespace RappleMod.Content.Projectiles
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
-            if (Projectile.ai[0] >= 40 && Projectile.ai[0] <= 70){
+            if (Projectile.ai[0] >= 35 && Projectile.ai[0] <= 70){
                 modifiers.SetCrit();
             }
         }
