@@ -11,11 +11,13 @@ namespace RappleMod{
         public bool NecroFossilSet;
 		public bool RangedCobaltPalladiumFrostSet;
 		public bool MeleeCobaltPalladiumFrostSet;
+		public bool MeleeOrichalcumMythrilFrostSet;
 
         public override void ResetEffects(){
 			NecroFossilSet = false;
 			RangedCobaltPalladiumFrostSet = false;
 			MeleeCobaltPalladiumFrostSet = false;
+			MeleeOrichalcumMythrilFrostSet = false;
         }
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)

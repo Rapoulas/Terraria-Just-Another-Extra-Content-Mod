@@ -1,10 +1,9 @@
-using RappleMod.Content.Projectiles;
+using RappleMod.Content.Projectiles.ProminenceRevolt;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Linq;
 

@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using Terraria.Audio;
 
 
-namespace RappleMod.Content.Projectiles
+namespace RappleMod.Content.Projectiles.Ultrakill
 {   
     public class UltrakillBullet : ModProjectile
     {

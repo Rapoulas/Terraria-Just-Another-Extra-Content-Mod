@@ -4,7 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 
-namespace RappleMod.Content.Projectiles
+namespace RappleMod.Content.Projectiles.Kylie
 {
     public class KylieProjectile : ModProjectile
     {

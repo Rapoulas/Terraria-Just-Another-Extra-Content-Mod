@@ -5,7 +5,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 
-namespace RappleMod.Content.Projectiles
+namespace RappleMod.Content.Projectiles.Explosiverang
 {
     public class ExplosiverangProjectile : ModProjectile
     {
@@ -68,10 +68,12 @@ namespace RappleMod.Content.Projectiles
 
     public class ExplosiverangExplosion : ModProjectile
     {
+        public override string Texture => "RappleMod/Content/Projectiles/InvisibleProj";
+        readonly double radius = 100f;
         public override void SetDefaults()
         {
-            Projectile.width = 100;
-            Projectile.height = 100;
+            Projectile.width = 200;
+            Projectile.height = 200;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.penetrate = -1;
@@ -105,6 +107,28 @@ namespace RappleMod.Content.Projectiles
 				gore.velocity.X -= 1.5f;
 				gore.velocity.Y -= 1.5f;
 			}
+        }
+
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            Rectangle center = new((int)Projectile.Center.X, (int)Projectile.Center.Y, 1, 1);
+            if (center.Intersects(targetHitbox)) 
+                return true;
+
+            float topLeftDistance = Vector2.Distance(Projectile.Center, targetHitbox.TopLeft());
+            float topRightDistance = Vector2.Distance(Projectile.Center, targetHitbox.TopRight());
+            float bottomLeftDistance = Vector2.Distance(Projectile.Center, targetHitbox.BottomLeft());
+            float bottomRightDistance = Vector2.Distance(Projectile.Center, targetHitbox.BottomRight());
+
+            float distanceToClosestPoint = topLeftDistance;
+            if (topRightDistance < distanceToClosestPoint)
+                distanceToClosestPoint = topRightDistance;
+            if (bottomLeftDistance < distanceToClosestPoint)
+                distanceToClosestPoint = bottomLeftDistance;
+            if (bottomRightDistance < distanceToClosestPoint)
+                distanceToClosestPoint = bottomRightDistance;
+
+            return distanceToClosestPoint <= radius;
         }
     }
 }

@@ -5,7 +5,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using RappleMod.Content.Projectiles;
+using RappleMod.Content.Projectiles.Ultrakill;
 
 namespace RappleMod.Content.Weapons{
     

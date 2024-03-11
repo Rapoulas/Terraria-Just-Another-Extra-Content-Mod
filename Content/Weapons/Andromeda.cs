@@ -1,7 +1,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using RappleMod.Content.Projectiles;
+using RappleMod.Content.Projectiles.Andromeda;
 
 namespace RappleMod.Content.Weapons
 {

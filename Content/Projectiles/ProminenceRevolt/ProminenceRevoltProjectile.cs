@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace RappleMod.Content.Projectiles
+namespace RappleMod.Content.Projectiles.ProminenceRevolt
 {
 	public class ProminenceRevoltProjectile : ModProjectile
 	{
