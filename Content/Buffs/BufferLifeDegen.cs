@@ -31,7 +31,7 @@ namespace RappleMod.Content.Buffs
 		}
         public override void UpdateBadLifeRegen() {
 			if (lifeRegenDebuff) {
-				// lifeRegen is measured in 1/2 life per second. Therefore, this effect causes 8 life lost per second
+				// lifeRegen is measured in 1/2 life per second.
 				Player.lifeRegen -= (int)(bufferDamageTaken /2.5f);
 			}
 		}

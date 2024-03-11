@@ -12,12 +12,16 @@ namespace RappleMod{
 		public bool RangedCobaltPalladiumFrostSet;
 		public bool MeleeCobaltPalladiumFrostSet;
 		public bool MeleeOrichalcumMythrilFrostSet;
+		public bool RangedOrichalcumMythrilFrostSet;
+		public int maxHitCountRangedOMFSet;
 
         public override void ResetEffects(){
 			NecroFossilSet = false;
 			RangedCobaltPalladiumFrostSet = false;
 			MeleeCobaltPalladiumFrostSet = false;
 			MeleeOrichalcumMythrilFrostSet = false;
+			RangedOrichalcumMythrilFrostSet = false;
+			maxHitCountRangedOMFSet = 0;
         }
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
@@ -29,11 +33,22 @@ namespace RappleMod{
 					Vector2 velocity = new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 0));
 					velocity.Normalize();
 					velocity *= Main.rand.NextFloat(10, 15);
-					float newDamage = hit.Damage/3;
+					float newDamage = hit.Damage/5;
 					
 					Projectile.NewProjectile(proj.GetSource_FromThis(), target.Center, velocity, ModContent.ProjectileType<NecroFossilBone>(), (int)newDamage, hit.Knockback, player.whoAmI, 0, target.whoAmI, target.whoAmI);
 				}
 				target.AddBuff(BuffID.Slow, 120);
+			}
+
+			if (proj.DamageType == DamageClass.Ranged && RangedOrichalcumMythrilFrostSet && Main.rand.NextBool(4)){
+				if (target.onFrostBurn || target.onFrostBurn2 || target.HasBuff<FrostburnCopy>() || target.HasBuff<FrostbiteCopy>()){
+					foreach (NPC npc in Main.npc){
+                        if (npc.Center.Distance(target.Center) < 96 && maxHitCountRangedOMFSet <= 5){
+                            player.ApplyDamageToNPC(npc, damageDone, 0, 0);
+							maxHitCountRangedOMFSet++;
+                        }
+                    }
+				}
 			}
         }
 

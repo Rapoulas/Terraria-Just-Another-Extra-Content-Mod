@@ -34,7 +34,7 @@ namespace RappleMod.Content.NPCs
                     damage = 10;
             }
 
-            if (player.GetModPlayer<SetBonusChangesPlayer>().RangedCobaltPalladiumFrostSet || player.GetModPlayer<SetBonusChangesPlayer>().MeleeCobaltPalladiumFrostSet || player.GetModPlayer<SetBonusChangesPlayer>().MeleeOrichalcumMythrilFrostSet){
+            if (player.GetModPlayer<SetBonusChangesPlayer>().RangedCobaltPalladiumFrostSet || player.GetModPlayer<SetBonusChangesPlayer>().MeleeCobaltPalladiumFrostSet || player.GetModPlayer<SetBonusChangesPlayer>().MeleeOrichalcumMythrilFrostSet || player.GetModPlayer<SetBonusChangesPlayer>().RangedOrichalcumMythrilFrostSet){
                 if (npc.onFrostBurn || npc.HasBuff<FrostburnCopy>())
                 {
                     int FrostburnBaseDotHalf = (int)(16 * 0.5);
@@ -102,6 +102,8 @@ namespace RappleMod.Content.NPCs
                     foreach (NPC target in Main.npc){
                         if (target.Center.Distance(npc.Center) < 128){
                             player.ApplyDamageToNPC(target, npc.lifeMax/4, 3, 1);
+                            if (Main.rand.NextBool(8)) target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(2, 5))
+                            if (Main.rand.NextBool(8)) target.AddBuff(BuffID.Frostburn2, 60 * Main.rand.Next(2, 5))
                         }
                     }
                     for (int i = 0; i < 50; i++){
