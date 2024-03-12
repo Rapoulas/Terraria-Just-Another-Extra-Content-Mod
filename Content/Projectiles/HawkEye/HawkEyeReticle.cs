@@ -26,8 +26,9 @@ namespace RappleMod.Content.Projectiles.HawkEye
         {
             Player player = Main.LocalPlayer;
 
-            if (player.GetModPlayer<MyPlayer>().isHoldingHawkEye){
+            if (!player.GetModPlayer<MyPlayer>().isHoldingHawkEye){
                 Projectile.Kill();
+                player.GetModPlayer<MyPlayer>().isHoldingHawkEye = false;
             }
         }
     }

@@ -7,7 +7,6 @@ namespace RappleMod.Content.Weapons{
     
     public class HawkEye : ModItem
     {
-        bool spawnedReticle = false;
         public override string Texture => $"Terraria/Images/Item_{ItemID.SniperRifle}";
         public override void SetDefaults() {
 			Item.width = 64;
@@ -30,7 +29,10 @@ namespace RappleMod.Content.Weapons{
         {
             player.GetModPlayer<MyPlayer>().isHoldingHawkEye = true;
 
-            
+            if (!player.GetModPlayer<MyPlayer>().spawnedReticle){
+
+				player.GetModPlayer<MyPlayer>().spawnedReticle = true;
+			}
         }
     }
 }

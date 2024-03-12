@@ -17,10 +17,12 @@ namespace RappleMod{
         public bool hasAbsorbTeamDamageEffect;
 		public bool defendedByAbsorbTeamDamageEffect;
 		public bool isHoldingHawkEye;
+		public bool spawnedReticle;
         public override void ResetEffects(){
             hasAbsorbTeamDamageEffect = false;
 			defendedByAbsorbTeamDamageEffect = false;
 			isHoldingHawkEye = false;
+			spawnedReticle = false;
         }
 
         public override void ModifyHurt(ref Player.HurtModifiers modifiers) {
