@@ -34,7 +34,7 @@ namespace RappleMod{
 					Vector2 velocity = new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 0));
 					velocity.Normalize();
 					velocity *= Main.rand.NextFloat(10, 15);
-					float newDamage = hit.Damage/3;
+					float newDamage = hit.Damage/5;
 					
 					Projectile.NewProjectile(proj.GetSource_FromThis(), target.Center, velocity, ModContent.ProjectileType<NecroFossilBone>(), (int)newDamage, hit.Knockback, player.whoAmI, 0, target.whoAmI, target.whoAmI);
 				}
