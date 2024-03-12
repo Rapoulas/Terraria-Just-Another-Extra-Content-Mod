@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using RappleMod.Content.Projectiles;
+using RappleMod.Content.Buffs;
 
 namespace RappleMod{
 
@@ -12,12 +13,16 @@ namespace RappleMod{
 		public bool RangedCobaltPalladiumFrostSet;
 		public bool MeleeCobaltPalladiumFrostSet;
 		public bool MeleeOrichalcumMythrilFrostSet;
+		public bool RangedOrichalcumMythrilFrostSet;
+		public int maxHitCountRangedOMFSet;
 
         public override void ResetEffects(){
 			NecroFossilSet = false;
 			RangedCobaltPalladiumFrostSet = false;
 			MeleeCobaltPalladiumFrostSet = false;
 			MeleeOrichalcumMythrilFrostSet = false;
+			RangedOrichalcumMythrilFrostSet = false;
+			maxHitCountRangedOMFSet = 0;
         }
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
@@ -34,6 +39,17 @@ namespace RappleMod{
 					Projectile.NewProjectile(proj.GetSource_FromThis(), target.Center, velocity, ModContent.ProjectileType<NecroFossilBone>(), (int)newDamage, hit.Knockback, player.whoAmI, 0, target.whoAmI, target.whoAmI);
 				}
 				target.AddBuff(BuffID.Slow, 120);
+			}
+
+			if (proj.DamageType == DamageClass.Ranged && RangedOrichalcumMythrilFrostSet && Main.rand.NextBool(4)){
+				if (target.onFrostBurn || target.onFrostBurn2 || target.HasBuff<FrostburnCopy>() || target.HasBuff<FrostbiteCopy>()){
+					foreach (NPC npc in Main.npc){
+                        if (npc.Center.Distance(target.Center) < 96 && maxHitCountRangedOMFSet <= 5){
+                            player.ApplyDamageToNPC(npc, damageDone, 0, 0);
+							maxHitCountRangedOMFSet++;
+                        }
+                    }
+				}
 			}
         }
 

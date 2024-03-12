@@ -102,6 +102,8 @@ namespace RappleMod.Content.NPCs
                     foreach (NPC target in Main.npc){
                         if (target.Center.Distance(npc.Center) < 128){
                             player.ApplyDamageToNPC(target, npc.lifeMax/4, 3, 1);
+                            if (Main.rand.NextBool(8)) target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(1, 4));
+                            if (Main.rand.NextBool(8)) target.AddBuff(BuffID.Frostburn2, 60 * Main.rand.Next(1, 4));
                         }
                     }
                     for (int i = 0; i < 50; i++){
