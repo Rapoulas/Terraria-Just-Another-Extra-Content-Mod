@@ -14,8 +14,6 @@ namespace RappleMod.Content.Projectiles.HawkEye
         public override void SetDefaults() {
             Projectile.width = 32;
             Projectile.height = 32;
-            Projectile.friendly = true;
-            Projectile.hostile = false;
             Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = false;
@@ -28,8 +26,25 @@ namespace RappleMod.Content.Projectiles.HawkEye
 
             if (!player.GetModPlayer<MyPlayer>().isHoldingHawkEye){
                 Projectile.Kill();
-                player.GetModPlayer<MyPlayer>().isHoldingHawkEye = false;
+                player.GetModPlayer<MyPlayer>().spawnedReticle = false;
             }
+
+            Projectile.position = Main.MouseWorld;
+        }
+    }
+
+    public class HawkEyeBullet : ModProjectile
+    {
+        public override string Texture => "RappleMod/Content/Projectiles/InvisibleProj";
+
+        public override void SetDefaults() {
+            Projectile.width = 32;
+            Projectile.height = 32;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.penetrate = -1;
+            Projectile.timeLeft = 2;
+            Projectile.tileCollide = false;
         }
     }
 }

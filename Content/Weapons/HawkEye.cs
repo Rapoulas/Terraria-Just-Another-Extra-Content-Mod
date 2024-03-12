@@ -16,12 +16,11 @@ namespace RappleMod.Content.Weapons{
 			Item.useAnimation = 60;
 			Item.autoReuse = true;
 			Item.DamageType = DamageClass.Ranged; 
-			Item.damage = 20; 
+			Item.damage = 200; 
 			Item.knockBack = 5f; 
 			Item.noMelee = true;
 			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.shoot = ProjectileID.PurificationPowder;
-			Item.shootSpeed = 5f; 
+			Item.shoot = ModContent.ProjectileType<HawkEyeBullet>();
 			Item.useAmmo = AmmoID.Bullet;
 		}
 
@@ -30,9 +29,14 @@ namespace RappleMod.Content.Weapons{
             player.GetModPlayer<MyPlayer>().isHoldingHawkEye = true;
 
             if (!player.GetModPlayer<MyPlayer>().spawnedReticle){
-
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Main.MouseWorld, 0, ModContent.ProjectileType<HawkEyeReticle>(), Item.damage, Item.knockBack, player.whoAmI);
 				player.GetModPlayer<MyPlayer>().spawnedReticle = true;
 			}
         }
+
+		public override void ModifyShootStats (Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback){
+			position = Main.MouseWorld;
+			velocity *= 0;
+		}
     }
 }
