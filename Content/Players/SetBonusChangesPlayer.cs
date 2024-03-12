@@ -47,6 +47,7 @@ namespace RappleMod{
                         if (npc.Center.Distance(target.Center) < 144 && maxHitCountRangedOMFSet <= 5){
                             player.ApplyDamageToNPC(npc, damageDone, 0, 0);
 							maxHitCountRangedOMFSet++;
+							for (int i = 0; i < 3; i++) Dust.NewDust(npc.Center, 1, 1, DustID.IceRod, 0, 0, 0, Color.LightBlue, 1f);
                         }
                     }
 				}

@@ -60,7 +60,7 @@ namespace RappleMod.Content.Projectiles.Explosiverang
             }
             Projectile.rotation += 0.4f * Projectile.direction;
 
-            if (Collision.CheckAABBvAABBCollision(player.position, player.Size, Projectile.position, Projectile.Size) && Projectile.ai[0] >= 20f){
+            if (Collision.CheckAABBvAABBCollision(player.position, player.Size, Projectile.position, Projectile.Size) && Projectile.ai[0] >= 10f){
                 Projectile.Kill();
             }
         }
@@ -69,11 +69,11 @@ namespace RappleMod.Content.Projectiles.Explosiverang
     public class ExplosiverangExplosion : ModProjectile
     {
         public override string Texture => "RappleMod/Content/Projectiles/InvisibleProj";
-        readonly double radius = 100f;
+        readonly double radius = 50f;
         public override void SetDefaults()
         {
-            Projectile.width = 200;
-            Projectile.height = 200;
+            Projectile.width = 100;
+            Projectile.height = 100;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.penetrate = -1;

@@ -15,8 +15,8 @@ namespace RappleMod.Content.Projectiles.Ultrakill
         bool alreadySpawnedText = false;
         
         public override void SetDefaults() {
-            Projectile.width = 36;
-            Projectile.height = 2;
+            Projectile.width = 4;
+            Projectile.height = 4;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.penetrate = -1;
@@ -99,6 +99,21 @@ namespace RappleMod.Content.Projectiles.Ultrakill
                 alreadySpawnedText = true;
             }
             base.OnHitNPC(target, hit, damageDone);
+        }
+
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            Vector2 velocity = Projectile.velocity;
+
+            Projectile.netUpdate = true;
+            for (int i = 0; i < 1; i++) {
+                Collision.HitTiles(Projectile.position, velocity, Projectile.width, Projectile.height);
+            }
+
+            SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
+            Projectile.Kill();
+
+            return false;
         }
 
         public Projectile FindClosestCoin(float maxDetectDistance) {

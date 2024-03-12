@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -31,6 +32,15 @@ namespace RappleMod.Content.Projectiles.Kylie
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
+            Vector2 velocity = Projectile.velocity;
+
+            Projectile.netUpdate = true;
+            for (int i = 0; i < 1; i++) {
+                Collision.HitTiles(Projectile.position, velocity, Projectile.width, Projectile.height);
+            }
+
+            SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
+
             returnToPlayer = true;
             return false;
         }
@@ -55,7 +65,7 @@ namespace RappleMod.Content.Projectiles.Kylie
             }
             Projectile.rotation += 0.4f * Projectile.direction;
 
-            if (Collision.CheckAABBvAABBCollision(player.position, player.Size, Projectile.position, Projectile.Size) && Projectile.ai[0] >= 20f){
+            if (Collision.CheckAABBvAABBCollision(player.position, player.Size, Projectile.position, Projectile.Size) && Projectile.ai[0] >= 10f){
                 Projectile.Kill();
             }
         }
