@@ -89,6 +89,11 @@ Mods: {
 				DisplayName: Buffer
 				Tooltip: Damage taken is dealt over time
 			}
+
+			HawkEye: {
+				Tooltip: ""
+				DisplayName: Hawk Eye
+			}
 		}
 
 		Buffs: {
@@ -128,6 +133,7 @@ Mods: {
 			UltrakillBullet.DisplayName: Ultrakill Bullet
 			UltrakillCoin.DisplayName: Ultrakill Coin
 			NecroFossilBone.DisplayName: Necro Fossil Bone
+			HawkEyeReticle.DisplayName: Hawk Eye Reticle
 		}
 	}
 }
