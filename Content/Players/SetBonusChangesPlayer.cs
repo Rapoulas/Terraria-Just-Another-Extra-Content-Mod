@@ -44,7 +44,7 @@ namespace RappleMod{
 			if (proj.DamageType == DamageClass.Ranged && RangedOrichalcumMythrilFrostSet && Main.rand.NextBool(4)){
 				if (target.onFrostBurn || target.onFrostBurn2 || target.HasBuff<FrostburnCopy>() || target.HasBuff<FrostbiteCopy>()){
 					foreach (NPC npc in Main.npc){
-                        if (npc.Center.Distance(target.Center) < 96 && maxHitCountRangedOMFSet <= 5){
+                        if (npc.Center.Distance(target.Center) < 144 && maxHitCountRangedOMFSet <= 5){
                             player.ApplyDamageToNPC(npc, damageDone, 0, 0);
 							maxHitCountRangedOMFSet++;
                         }
