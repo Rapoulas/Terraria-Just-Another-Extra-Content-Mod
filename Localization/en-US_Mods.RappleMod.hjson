@@ -34,6 +34,7 @@ Projectiles: {
 	GrowerProjectile.DisplayName: Grower Projectile
 	ZetaReferenceProjectile.DisplayName: Zeta Reference Projectile
 	UltrakillBulletCopy.DisplayName: Ultrakill Bullet Copy
+	HawkEyeBullet.DisplayName: Hawk Eye Bullet
 }
 
 Buffs: {

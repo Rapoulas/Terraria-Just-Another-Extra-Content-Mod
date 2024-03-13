@@ -12,8 +12,8 @@ namespace RappleMod.Content.Projectiles.HawkEye
     {
         
         public override void SetDefaults() {
-            Projectile.width = 32;
-            Projectile.height = 32;
+            Projectile.width = 64;
+            Projectile.height = 64;
             Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = false;
@@ -26,10 +26,14 @@ namespace RappleMod.Content.Projectiles.HawkEye
 
             if (!player.GetModPlayer<MyPlayer>().isHoldingHawkEye){
                 Projectile.Kill();
-                player.GetModPlayer<MyPlayer>().spawnedReticle = false;
             }
 
-            Projectile.position = Main.MouseWorld;
+            Projectile.Center = Main.MouseWorld;
+        }
+
+        public override Color? GetAlpha(Color lightColor)
+        {
+            return Color.White;
         }
     }
 
@@ -44,7 +48,21 @@ namespace RappleMod.Content.Projectiles.HawkEye
             Projectile.hostile = false;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 2;
-            Projectile.tileCollide = false;
+            Projectile.tileCollide = true;
+        }
+
+         public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            Vector2 velocity = Projectile.velocity;
+
+            Projectile.netUpdate = true;
+            for (int i = 0; i < 1; i++) {
+                Collision.HitTiles(Projectile.position, velocity, Projectile.width, Projectile.height);
+            }
+
+            SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
+
+            return false;
         }
     }
 }
