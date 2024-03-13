@@ -12,7 +12,7 @@ namespace RappleMod.Content.Weapons
 
 		public override void SetDefaults()
 		{
-			Item.damage = 50;
+			Item.damage = 20;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 40;
 			Item.height = 40;
@@ -21,7 +21,7 @@ namespace RappleMod.Content.Weapons
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 6;
 			Item.value = 10000;
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ItemRarityID.Orange;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
             Item.noUseGraphic = true;
@@ -41,8 +41,9 @@ namespace RappleMod.Content.Weapons
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.DirtBlock, 10);
-			recipe.AddTile(TileID.WorkBenches);
+			recipe.AddIngredient(ItemID.EnchantedBoomerang, 1);
+			recipe.AddIngredient(ItemID.Dynamite, 99);
+			recipe.AddTile(TileID.TinkerersWorkbench);
 			recipe.Register();
 		}
 	}

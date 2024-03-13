@@ -20,7 +20,7 @@ namespace RappleMod.Content.Weapons
 
 		public override void SetDefaults() {
 			// Common Properties
-			Item.rare = ItemRarityID.Expert; // Assign this item a rarity level of Pink
+			Item.rare = ItemRarityID.Yellow; // Assign this item a rarity level of Pink
 			Item.value = Item.sellPrice(silver: 10); // The number and type of coins item can be sold for to an NPC
 
 			// Use Properties

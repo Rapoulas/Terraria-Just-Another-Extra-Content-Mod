@@ -13,14 +13,14 @@ namespace RappleMod.Content.Weapons{
 			Item.width = 64;
 			Item.height = 36;
 			Item.scale = 0.75f;
-			Item.rare = ItemRarityID.Orange;
+			Item.rare = ItemRarityID.Lime;
 
 			Item.useTime = 7; 
 			Item.useAnimation = 7;
 			Item.autoReuse = true;
 
 			Item.DamageType = DamageClass.Ranged; 
-			Item.damage = 20; 
+			Item.damage = 27; 
 			Item.knockBack = 5f; 
 			Item.noMelee = true;
 			Item.useStyle = ItemUseStyleID.Shoot;

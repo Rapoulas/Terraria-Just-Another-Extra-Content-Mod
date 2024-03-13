@@ -19,7 +19,7 @@ namespace RappleMod.Content.Weapons
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 6;
 			Item.value = 10000;
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ItemRarityID.LightRed;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
             Item.noUseGraphic = true;
@@ -30,10 +30,17 @@ namespace RappleMod.Content.Weapons
 
 		public override void AddRecipes()
 		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.DirtBlock, 10);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.TitaniumBar, 12)
+				.AddIngredient(ItemID.WoodenBoomerang, 1)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
+			
+			CreateRecipe()
+				.AddIngredient(ItemID.AdamantiteBar, 12)
+				.AddIngredient(ItemID.WoodenBoomerang, 1)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
 		}
 
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {

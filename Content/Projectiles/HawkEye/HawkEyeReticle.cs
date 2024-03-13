@@ -49,6 +49,22 @@ namespace RappleMod.Content.Projectiles.HawkEye
             Projectile.penetrate = -1;
             Projectile.timeLeft = 2;
             Projectile.tileCollide = false;
+            Projectile.DamageType = DamageClass.Ranged; 
+        }
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            Rectangle center = new((int)target.Center.X, (int)target.Center.Y, 1, 1);
+            if (Projectile.Hitbox.Intersects(center)) modifiers.SetCrit();
+            else modifiers.DisableCrit();
+        }
+
+         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {   
+            Player player = Main.player[Projectile.owner];
+
+            if (Main.rand.NextBool(500))
+                CombatText.NewText(player.getRect(), Color.Gold, "TRICKSHOT!!", true, false);
         }
     }
 }

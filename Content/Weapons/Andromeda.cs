@@ -35,8 +35,9 @@ namespace RappleMod.Content.Weapons
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.DirtBlock, 10);
-			recipe.AddTile(TileID.WorkBenches);
+			recipe.AddIngredient(ItemID.Sunfury, 1);
+			recipe.AddIngredient(ItemID.FallenStar, 50);
+			recipe.AddTile(TileID.Hellforge);
 			recipe.Register();
 		}
 	}

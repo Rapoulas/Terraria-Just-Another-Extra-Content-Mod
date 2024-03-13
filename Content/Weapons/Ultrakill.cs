@@ -14,7 +14,7 @@ namespace RappleMod.Content.Weapons{
         public override void SetDefaults() {
 			Item.width = 64;
 			Item.height = 36;
-			Item.rare = ItemRarityID.Master;
+			Item.rare = ItemRarityID.Yellow;
 
 			Item.useTime = 25; 
 			Item.useAnimation = 25;
@@ -29,7 +29,16 @@ namespace RappleMod.Content.Weapons{
 			Item.shootSpeed = 3f;
 		}
 
-        
+        public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient(ItemID.SniperRifle, 1)
+				.AddIngredient(ItemID.PlatinumCoin, 20)
+				.AddIngredient(ItemID.SoulofNight, 15)
+				.AddIngredient(ItemID.SoulofSight, 15)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
+		}
 
         public override bool AltFunctionUse(Player player)
         {
