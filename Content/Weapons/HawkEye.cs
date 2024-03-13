@@ -23,7 +23,6 @@ namespace RappleMod.Content.Weapons{
 			Item.damage = 320; 
 			Item.knockBack = 5f; 
 			Item.noMelee = true;
-			Item.crit = 16;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.shoot = ModContent.ProjectileType<HawkEyeBullet>();
 		}
@@ -37,6 +36,12 @@ namespace RappleMod.Content.Weapons{
 			recipe.AddTile(TileID.LunarCraftingStation);
 			recipe.Register();
 		}
+
+        public override Vector2? HoldoutOffset()
+        {
+            Vector2 offset = new(-4, 0);
+    		return offset;
+        }
 
         public override void HoldItem(Player player)
         {
