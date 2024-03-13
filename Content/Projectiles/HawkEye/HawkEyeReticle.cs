@@ -48,21 +48,7 @@ namespace RappleMod.Content.Projectiles.HawkEye
             Projectile.hostile = false;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 2;
-            Projectile.tileCollide = true;
-        }
-
-         public override bool OnTileCollide(Vector2 oldVelocity)
-        {
-            Vector2 velocity = Projectile.velocity;
-
-            Projectile.netUpdate = true;
-            for (int i = 0; i < 1; i++) {
-                Collision.HitTiles(Projectile.position, velocity, Projectile.width, Projectile.height);
-            }
-
-            SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
-
-            return false;
+            Projectile.tileCollide = false;
         }
     }
 }
