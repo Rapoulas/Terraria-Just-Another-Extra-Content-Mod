@@ -31,7 +31,9 @@ namespace RappleMod.Content.Buffs
 		}
         public override void UpdateBadLifeRegen() {
 			if (lifeRegenDebuff) {
-				// lifeRegen is measured in 1/2 life per second.
+				if (Player.lifeRegen > 0)
+                    Player.lifeRegen = 0;
+                Player.lifeRegenTime = 0;
 				Player.lifeRegen -= (int)(bufferDamageTaken /2.5f);
 			}
 		}
@@ -46,7 +48,7 @@ namespace RappleMod.Content.Buffs
             modifiers.ModifyHurtInfo += (ref Player.HurtInfo info) =>
             {
 				if (!Player.HasBuff(ModContent.BuffType<BufferLifeDegen>())) bufferDamageTaken = 0;
-                bufferDamageTaken = Math.Min(info.Damage+bufferDamageTaken, 200);
+                bufferDamageTaken = Math.Min(info.Damage+bufferDamageTaken, 300);
                 info.Damage = 1;
             };
         }

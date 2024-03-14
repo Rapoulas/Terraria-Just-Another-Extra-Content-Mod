@@ -14,7 +14,10 @@ namespace RappleMod{
 		public bool MeleeCobaltPalladiumFrostSet;
 		public bool MeleeOrichalcumMythrilFrostSet;
 		public bool RangedOrichalcumMythrilFrostSet;
+		public bool MeleeTitaniumAdamantiteFrostSet;
+		public bool RangedTitaniumAdamantiteFrostSet;
 		public int maxHitCountRangedOMFSet;
+		public int timer;
 
         public override void ResetEffects(){
 			NecroFossilSet = false;
@@ -22,13 +25,15 @@ namespace RappleMod{
 			MeleeCobaltPalladiumFrostSet = false;
 			MeleeOrichalcumMythrilFrostSet = false;
 			RangedOrichalcumMythrilFrostSet = false;
+			MeleeTitaniumAdamantiteFrostSet = false;
+			RangedTitaniumAdamantiteFrostSet = false;
 			maxHitCountRangedOMFSet = 0;
         }
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
 			Player player = Main.LocalPlayer;
-			
+
 			if (proj.DamageType == DamageClass.Ranged && hit.Crit && NecroFossilSet && proj.type != ModContent.ProjectileType<NecroFossilBone>()){
 				for (int i = 0; i < 3; i++){
 					Vector2 velocity = new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 0));
@@ -52,6 +57,26 @@ namespace RappleMod{
                     }
 				}
 			}
+
+			if (MeleeCobaltPalladiumFrostSet && Main.rand.NextBool(5) && hit.DamageType == DamageClass.Melee){
+				target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(3, 6));
+			}
+			if (MeleeCobaltPalladiumFrostSet && Main.rand.NextBool(5) && hit.DamageType == DamageClass.Melee){
+				target.AddBuff(BuffID.Frostburn2, 60 * Main.rand.Next(3, 6));
+			}
+
+			if (MeleeTitaniumAdamantiteFrostSet && hit.DamageType == DamageClass.Melee){
+				ShardStormGenerate(target, hit);
+			}
+
+			if (RangedTitaniumAdamantiteFrostSet && hit.DamageType == DamageClass.Ranged){
+				ShardStormGenerate(target, hit);
+			}
+
+			if (proj.type == 908){
+				target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(3, 6));
+				target.AddBuff(BuffID.Frostburn2, 60 * Main.rand.Next(3, 6));
+			}
         }
 
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
@@ -62,10 +87,16 @@ namespace RappleMod{
 			if (MeleeCobaltPalladiumFrostSet && Main.rand.NextBool(5)){
 				target.AddBuff(BuffID.Frostburn2, 60 * Main.rand.Next(3, 6));
 			}
+
+			if (MeleeTitaniumAdamantiteFrostSet && hit.DamageType == DamageClass.Melee){
+				ShardStormGenerate(target, hit);
+			}
         }
 
         public override void PostUpdateEquips()
         {
+			Player player = Main.LocalPlayer;
+
 			if (RangedCobaltPalladiumFrostSet){
 				for (int i = 0; i < Main.maxProjectiles; i++){
 					if (Main.projectile[i].owner == Main.myPlayer){
@@ -75,6 +106,15 @@ namespace RappleMod{
 							closestNPC.AddBuff(BuffID.Frostburn2, 120);
 						}
 					}
+				}
+			}
+
+			if (RangedTitaniumAdamantiteFrostSet){
+				timer++;
+
+				if (timer % 90 == 0) {
+					player.GetModPlayer<TitaniumShardOnHitPlayer>().buffStacks--;
+					timer = 0;
 				}
 			}
         }
@@ -97,5 +137,31 @@ namespace RappleMod{
 			}
             return closestNPC;
         }
+
+		public static void ShardStormGenerate(NPC target, NPC.HitInfo hit){
+			Player player = Main.LocalPlayer;
+
+			bool flag = target is NPC && (target.type == NPCID.TargetDummy || target.SpawnedFromStatue);
+			if (player.titaniumStormCooldown > 0)
+			{
+				flag = true;
+			}
+			if (target is NPC)
+			{
+				Main.BigBossProgressBar.TryTracking(target.whoAmI);
+			}
+			if (!flag)
+			{
+				player.titaniumStormCooldown = 10;
+				player.AddBuff(306, 600);
+				if (player.ownedProjectileCounts[908] < 7)
+				{
+					player.ownedProjectileCounts[908]++;
+					Projectile.NewProjectile(player.GetSource_OnHit(target, ""), player.Center, Vector2.Zero, 908, 50, 15f, player.whoAmI);
+				}
+			}
+			
+		}
+
     }
 }

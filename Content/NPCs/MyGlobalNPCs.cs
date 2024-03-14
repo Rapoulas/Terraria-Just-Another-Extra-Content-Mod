@@ -34,7 +34,7 @@ namespace RappleMod.Content.NPCs
                     damage = 10;
             }
 
-            if (player.GetModPlayer<SetBonusChangesPlayer>().RangedCobaltPalladiumFrostSet || player.GetModPlayer<SetBonusChangesPlayer>().MeleeCobaltPalladiumFrostSet || player.GetModPlayer<SetBonusChangesPlayer>().MeleeOrichalcumMythrilFrostSet || player.GetModPlayer<SetBonusChangesPlayer>().RangedOrichalcumMythrilFrostSet){
+            if (player.GetModPlayer<SetBonusChangesPlayer>().RangedCobaltPalladiumFrostSet || player.GetModPlayer<SetBonusChangesPlayer>().MeleeCobaltPalladiumFrostSet || player.GetModPlayer<SetBonusChangesPlayer>().MeleeOrichalcumMythrilFrostSet || player.GetModPlayer<SetBonusChangesPlayer>().RangedOrichalcumMythrilFrostSet || player.GetModPlayer<SetBonusChangesPlayer>().MeleeTitaniumAdamantiteFrostSet || player.GetModPlayer<SetBonusChangesPlayer>().RangedTitaniumAdamantiteFrostSet){
                 if (npc.onFrostBurn || npc.HasBuff<FrostburnCopy>())
                 {
                     int FrostburnBaseDotHalf = (int)(16 * 0.5);

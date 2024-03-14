@@ -125,6 +125,11 @@ Mods: {
 				DisplayName: Frostburn Copy
 				Description: Mods.RappleMod.Buffs.FrostburnCopy.Description
 			}
+
+			TitaniumShardOnHit: {
+				Description: ""
+				DisplayName: Shard Empowerment
+			}
 		}
 
 		Projectiles: {
@@ -138,6 +143,7 @@ Mods: {
 			UltrakillCoin.DisplayName: Ultrakill Coin
 			NecroFossilBone.DisplayName: Necro Fossil Bone
 			HawkEyeReticle.DisplayName: Hawk Eye Reticle
+			HawkEyeBullet.DisplayName: Hawk Eye Bullet
 		}
 	}
 }

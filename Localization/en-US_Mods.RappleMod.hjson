@@ -1,40 +1,42 @@
-TutorialSword: {
-}
+Items: {
+	TutorialSword: {
+	}
 
-Explosiverang: {
-}
+	Explosiverang: {
+	}
 
-Andromeda: {
-}
+	Andromeda: {
+	}
 
-ProminenceRevolt: {
-}
+	ProminenceRevolt: {
+	}
 
-WaxQuail: {
-}
+	WaxQuail: {
+	}
 
-RelogicFeather: {
-}
+	RelogicFeather: {
+	}
 
-ZetaReference: {
-}
+	ZetaReference: {
+	}
 
-MeatShield: {
-}
+	MeatShield: {
+	}
 
-Linoge: {
-}
+	Linoge: {
+	}
 
-Ultrakill: {
-}
+	Ultrakill: {
+	}
 
-Items.Kylie.DispalyName: Kylie
+	Kylie: {
+	}
 
-Projectiles: {
-	GrowerProjectile.DisplayName: Grower Projectile
-	ZetaReferenceProjectile.DisplayName: Zeta Reference Projectile
-	UltrakillBulletCopy.DisplayName: Ultrakill Bullet Copy
-	HawkEyeBullet.DisplayName: Hawk Eye Bullet
+	Buffer: {
+	}
+
+	HawkEye: {
+	}
 }
 
 Buffs: {
@@ -43,4 +45,16 @@ Buffs: {
 
 	MeatShieldDmgRegen: {
 	}
+
+	BufferLifeDegen: {
+	}
+
+	FrostbiteCopy: {
+	}
+
+	FrostburnCopy: {
+	}
+}
+
+Projectiles: {
 }
