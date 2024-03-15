@@ -66,11 +66,11 @@ namespace RappleMod{
 			}
 
 			if (MeleeTitaniumAdamantiteFrostSet && hit.DamageType == DamageClass.Melee){
-				ShardStormGenerate(target, hit);
+				ShardStormGenerate(target);
 			}
 
 			if (RangedTitaniumAdamantiteFrostSet && hit.DamageType == DamageClass.Ranged){
-				ShardStormGenerate(target, hit);
+				ShardStormGenerate(target);
 			}
 
 			if (proj.type == 908){
@@ -89,7 +89,7 @@ namespace RappleMod{
 			}
 
 			if (MeleeTitaniumAdamantiteFrostSet && hit.DamageType == DamageClass.Melee){
-				ShardStormGenerate(target, hit);
+				ShardStormGenerate(target);
 			}
         }
 
@@ -138,7 +138,7 @@ namespace RappleMod{
             return closestNPC;
         }
 
-		public static void ShardStormGenerate(NPC target, NPC.HitInfo hit){
+		public static void ShardStormGenerate(NPC target){
 			Player player = Main.LocalPlayer;
 
 			bool flag = target is NPC && (target.type == NPCID.TargetDummy || target.SpawnedFromStatue);
@@ -152,7 +152,7 @@ namespace RappleMod{
 			}
 			if (!flag)
 			{
-				player.titaniumStormCooldown = 10;
+				player.titaniumStormCooldown = 20;
 				player.AddBuff(306, 600);
 				if (player.ownedProjectileCounts[908] < 7)
 				{

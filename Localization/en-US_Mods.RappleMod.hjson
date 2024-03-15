@@ -37,6 +37,11 @@ Items: {
 
 	HawkEye: {
 	}
+
+	Brimstone: {
+		Tooltip: ""
+		DisplayName: Brimstone
+	}
 }
 
 Buffs: {
@@ -56,5 +61,4 @@ Buffs: {
 	}
 }
 
-Projectiles: {
-}
+Projectiles.BrimstoneBeam.DisplayName: Brimstone Beam

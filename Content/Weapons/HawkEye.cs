@@ -25,6 +25,7 @@ namespace RappleMod.Content.Weapons{
 			Item.noMelee = true;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.shoot = ModContent.ProjectileType<HawkEyeBullet>();
+			Item.useAmmo = AmmoID.Bullet;
 		}
 
         public override void AddRecipes()
@@ -69,8 +70,18 @@ namespace RappleMod.Content.Weapons{
         {
 			SoundStyle HawkEyeShoot = new($"{nameof(RappleMod)}/Assets/Sounds/HawkEyeShoot");
             SoundEngine.PlaySound(HawkEyeShoot, player.Center);
-
-            return base.Shoot(player, source, position, velocity, type, damage, knockback);
+			
+			position = player.Center;
+            for (int l = 0; l < Main.projectile.Length; l++)
+            {
+                Projectile proj = Main.projectile[l];
+                if (proj.active && proj.type == Item.shoot && proj.owner == player.whoAmI)
+                {
+                    return false;
+                }
+            }
+            Projectile.NewProjectile(source, Main.MouseWorld, velocity*0, ModContent.ProjectileType<HawkEyeBullet>(), damage, knockback, player.whoAmI);
+            return false;
         }
     }
 }
