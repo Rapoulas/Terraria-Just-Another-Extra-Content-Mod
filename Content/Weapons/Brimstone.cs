@@ -8,8 +8,6 @@ namespace RappleMod.Content.Weapons
 {
 	public class Brimstone : ModItem
 	{
-		// You can use a vanilla texture for your item by using the format: "Terraria/Item_<Item ID>".
-		public override string Texture => "Terraria/Images/Item_" + ItemID.LunarFlareBook;
 		public static Color OverrideColor = new(122, 173, 255);
 
 		public override void SetDefaults() {
@@ -20,16 +18,13 @@ namespace RappleMod.Content.Weapons
 			Item.shootSpeed = 30f;
             Item.noMelee = true;
             Item.channel = true;
-            Item.damage = 250;
+            Item.damage = 200;
             Item.noUseGraphic = false;
             Item.useTime = 30;
             Item.useAnimation = 30;
             Item.rare = ItemRarityID.Red;
             Item.DamageType = DamageClass.Magic;
 			Item.useStyle = ItemUseStyleID.Shoot;
-
-			// Change the item's draw color so that it is visually distinct from the vanilla Last Prism.
-			Item.color = OverrideColor;
 		}
 
 		public override void AddRecipes() {

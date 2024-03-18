@@ -63,7 +63,9 @@ namespace RappleMod.Content.Projectiles.Kylie
                 Projectile.velocity = Projectile.Center.DirectionTo(player.Center) * 10f;
                 Projectile.tileCollide = false;
             }
-            Projectile.rotation += 0.4f * Projectile.direction;
+            if (Projectile.direction < 0) Projectile.rotation += 0.4f * Projectile.direction;
+            else if (Projectile.direction > 0) Projectile.rotation -= 0.4f * Projectile.direction;
+            
 
             if (Collision.CheckAABBvAABBCollision(player.position, player.Size, Projectile.position, Projectile.Size) && Projectile.ai[0] >= 10f){
                 Projectile.Kill();

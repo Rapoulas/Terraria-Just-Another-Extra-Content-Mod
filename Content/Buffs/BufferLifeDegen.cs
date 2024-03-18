@@ -45,12 +45,14 @@ namespace RappleMod.Content.Buffs
 
         public override void ModifyHurt(ref Player.HurtModifiers modifiers)
         {
-            modifiers.ModifyHurtInfo += (ref Player.HurtInfo info) =>
-            {
-				if (!Player.HasBuff(ModContent.BuffType<BufferLifeDegen>())) bufferDamageTaken = 0;
-                bufferDamageTaken = Math.Min(info.Damage+bufferDamageTaken, 300);
-                info.Damage = 1;
-            };
+			if(Player.GetModPlayer<MyPlayer>().hasBuffer != null){
+				modifiers.ModifyHurtInfo += (ref Player.HurtInfo info) =>
+				{
+					if (!Player.HasBuff(ModContent.BuffType<BufferLifeDegen>())) bufferDamageTaken = 0;
+					bufferDamageTaken = Math.Min(info.Damage+bufferDamageTaken, 300);
+					info.Damage = 1;
+				};
+			}
         }
 
         private void BufferOnHurt(Player.HurtInfo info){

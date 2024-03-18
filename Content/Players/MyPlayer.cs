@@ -21,6 +21,9 @@ namespace RappleMod{
             hasAbsorbTeamDamageEffect = false;
 			defendedByAbsorbTeamDamageEffect = false;
 			isHoldingHawkEye = false;
+			hasZetaReference = null;
+			hasMeatShield = null;
+			hasBuffer = null;
         }
 
         public override void ModifyHurt(ref Player.HurtModifiers modifiers) {
@@ -55,15 +58,11 @@ namespace RappleMod{
             if (hasZetaReference == null) return;
 
             for (int i = 0; i < 250; i++){
-                if (!Main.npc[i].active || Main.npc[i].friendly){
-                    continue;
-                }
-                float j = (Main.npc[i].Center - Player.Center).Length();
-                    
-                if (j < 200){
-                    Main.npc[i].AddBuff(BuffID.Ichor, 300);
-                    Main.npc[i].AddBuff(BuffID.Confused, 300);
-                }
+                NPC closestNPC = FindClosestNPC(112);
+				if (closestNPC != null){
+					closestNPC.AddBuff(BuffID.Ichor, 300);
+					closestNPC.AddBuff(BuffID.Confused, 300);
+				}
 			}
 		}
 
@@ -108,5 +107,24 @@ namespace RappleMod{
 
 			return true;
 		}
+
+		public NPC FindClosestNPC(float maxDetectDistance) {
+			NPC closestNPC = null;
+
+			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
+
+			for (int k = 0; k < Main.maxNPCs; k++) {
+				NPC target = Main.npc[k];
+				if (target.CanBeChasedBy() && !target.HasBuff(BuffID.Ichor)) {
+					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Player.Center);
+
+					if (sqrDistanceToTarget < sqrMaxDetectDistance) {
+						sqrMaxDetectDistance = sqrDistanceToTarget;
+						closestNPC = target;
+					}
+				}
+			}
+            return closestNPC;
+        }
     }
 }

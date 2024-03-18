@@ -145,6 +145,9 @@ Mods: {
 			HawkEyeReticle.DisplayName: Hawk Eye Reticle
 			HawkEyeBullet.DisplayName: Hawk Eye Bullet
 			BrimstoneHoldOut.DisplayName: Brimstone Hold Out
+			BrimstoneBeamM.DisplayName: Brimstone Beam M
+			BrimstoneBeamL.DisplayName: Brimstone Beam L
+			BrimstoneBeamS.DisplayName: Brimstone Beam S
 		}
 	}
 }
