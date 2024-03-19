@@ -1,6 +1,8 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
+using Terraria.Graphics.CameraModifiers;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -155,6 +157,7 @@ namespace RappleMod.Content.Projectiles.Brimstone
 		}
 
 		private void FireBrimstone() {
+			Player player = Main.LocalPlayer;
 			// If for some reason the beam velocity can't be correctly normalized, set it to a default value.
 			Vector2 beamVelocity = Vector2.Normalize(Projectile.velocity);
 			if (beamVelocity.HasNaNs()) {
@@ -166,14 +169,23 @@ namespace RappleMod.Content.Projectiles.Brimstone
 
 			int damage = Projectile.damage;
 			float knockback = Projectile.knockBack;
-			
-			if (ChargeLevel == 1)
+			SoundStyle BrimWeak = new($"{nameof(RappleMod)}/Assets/Sounds/BrimstoneWeak{Main.rand.Next(1, 4)}");
+			SoundStyle BrimMedium = new($"{nameof(RappleMod)}/Assets/Sounds/BrimstoneMedium{Main.rand.Next(1, 4)}");
+			SoundStyle BrimStrong = new($"{nameof(RappleMod)}/Assets/Sounds/BrimstoneLarge{Main.rand.Next(1, 4)}");
+			if (ChargeLevel == 1){
+			 	SoundEngine.PlaySound(BrimWeak, player.Center);
 				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, beamVelocity, ModContent.ProjectileType<BrimstoneBeamS>(), (int)(damage * 0.33f), knockback, Projectile.owner, ChargeLevel, uuid);
-			else if (ChargeLevel == 2)
+			}
+			else if (ChargeLevel == 2){
+				SoundEngine.PlaySound(BrimMedium, player.Center);
 				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, beamVelocity, ModContent.ProjectileType<BrimstoneBeamM>(), damage, knockback, Projectile.owner, ChargeLevel, uuid);
-			else if (ChargeLevel == 3)
+			}
+			else if (ChargeLevel == 3){
+				PunchCameraModifier modifier = new PunchCameraModifier(player.Center, (Main.rand.NextFloat() * ((float)System.Math.PI * 2f)).ToRotationVector2(), 20f, 6f, 20, 1000f, FullName);
+				Main.instance.CameraModifiers.Add(modifier);
+				SoundEngine.PlaySound(BrimStrong, player.Center);
 				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, beamVelocity, ModContent.ProjectileType<BrimstoneBeamL>(), damage*3, knockback, Projectile.owner, ChargeLevel, uuid);
-			
+			}
 			Projectile.netUpdate = true;
 		}
 

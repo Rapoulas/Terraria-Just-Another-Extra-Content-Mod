@@ -63,11 +63,11 @@ namespace RappleMod.Content.Projectiles.Brimstone
 				return;
 			}
 			
-            float chargeRatio = MathHelper.Clamp(((float)timer-30)/60, 0f, 1f);
+            float chargeRatio = MathHelper.Clamp(((float)timer-40)/60, 0f, 1f);
 			Vector2 hostBeamDir = Vector2.Normalize(hostBeam.velocity);
             timer++;
 			
-			if (timer > 30) {
+			if (timer > 40) {
 				Projectile.scale = MathHelper.Lerp(MaxBeamSize, 0f, EaseIn(chargeRatio));
                 if (Projectile.scale <= 0f) Projectile.Kill();
 			}
