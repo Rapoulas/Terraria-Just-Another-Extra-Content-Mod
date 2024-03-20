@@ -182,9 +182,9 @@ namespace RappleMod.Content.Projectiles.Brimstone
 			DrawBeamEnd(Main.spriteBatch, brimstoneEndTexture, startPosition, endPosition, drawScale, Color.Red * OuterBeamOpacityMultiplier * Projectile.Opacity, lineFraming, timer);
 			
 			drawScale *= 0.5f;
-			DrawBeamStart(Main.spriteBatch, brimstoneStartTexture, startPosition, endPosition, drawScale, Color.Red * OuterBeamOpacityMultiplier * Projectile.Opacity, lineFraming, timer);
-			DrawBeamBody(Main.spriteBatch, brimstoneBodyTexture, startPosition, endPosition, drawScale, Color.Red * OuterBeamOpacityMultiplier * Projectile.Opacity, lineFraming, timer);
-			DrawBeamEnd(Main.spriteBatch, brimstoneEndTexture, startPosition, endPosition, drawScale, Color.Red * OuterBeamOpacityMultiplier * Projectile.Opacity, lineFraming, timer);
+			DrawBeamStart(Main.spriteBatch, brimstoneStartTexture, startPosition, endPosition, drawScale, Color.Red * InnerBeamOpacityMultiplier * Projectile.Opacity, lineFraming, timer);
+			DrawBeamBody(Main.spriteBatch, brimstoneBodyTexture, startPosition, endPosition, drawScale, Color.Red * InnerBeamOpacityMultiplier * Projectile.Opacity, lineFraming, timer);
+			DrawBeamEnd(Main.spriteBatch, brimstoneEndTexture, startPosition, endPosition, drawScale, Color.Red * InnerBeamOpacityMultiplier * Projectile.Opacity, lineFraming, timer);
 			
 			return false;
 		}
