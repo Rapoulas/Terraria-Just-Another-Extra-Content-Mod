@@ -23,7 +23,7 @@ namespace RappleMod.Content.Projectiles.Brimstone
         private const float BeamHitboxCollisionWidth = 28f;
         private const int NumSamplePoints = 3;
         private const float BeamLengthChangeFactor = 1f;
-        private const float OuterBeamOpacityMultiplier = 0.60f;
+        private const float OuterBeamOpacityMultiplier = 0.88f;
 		private const float InnerBeamOpacityMultiplier = 0.1f;
         private const float BeamLightBrightness = 0.75f;
         public int timer = 0;

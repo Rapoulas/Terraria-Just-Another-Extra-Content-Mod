@@ -45,16 +45,24 @@ namespace RappleMod.Content.Projectiles.ProminenceRevolt
 			Player player = Main.player[Projectile.owner];
 
 			if (timeLeft == 0){
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y , 0, -1, 654, Projectile.damage, Projectile.knockBack, player.whoAmI);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y , 0, -1, 953, 0, Projectile.knockBack, player.whoAmI);
+				int a = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y , 0, -1, 654, Projectile.damage, Projectile.knockBack, player.whoAmI);
+				Main.projectile[a].friendly = true;
+				Main.projectile[a].hostile = false;
+				int b = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y , 0, -1, 953, 0, Projectile.knockBack, player.whoAmI);
+				Main.projectile[b].friendly = true;
+				Main.projectile[b].hostile = false;
 			}		
 		}
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			Player player = Main.player[Projectile.owner];
 
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center.X, target.Center.Y , 0, -1, 654, Projectile.damage, Projectile.knockBack, player.whoAmI);
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center.X, target.Center.Y , 0, -1, 953, 0, Projectile.knockBack, player.whoAmI);
+			int a = Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center.X, target.Center.Y , 0, -1, 654, Projectile.damage, Projectile.knockBack, player.whoAmI);
+			Main.projectile[a].friendly = true;
+			Main.projectile[a].hostile = false;
+			int b = Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center.X, target.Center.Y , 0, -1, 953, 0, Projectile.knockBack, player.whoAmI);
+			Main.projectile[b].friendly = true;
+			Main.projectile[b].hostile = false;
 			if (Main.rand.NextBool(2)) {
 				target.AddBuff(BuffID.OnFire, 300);
 			}

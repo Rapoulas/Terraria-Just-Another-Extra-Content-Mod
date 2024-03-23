@@ -99,7 +99,7 @@ namespace RappleMod.Content.Projectiles.Brimstone
 				ChargeLevel = 2;
 				Main.NewText(ChargeLevel);
 			}
-			if (ChargeTime == 300){
+			if (ChargeTime == 299){
 				ChargeLevel = 3;
 				Main.NewText(ChargeLevel);
 			}

@@ -22,7 +22,7 @@ namespace RappleMod.Content.Projectiles.Brimstone
         private const float BeamHitboxCollisionWidth = 20f;
         private const int NumSamplePoints = 3;
         private const float BeamLengthChangeFactor = 1f;
-        private const float OuterBeamOpacityMultiplier = 0.60f;
+        private const float OuterBeamOpacityMultiplier = 0.88f;
 		private const float InnerBeamOpacityMultiplier = 0.1f;
         private const float BeamLightBrightness = 0.75f;
         public int timer = 0;
@@ -169,7 +169,7 @@ namespace RappleMod.Content.Projectiles.Brimstone
 			Vector2 centerFloored = Projectile.Center.Floor() + Projectile.velocity * Projectile.scale * 10.5f;
 			Vector2 drawScale = new Vector2(Projectile.scale);
 
-			float visualBeamLength = BeamLength - 15f * Projectile.scale * Projectile.scale;
+			float visualBeamLength = BeamLength - 23f * Projectile.scale * Projectile.scale;
 
 			DelegateMethods.f_1 = 1f;
 			Vector2 startPosition = centerFloored - Main.screenPosition;
@@ -207,7 +207,7 @@ namespace RappleMod.Content.Projectiles.Brimstone
 					break;
 				case 2:
 					distCovered = 22f;
-					frame = new Rectangle(0, 0, 26, 30);
+					frame = new Rectangle(0, 0, 42, 30);
 					origin = new Vector2(frame.Width / 2, 1f);
 					break;
 				default:

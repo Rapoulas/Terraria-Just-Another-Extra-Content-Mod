@@ -15,8 +15,8 @@ namespace RappleMod.Content.Projectiles.ProminenceRevolt
 
 		public override void SetDefaults() {
 			Projectile.CloneDefaults(ProjectileID.Spear); // Clone the default values for a vanilla spear. Spear specific values set for width, height, aiStyle, friendly, penetrate, tileCollide, scale, hide, ownerHitCheck, and melee.		
-			Projectile.height = 68;
-			Projectile.width = 68;
+			Projectile.height = 18;
+			Projectile.width = 18;
 		}
 
 		public override bool PreAI() {
@@ -64,7 +64,9 @@ namespace RappleMod.Content.Projectiles.ProminenceRevolt
             Player player = Main.player[Projectile.owner];
 
 			if (!onCooldown){
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center.X, target.Center.Y , 0, -1, 654, Projectile.damage, Projectile.knockBack, player.whoAmI);
+				int a = Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center.X, target.Center.Y , 0, -1, 654, Projectile.damage, Projectile.knockBack, player.whoAmI);
+				Main.projectile[a].friendly = true;
+				Main.projectile[a].hostile = false;
 				if (Main.rand.NextBool(2)) {
 					target.AddBuff(BuffID.OnFire, 300);
 				}
