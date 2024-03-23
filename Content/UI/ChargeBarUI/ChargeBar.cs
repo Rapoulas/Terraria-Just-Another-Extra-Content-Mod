@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RappleMod.Content.Weapons;
 using ReLogic.Content;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent;
@@ -20,8 +21,8 @@ namespace RappleMod.Content.UI.ChargeBarUI
 		// Once this is all set up make sure to go and do the required stuff for most UI's in the ModSystem class.
 		private static Vector2 barPosition;
 		private static Texture2D barFrame = ModContent.Request<Texture2D>("RappleMod/Content/UI/ChargeBarUI/ChargeBarSprite", AssetRequestMode.ImmediateLoad).Value;
-		public static int frameCounter;
 		public static float timer;
+		public static int frameCounter;
 
 		public override void OnInitialize() {
 			Player player = Main.LocalPlayer;
@@ -47,10 +48,8 @@ namespace RappleMod.Content.UI.ChargeBarUI
 
 		private static void DrawChargeBar(SpriteBatch spriteBatch){
 			timer++;
-			if (timer % 23 == 0 && frameCounter < 13){
-				frameCounter++;
-			}
-			Rectangle cropRect = new(0, 32 * frameCounter, barFrame.Width, 32);
+			if (timer% 23 == 0 && frameCounter < 13) frameCounter++;
+			Rectangle cropRect = new(0, 32 * Math.Max(0, frameCounter-1), barFrame.Width, 32);
 			spriteBatch.Draw(barFrame, barPosition, cropRect, Color.White);
 		}
     }
