@@ -15,11 +15,11 @@ namespace RappleMod.Content.Weapons
 			Item.mana = 0;
 			Item.shootSpeed = 1f;
             Item.noMelee = true;
-            Item.damage = 50;
+            Item.damage = 75;
             Item.useTime = 5;
             Item.shoot = ProjectileID.PurificationPowder;
             Item.useAnimation = 180;
-            Item.rare = ItemRarityID.Red;
+            Item.rare = ItemRarityID.LightRed;
             Item.DamageType = DamageClass.Magic;
 			Item.useStyle = ItemUseStyleID.Shoot;
             Item.useLimitPerAnimation = 6;
@@ -27,10 +27,11 @@ namespace RappleMod.Content.Weapons
 
 		public override void AddRecipes() {
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.LastPrism, 1);
-			recipe.AddIngredient(ItemID.LunarFlareBook, 1);
-			recipe.AddIngredient(ItemID.NebulaBlaze, 1);
-			recipe.AddTile(TileID.LunarCraftingStation);
+			recipe.AddIngredient(ItemID.SpellTome, 1);
+			recipe.AddIngredient(ItemID.Grenade, 50);
+			recipe.AddIngredient(ItemID.BouncyGrenade, 50);
+			recipe.AddIngredient(ItemID.StickyGrenade, 50);
+			recipe.AddTile(TileID.Bookcases);
 			recipe.Register();
 		}
         

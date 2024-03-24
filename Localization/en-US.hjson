@@ -100,7 +100,11 @@ Mods: {
 			}
 
 			AnarchistCookbook: {
-				Tooltip: ""
+				Tooltip: 
+					'''
+					Shoots a barrage of grenades
+					Right click to switch grenade type
+					'''
 				DisplayName: Anarchist's Cookbook
 			}
 		}
