@@ -23,6 +23,7 @@ namespace RappleMod.Content.UI.ChargeBarUI
 		private static Texture2D barFrame = ModContent.Request<Texture2D>("RappleMod/Content/UI/ChargeBarUI/ChargeBarSprite", AssetRequestMode.ImmediateLoad).Value;
 		public static float timer;
 		public static int frameCounter;
+		public static Color color = new(255, 171, 0);
 
 		public override void OnInitialize() {
 			Player player = Main.LocalPlayer;
@@ -35,6 +36,7 @@ namespace RappleMod.Content.UI.ChargeBarUI
 			if (Main.LocalPlayer.HeldItem.ModItem is not Brimstone || !Main.LocalPlayer.channel){
 				timer = 0;
 				frameCounter = 0;
+				color = new(255, 171, 0);
 				return;
 			}
 			
@@ -50,7 +52,13 @@ namespace RappleMod.Content.UI.ChargeBarUI
 			timer++;
 			if (timer% 23 == 0 && frameCounter < 13) frameCounter++;
 			Rectangle cropRect = new(0, 32 * Math.Max(0, frameCounter-1), barFrame.Width, 32);
-			spriteBatch.Draw(barFrame, barPosition, cropRect, Color.White);
+			if (color.G < 255) color.G++;
+			else if (color.G == 255 && color.R > 0) color.R--;
+			
+			Vector2 drawScale = new(1f, 1f);
+			drawScale *= 0.75f;
+			Rectangle frame = new(0, 0, 0, 0);
+			spriteBatch.Draw(barFrame, barPosition, cropRect, color, 0, frame.Size()/2f, drawScale, SpriteEffects.None, 0f);
 		}
     }
 

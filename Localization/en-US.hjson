@@ -98,6 +98,11 @@ Mods: {
 					'''
 				DisplayName: Hawk-Eye
 			}
+
+			AnarchistCookbook: {
+				Tooltip: ""
+				DisplayName: Anarchist's Cookbook
+			}
 		}
 
 		Buffs: {

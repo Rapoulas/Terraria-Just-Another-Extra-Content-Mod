@@ -12,8 +12,8 @@ namespace RappleMod.Content.Projectiles.HawkEye
     {
         
         public override void SetDefaults() {
-            Projectile.width = 64;
-            Projectile.height = 64;
+            Projectile.width = 66;
+            Projectile.height = 66;
             Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = false;

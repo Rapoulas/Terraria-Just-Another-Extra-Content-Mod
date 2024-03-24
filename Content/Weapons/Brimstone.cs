@@ -8,8 +8,6 @@ namespace RappleMod.Content.Weapons
 {
 	public class Brimstone : ModItem
 	{
-		public static Color OverrideColor = new(122, 173, 255);
-
 		public override void SetDefaults() {
             Item.width = 28;
             Item.height = 30;

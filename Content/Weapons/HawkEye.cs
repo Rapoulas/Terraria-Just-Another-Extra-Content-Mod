@@ -11,7 +11,6 @@ namespace RappleMod.Content.Weapons{
     public class HawkEye : ModItem
     {
 		int reticleCounter = 0;
-        public override string Texture => $"Terraria/Images/Item_{ItemID.SniperRifle}";
         public override void SetDefaults() {
 			Item.width = 64;
 			Item.height = 36;
