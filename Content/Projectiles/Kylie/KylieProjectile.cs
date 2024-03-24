@@ -70,6 +70,7 @@ namespace RappleMod.Content.Projectiles.Kylie
             if (Collision.CheckAABBvAABBCollision(player.position, player.Size, Projectile.position, Projectile.Size) && Projectile.ai[0] >= 10f){
                 Projectile.Kill();
             }
+            if (Projectile.ai[0] > 1000) Projectile.Kill();
         }
     }
 }

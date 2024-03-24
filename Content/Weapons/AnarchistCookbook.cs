@@ -9,7 +9,6 @@ namespace RappleMod.Content.Weapons
 {
 	public class AnarchistCookbook: ModItem
 	{
-        public int mode;
 		public override void SetDefaults() {
             Item.width = 28;
             Item.height = 30;
@@ -54,31 +53,37 @@ namespace RappleMod.Content.Weapons
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             if (player.altFunctionUse == 2){
-                if (mode == 0){
-                    mode = 1;
-                    Main.NewText("Sticky grenade mode");
+                player.GetModPlayer<MyPlayer>().anarchistCookbookCounter = 100;
+                if (player.GetModPlayer<MyPlayer>().anarchistCookbookMode == 0){
+                    player.GetModPlayer<MyPlayer>().anarchistCookbookMode = 1;
                     return false;
                 }
-                else if (mode == 1){
-                    mode = 2;
-                    Main.NewText("Bouncy grenade mode");
+                else if (player.GetModPlayer<MyPlayer>().anarchistCookbookMode == 1){
+                    player.GetModPlayer<MyPlayer>().anarchistCookbookMode = 2;
                     return false;
                 }
-                else if (mode == 2){
-                    mode = 0;
-                    Main.NewText("Normal grenade mode");
+                else if (player.GetModPlayer<MyPlayer>().anarchistCookbookMode == 2){
+                    player.GetModPlayer<MyPlayer>().anarchistCookbookMode = 3;
+                    return false;
+                }
+                else if (player.GetModPlayer<MyPlayer>().anarchistCookbookMode == 3){
+                    player.GetModPlayer<MyPlayer>().anarchistCookbookMode = 0;
                     return false;
                 }
             }
             velocity = player.DirectionTo(Main.MouseWorld);
             velocity.Normalize();
             velocity *= Main.rand.NextFloat(4, 7);
-            if (mode == 0) type = ProjectileID.Grenade;
-            else if (mode == 1) type = ProjectileID.StickyGrenade;
-            else if (mode == 2) type = ProjectileID.BouncyGrenade;
-            int a = Projectile.NewProjectile(source, position, velocity.RotatedByRandom(MathHelper.ToRadians(135)/2), type, damage, 1);
-            Main.projectile[a].friendly = true;
-            Main.projectile[a].hostile = false;
+            if (player.GetModPlayer<MyPlayer>().anarchistCookbookMode == 0) type = ProjectileID.Grenade;
+            else if (player.GetModPlayer<MyPlayer>().anarchistCookbookMode == 1) type = ProjectileID.StickyGrenade;
+            else if (player.GetModPlayer<MyPlayer>().anarchistCookbookMode == 2) type = ProjectileID.BouncyGrenade;
+            else if (player.GetModPlayer<MyPlayer>().anarchistCookbookMode == 3) {
+                int random = Main.rand.Next(1, 4);
+                if (random == 1 ) type = ProjectileID.Grenade;
+                else if (random == 2) type = ProjectileID.StickyGrenade;
+                else if (random == 3) type = ProjectileID.BouncyGrenade;
+            }
+            Projectile.NewProjectile(source, position, velocity.RotatedByRandom(MathHelper.ToRadians(135)/2), type, damage, 1);
             return false;
         }
 

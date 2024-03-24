@@ -17,6 +17,8 @@ namespace RappleMod{
         public bool hasAbsorbTeamDamageEffect;
 		public bool defendedByAbsorbTeamDamageEffect;
 		public bool isHoldingHawkEye;
+		public int anarchistCookbookMode;
+		public float anarchistCookbookCounter = 0;
         public override void ResetEffects(){
             hasAbsorbTeamDamageEffect = false;
 			defendedByAbsorbTeamDamageEffect = false;
