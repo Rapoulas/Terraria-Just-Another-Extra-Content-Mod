@@ -63,6 +63,8 @@ namespace RappleMod.Content.Projectiles.Explosiverang
             if (Collision.CheckAABBvAABBCollision(player.position, player.Size, Projectile.position, Projectile.Size) && Projectile.ai[0] >= 10f){
                 Projectile.Kill();
             }
+
+            if (Projectile.ai[0] > 450) Projectile.Kill();
         }
     }
 

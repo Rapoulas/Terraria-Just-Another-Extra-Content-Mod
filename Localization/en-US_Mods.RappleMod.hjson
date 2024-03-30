@@ -42,6 +42,11 @@ Items: {
 		Tooltip: ""
 		DisplayName: Brimstone
 	}
+
+	Bonetrousle: {
+		Tooltip: ""
+		DisplayName: Bonetrousle
+	}
 }
 
 Buffs: {
@@ -61,4 +66,9 @@ Buffs: {
 	}
 }
 
-Projectiles.BrimstoneBeam.DisplayName: Brimstone Beam
+Projectiles: {
+	BrimstoneBeam.DisplayName: Brimstone Beam
+	BonetrousleProjectile.DisplayName: Bonetrousle Projectile
+	BonetrousleBoneProjectile.DisplayName: Bonetrousle Bone Projectile
+	BonetrousleSpiritProjectile.DisplayName: Bonetrousle Spirit Projectile
+}

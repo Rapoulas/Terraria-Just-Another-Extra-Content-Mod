@@ -42,8 +42,8 @@ namespace RappleMod.Content.Projectiles.Andromeda
 		}
         public override void SetDefaults() {
 			Projectile.netImportant = true; 
-			Projectile.width = 22; 
-			Projectile.height = 22; 
+			Projectile.width = 34; 
+			Projectile.height = 34; 
 			Projectile.friendly = true; 
 			Projectile.penetrate = -1; 
 			Projectile.DamageType = DamageClass.Melee; 
@@ -426,24 +426,29 @@ namespace RappleMod.Content.Projectiles.Andromeda
 			Asset<Texture2D> chainTextureExtra = ModContent.Request<Texture2D>(ChainTextureExtraPath); // This texture and related code is optional and used for a unique effect
 
 			Rectangle? chainSourceRectangle = null;
+			// Drippler Crippler customizes sourceRectangle to cycle through sprite frames: sourceRectangle = asset.Frame(1, 6);
 			float chainHeightAdjustment = 0f; // Use this to adjust the chain overlap. 
 
 			Vector2 chainOrigin = chainSourceRectangle.HasValue ? (chainSourceRectangle.Value.Size() / 2f) : (chainTexture.Size() / 2f);
 			Vector2 chainDrawPosition = Projectile.Center;
-			Vector2 vectorFromProjectileToPlayerArms = playerArmPosition.MoveTowards(chainDrawPosition, 3f) - chainDrawPosition;
+			Vector2 vectorFromProjectileToPlayerArms = playerArmPosition.MoveTowards(chainDrawPosition, 4f) - chainDrawPosition;
 			Vector2 unitVectorFromProjectileToPlayerArms = vectorFromProjectileToPlayerArms.SafeNormalize(Vector2.Zero);
 			float chainSegmentLength = (chainSourceRectangle.HasValue ? chainSourceRectangle.Value.Height : chainTexture.Height()) + chainHeightAdjustment;
 			if (chainSegmentLength == 0) {
 				chainSegmentLength = 10; // When the chain texture is being loaded, the height is 0 which would cause infinite loops.
 			}
 			float chainRotation = unitVectorFromProjectileToPlayerArms.ToRotation() + MathHelper.PiOver2;
-			int chainCount = 1;
+			int chainCount = 0;
 			float chainLengthRemainingToDraw = vectorFromProjectileToPlayerArms.Length() + chainSegmentLength / 2f;
 
 			// This while loop draws the chain texture from the projectile to the player, looping to draw the chain texture along the path
 			while (chainLengthRemainingToDraw > 0f) {
 				// This code gets the lighting at the current tile coordinates
 				Color chainDrawColor = Lighting.GetColor((int)chainDrawPosition.X / 16, (int)(chainDrawPosition.Y / 16f));
+
+				// Flaming Mace and Drippler Crippler use code here to draw custom sprite frames with custom lighting.
+				// Cycling through frames: sourceRectangle = asset.Frame(1, 6, 0, chainCount % 6);
+				// This example shows how Flaming Mace works. It checks chainCount and changes chainTexture and draw color at different values
 
 				var chainTextureToDraw = chainTexture;
 				if (chainCount >= 4) {
@@ -478,8 +483,7 @@ namespace RappleMod.Content.Projectiles.Andromeda
 			}
 
 			// Add a motion trail when moving forward, like most flails do (don't add trail if already hit a tile)
-			if (CurrentAIState == AIState.LaunchingForward)
-			{
+			if (CurrentAIState == AIState.LaunchingForward) {
 				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 				Vector2 drawOrigin = new Vector2(projectileTexture.Width * 0.5f, Projectile.height * 0.5f);
 				SpriteEffects spriteEffects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
