@@ -157,6 +157,7 @@ Mods: {
 			BrimstoneBeamM.DisplayName: Brimstone Beam M
 			BrimstoneBeamL.DisplayName: Brimstone Beam L
 			BrimstoneBeamS.DisplayName: Brimstone Beam S
+			DryadWardCopy.DisplayName: Dryad Ward Copy
 		}
 	}
 }

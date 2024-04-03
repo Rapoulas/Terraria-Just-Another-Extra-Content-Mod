@@ -22,17 +22,19 @@ namespace RappleMod.Content.SetBonusChanges
 
             if (
                 (head.type == S1H || head.type == S2H) && (body.type == S1B || body.type == S2B || body.type == S3B)  && (legs.type == S1L || legs.type == S2L || legs.type == S3L) &&
-                !(head.type == S1H && head.type == S1B && legs.type == S1L) &&
-                !(head.type == S2H && head.type == S2B && legs.type == S2L) &&
-                !(head.type == S3H && head.type == S3B && legs.type == S3L)
+                !(head.type == S1H && body.type == S1B && legs.type == S1L) &&
+                !(head.type == S2H && body.type == S2B && legs.type == S2L) &&
+                !(head.type == S3H && body.type == S3B && legs.type == S3L)
                 ) return "MeleeCobaltPalladiumFrostSet";
 
             return base.IsArmorSet(head, body, legs);
         }
         public override void UpdateArmorSet(Player player, string set)
         {
-            player.setBonus = "Melee attacks can apply Frostburn and Frostbite\nEnemies have a chance to spread frost debuffs to nearby enemies\nIncreases the damage of frost debuffs by 50%";
-            player.GetModPlayer<SetBonusChangesPlayer>().MeleeCobaltPalladiumFrostSet = true;
+            if (set == "MeleeCobaltPalladiumFrostSet"){
+                player.setBonus = "Melee attacks can apply Frostburn and Frostbite\nEnemies have a chance to spread frost debuffs to nearby enemies\nIncreases the damage of frost debuffs by 50%";
+                player.GetModPlayer<SetBonusChangesPlayer>().MeleeCobaltPalladiumFrostSet = true;
+            }
         }
     }
 }

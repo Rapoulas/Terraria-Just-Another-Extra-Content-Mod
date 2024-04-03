@@ -7,7 +7,6 @@ namespace RappleMod.Content.Buffs
 {
 	public class BufferLifeDegen : ModBuff
 	{
-        public override string Texture => $"Terraria/Images/Buff_{BuffID.Poisoned}";
 		public override void SetStaticDefaults() {
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;

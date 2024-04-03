@@ -13,7 +13,7 @@ namespace RappleMod.Content.Projectiles.Bonetrousle
         public override void SetStaticDefaults() {
 
 			ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = 12f;
-			ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 500f;
+			ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 250f;
 			ProjectileID.Sets.YoyosTopSpeed[Projectile.type] = 15f;
             Main.projFrames[Projectile.type] = 2;
 		}
@@ -42,7 +42,7 @@ namespace RappleMod.Content.Projectiles.Bonetrousle
             timer++;
 
             if (timer % 30 == 0){
-                float newDamage = Projectile.damage/3f;
+                float newDamage = Projectile.damage/2f;
                 Vector2 randomDir = new(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1));
                 randomDir.Normalize();
                 randomDir *= 15;

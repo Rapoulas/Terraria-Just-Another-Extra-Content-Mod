@@ -22,17 +22,19 @@ namespace RappleMod.Content.SetBonusChanges
 
             if (
                 (head.type == S1H || head.type == S2H) && (body.type == S1B || body.type == S2B || body.type == S3B)  && (legs.type == S1L || legs.type == S2L || legs.type == S3L) &&
-                !(head.type == S1H && head.type == S1B && legs.type == S1L) &&
-                !(head.type == S2H && head.type == S2B && legs.type == S2L) &&
-                !(head.type == S3H && head.type == S3B && legs.type == S3L)
+                !(head.type == S1H && body.type == S1B && legs.type == S1L) &&
+                !(head.type == S2H && body.type == S2B && legs.type == S2L) &&
+                !(head.type == S3H && body.type == S3B && legs.type == S3L)
                 ) return "RangedTitaniumAdamantiteFrostSet";
 
             return base.IsArmorSet(head, body, legs);
         }
         public override void UpdateArmorSet(Player player, string set)
         {
-            player.setBonus = "Ranged hits generate shards\nIncreases ranged abilities on hitting enemies with shards\nIncreases the damage of frost debuffs by 50%";
-            player.GetModPlayer<SetBonusChangesPlayer>().RangedTitaniumAdamantiteFrostSet = true;
+            if (set == "RangedTitaniumAdamantiteFrostSet"){
+                player.setBonus = "Ranged hits generate shards\nIncreases ranged abilities on hitting enemies with shards\nIncreases the damage of frost debuffs by 50%";
+                player.GetModPlayer<SetBonusChangesPlayer>().RangedTitaniumAdamantiteFrostSet = true;
+            }
         }
     }
 }

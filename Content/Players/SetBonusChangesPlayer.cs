@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using RappleMod.Content.Projectiles;
 using RappleMod.Content.Buffs;
+using RappleMod.Content.Projectiles.DryadWardCopy;
 
 namespace RappleMod{
 
@@ -16,6 +17,8 @@ namespace RappleMod{
 		public bool RangedOrichalcumMythrilFrostSet;
 		public bool MeleeTitaniumAdamantiteFrostSet;
 		public bool RangedTitaniumAdamantiteFrostSet;
+		public bool MeleeHallowedChlorophyteSet;
+		public bool MeleeHCSetReapply = false;
 		public int maxHitCountRangedOMFSet;
 		public int timer;
 
@@ -27,6 +30,7 @@ namespace RappleMod{
 			RangedOrichalcumMythrilFrostSet = false;
 			MeleeTitaniumAdamantiteFrostSet = false;
 			RangedTitaniumAdamantiteFrostSet = false;
+			MeleeHallowedChlorophyteSet = false;
 			maxHitCountRangedOMFSet = 0;
         }
 
@@ -58,14 +62,14 @@ namespace RappleMod{
 				}
 			}
 
-			if (MeleeCobaltPalladiumFrostSet && Main.rand.NextBool(5) && hit.DamageType == DamageClass.Melee){
+			if (MeleeCobaltPalladiumFrostSet && Main.rand.NextBool(5) && (hit.DamageType == DamageClass.Melee || hit.DamageType == DamageClass.MeleeNoSpeed)){
 				target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(3, 6));
 			}
-			if (MeleeCobaltPalladiumFrostSet && Main.rand.NextBool(5) && hit.DamageType == DamageClass.Melee){
+			if (MeleeCobaltPalladiumFrostSet && Main.rand.NextBool(5) && (hit.DamageType == DamageClass.Melee || hit.DamageType == DamageClass.MeleeNoSpeed)){
 				target.AddBuff(BuffID.Frostburn2, 60 * Main.rand.Next(3, 6));
 			}
 
-			if (MeleeTitaniumAdamantiteFrostSet && hit.DamageType == DamageClass.Melee){
+			if (MeleeTitaniumAdamantiteFrostSet && (hit.DamageType == DamageClass.Melee || hit.DamageType == DamageClass.MeleeNoSpeed)){
 				ShardStormGenerate(target);
 			}
 
@@ -73,14 +77,28 @@ namespace RappleMod{
 				ShardStormGenerate(target);
 			}
 
-			if (proj.type == 908){
+			if (proj.type == 908 && (RangedTitaniumAdamantiteFrostSet || MeleeTitaniumAdamantiteFrostSet)){
 				target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(3, 6));
 				target.AddBuff(BuffID.Frostburn2, 60 * Main.rand.Next(3, 6));
+			}
+
+			if (MeleeHallowedChlorophyteSet && (hit.DamageType == DamageClass.Melee || hit.DamageType == DamageClass.MeleeNoSpeed)){
+				if (player.ownedProjectileCounts[ModContent.ProjectileType<DryadWardCopy>()] <= 0)
+					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DryadWardCopy>(), 50, 0, player.whoAmI, 0, player.whoAmI, 1);
+				else MeleeHCSetReapply = true;
+			}
+
+			if (MeleeHallowedChlorophyteSet && (hit.DamageType == DamageClass.Ranged)){
+				if (player.ownedProjectileCounts[ModContent.ProjectileType<DryadWardCopy>()] <= 0)
+					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DryadWardCopy>(), 50, 0, player.whoAmI, 0, target.whoAmI, 0);
+				else MeleeHCSetReapply = true;
 			}
         }
 
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {	
+			Player player = Main.LocalPlayer;
+
 			if (MeleeCobaltPalladiumFrostSet && Main.rand.NextBool(5)){
 				target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(3, 6));
 			}
@@ -88,8 +106,14 @@ namespace RappleMod{
 				target.AddBuff(BuffID.Frostburn2, 60 * Main.rand.Next(3, 6));
 			}
 
-			if (MeleeTitaniumAdamantiteFrostSet && hit.DamageType == DamageClass.Melee){
+			if (MeleeTitaniumAdamantiteFrostSet && (hit.DamageType == DamageClass.Melee || hit.DamageType == DamageClass.MeleeNoSpeed)){
 				ShardStormGenerate(target);
+			}
+
+			if (MeleeHallowedChlorophyteSet && (hit.DamageType == DamageClass.Melee || hit.DamageType == DamageClass.MeleeNoSpeed)){
+				if (player.ownedProjectileCounts[ModContent.ProjectileType<DryadWardCopy>()] <= 0)
+					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DryadWardCopy>(), 50, 0, player.whoAmI, 0, player.whoAmI, player.whoAmI);
+				else MeleeHCSetReapply = true;
 			}
         }
 
