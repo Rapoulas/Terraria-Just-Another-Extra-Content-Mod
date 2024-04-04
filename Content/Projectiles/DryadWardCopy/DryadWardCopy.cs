@@ -12,6 +12,7 @@ namespace RappleMod.Content.Projectiles.DryadWardCopy
 	{
         double radius;
         float timer;
+        NPC npc;
         public override void SetStaticDefaults() {
             Main.projFrames[Projectile.type] = 5;
 		}
@@ -24,7 +25,7 @@ namespace RappleMod.Content.Projectiles.DryadWardCopy
 			Projectile.DamageType = DamageClass.Default;
 			Projectile.penetrate = -1; 
             Projectile.tileCollide = false;
-            Projectile.localNPCHitCooldown = 60;
+            Projectile.localNPCHitCooldown = 90;
             Projectile.usesLocalNPCImmunity = true;
 		}
         public override void AI()
@@ -36,11 +37,12 @@ namespace RappleMod.Content.Projectiles.DryadWardCopy
 			} 
 
             Player player = Main.player[Projectile.owner];
-
+            
             if (Projectile.ai[2] == 0) 
                 for (int i = 0; i < Main.maxNPCs; i++){
                     if (Main.npc[i].whoAmI == Projectile.ai[1]){
-                        Projectile.Center = Main.npc[i].Center;
+                        npc = Main.npc[i];
+                        Projectile.Center = npc.Center;
                     }
                 }
             else if (Projectile.ai[2] == 1) Projectile.Center = player.Center;
@@ -49,9 +51,18 @@ namespace RappleMod.Content.Projectiles.DryadWardCopy
                 Projectile.Kill();
                 return;
 		    }
+            if (Projectile.ai[2] == 0 && !npc.active){
+                Projectile.Kill();
+                return;
+            }
             Projectile.ai[0] += 1f;
-            Projectile.rotation += (float)Math.PI / 300f;
+
+            if (Projectile.localNPCHitCooldown > 45)
+                Projectile.localNPCHitCooldown = Math.Min((int)MathHelper.Lerp(90, 45, (timer-400)/300), 90);
+
+            Projectile.rotation += (float)Math.PI / Math.Max(300f - (timer/2f), 35f);
             Projectile.scale = Projectile.ai[0] / 100f;
+
             if (Projectile.scale > 1f)
             {
                 Projectile.scale = 1f;
@@ -66,7 +77,7 @@ namespace RappleMod.Content.Projectiles.DryadWardCopy
             {
                 distanceLeafPlayer = 208f;
             }
-            if (distanceLeafPlayer == 208f && player.GetModPlayer<SetBonusChangesPlayer>().MeleeHCSetReapply){
+            if (distanceLeafPlayer == 208f && Projectile.ai[0] <= 500f && player.GetModPlayer<SetBonusChangesPlayer>().MeleeHCSetReapply){
                 Projectile.ai[0] = 400f;
                 player.GetModPlayer<SetBonusChangesPlayer>().MeleeHCSetReapply = false;
             }
@@ -74,26 +85,33 @@ namespace RappleMod.Content.Projectiles.DryadWardCopy
             {
                 Projectile.alpha = (int)MathHelper.Lerp(0f, 255f, (Projectile.ai[0] - 500f) / 100f);
                 distanceLeafPlayer = MathHelper.Lerp(208f, 288f, (Projectile.ai[0] - 500f) / 100f);
-                Projectile.rotation += (float)Math.PI / 300f;
             }
             int num2 = 163;
             
             if (Main.rand.NextBool(2))
             {
+                int dust = 0;
                 Vector2 vector2 = new Vector2(Main.rand.Next(-10, 11), Main.rand.Next(-10, 11));
                 float num7 = Main.rand.Next(3, 9);
                 vector2.Normalize();
-                int num8 = Dust.NewDust(new Vector2(player.position.X, player.position.Y), player.width, player.height, num2, 0f, 0f, 100, default(Color), 1.5f);
-                Main.dust[num8].noGravity = true;
-                Main.dust[num8].position = player.Center + vector2 * 30f;
+
+                if (Projectile.ai[2] == 0){
+                    dust = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y), npc.width, npc.height, num2, 0f, 0f, 100, default(Color), 1.5f);
+                    Main.dust[dust].position = npc.Center + vector2 * 30f;
+                }
+                else if (Projectile.ai[2] == 1){
+                    dust = Dust.NewDust(new Vector2(player.position.X, player.position.Y), player.width, player.height, num2, 0f, 0f, 100, default(Color), 1.5f);
+                    Main.dust[dust].position = player.Center + vector2 * 30f;
+                }
+                Main.dust[dust].noGravity = true;
                 if (Main.rand.NextBool(8))
                 {
-                    Main.dust[num8].velocity = vector2 * (0f - num7) * 3f;
-                    Main.dust[num8].scale += 0.5f;
+                    Main.dust[dust].velocity = vector2 * (0f - num7) * 3f;
+                    Main.dust[dust].scale += 0.5f;
                 }
                 else
                 {
-                    Main.dust[num8].velocity = vector2 * (0f - num7);
+                    Main.dust[dust].velocity = vector2 * (0f - num7);
                 }
             }
             if (Projectile.ai[0] >= 30f && Main.netMode != NetmodeID.Server)

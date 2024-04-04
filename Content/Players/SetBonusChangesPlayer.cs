@@ -84,13 +84,13 @@ namespace RappleMod{
 
 			if (MeleeHallowedChlorophyteSet && (hit.DamageType == DamageClass.Melee || hit.DamageType == DamageClass.MeleeNoSpeed)){
 				if (player.ownedProjectileCounts[ModContent.ProjectileType<DryadWardCopy>()] <= 0)
-					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DryadWardCopy>(), 50, 0, player.whoAmI, 0, player.whoAmI, 1);
+					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DryadWardCopy>(), 75, 0, player.whoAmI, 0, player.whoAmI, 1);
 				else MeleeHCSetReapply = true;
 			}
 
 			if (MeleeHallowedChlorophyteSet && (hit.DamageType == DamageClass.Ranged)){
 				if (player.ownedProjectileCounts[ModContent.ProjectileType<DryadWardCopy>()] <= 0)
-					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DryadWardCopy>(), 50, 0, player.whoAmI, 0, target.whoAmI, 0);
+					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DryadWardCopy>(), 75, 0, player.whoAmI, 0, target.whoAmI, 0);
 				else MeleeHCSetReapply = true;
 			}
         }
