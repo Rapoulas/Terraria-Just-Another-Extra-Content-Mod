@@ -1,1 +1,17 @@
-just doing stuff.
+    Just another mod that adds some stuff that i think would be cool.
+
+    Includes a handful of items, some of them dont have a way to be obtained yet, so maybe just activate some
+Cheat mod and try them out.
+    
+    Currently also adds some hybrid set bonuses:
+    (Ranged)
+        Necro + Fossil 
+        Cobalt + Palladium + Frost
+        Orichalcum + Mythril + Frost
+        Titanium + Adamantite + Frost
+        Hallowed + Chlorophyte
+    (Melee)
+        Cobalt + Palladium + Frost
+        Orichalcum + Mythril + Frost
+        Titanium + Adamantite + Frost
+        Hallowed + Chlorophyte

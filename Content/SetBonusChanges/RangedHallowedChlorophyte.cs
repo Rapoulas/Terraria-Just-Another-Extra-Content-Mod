@@ -4,19 +4,19 @@ using Terraria.ModLoader;
 
 namespace RappleMod.Content.SetBonusChanges
 {
-    public class MeleeHallowedChlorophyte : GlobalItem
+    public class RangedHallowedChlorophyte : GlobalItem
     {
         public override string IsArmorSet(Item head, Item body, Item legs)
         {
-            short S1H = ItemID.HallowedMask;
+            short S1H = ItemID.HallowedHelmet;
             short S1B= ItemID.HallowedPlateMail;
             short S1L = ItemID.HallowedGreaves;
 
-            short S2H = ItemID.AncientHallowedMask;
+            short S2H = ItemID.AncientHallowedHelmet;
             short S2B = ItemID.AncientHallowedPlateMail;
             short S2L = ItemID.AncientHallowedGreaves;
 
-            short S3H = ItemID.ChlorophyteMask;
+            short S3H = ItemID.ChlorophyteHelmet;
             short S3B = ItemID.ChlorophytePlateMail;
             short S3L = ItemID.ChlorophyteGreaves;
 
@@ -25,15 +25,15 @@ namespace RappleMod.Content.SetBonusChanges
                 !(head.type == S1H && body.type == S1B && legs.type == S1L) &&
                 !(head.type == S2H && body.type == S2B && legs.type == S2L) &&
                 !(head.type == S3H && body.type == S3B && legs.type == S3L)
-                ) return "MeleeHallowedChlorophyteSet";
+                ) return "RangedHallowedChlorophyteSet";
 
             return base.IsArmorSet(head, body, legs);
         }
         public override void UpdateArmorSet(Player player, string set)
         {
-            if (set == "MeleeHallowedChlorophyteSet"){
-                player.setBonus = "Melee attacks surrounds the player damaging aura\n";
-                player.GetModPlayer<SetBonusChangesPlayer>().MeleeHallowedChlorophyteSet = true;
+            if (set == "RangedHallowedChlorophyteSet"){
+                player.setBonus = "Ranged attacks surrounds the enemy hit in a damaging aura\n";
+                player.GetModPlayer<SetBonusChangesPlayer>().RangedHallowedChlorophyteSet = true;
             }
         }
     }

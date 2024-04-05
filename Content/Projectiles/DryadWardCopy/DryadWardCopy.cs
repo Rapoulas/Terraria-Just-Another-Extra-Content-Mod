@@ -13,7 +13,6 @@ namespace RappleMod.Content.Projectiles.DryadWardCopy
         double radius;
         float timer;
         bool runOnce = true;
-        float counter = 0;
         NPC npc;
         public override void SetStaticDefaults() {
             Main.projFrames[Projectile.type] = 5;
@@ -61,9 +60,12 @@ namespace RappleMod.Content.Projectiles.DryadWardCopy
 
             float distanceCirclePlayer = 32f;
 
-            if (Projectile.localNPCHitCooldown > 45)
+            if (Projectile.localNPCHitCooldown > 45){
                 Projectile.localNPCHitCooldown = Math.Min((int)MathHelper.Lerp(90, 45, (timer-400)/300), 90);
-
+                if (Projectile.ai[2] == 0 && !npc.active){
+                    Projectile.localNPCHitCooldown *= 2;
+                }
+            }
             Projectile.rotation += (float)Math.PI / Math.Max(300f - (timer/2f), 35f);
             Projectile.scale = Projectile.ai[0] / 100f;
 

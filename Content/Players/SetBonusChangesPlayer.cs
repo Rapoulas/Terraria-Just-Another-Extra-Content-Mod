@@ -18,6 +18,7 @@ namespace RappleMod{
 		public bool MeleeTitaniumAdamantiteFrostSet;
 		public bool RangedTitaniumAdamantiteFrostSet;
 		public bool MeleeHallowedChlorophyteSet;
+		public bool RangedHallowedChlorophyteSet;
 		public bool MeleeHCSetReapply = false;
 		public int maxHitCountRangedOMFSet;
 		public int timer;
@@ -31,6 +32,7 @@ namespace RappleMod{
 			MeleeTitaniumAdamantiteFrostSet = false;
 			RangedTitaniumAdamantiteFrostSet = false;
 			MeleeHallowedChlorophyteSet = false;
+			RangedHallowedChlorophyteSet = false;
 			maxHitCountRangedOMFSet = 0;
         }
 
@@ -88,7 +90,7 @@ namespace RappleMod{
 				else MeleeHCSetReapply = true;
 			}
 
-			if (MeleeHallowedChlorophyteSet && (hit.DamageType == DamageClass.Ranged)){
+			if (RangedHallowedChlorophyteSet && (hit.DamageType == DamageClass.Ranged)){
 				if (player.ownedProjectileCounts[ModContent.ProjectileType<DryadWardCopy>()] <= 0)
 					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DryadWardCopy>(), 75, 0, player.whoAmI, 0, target.whoAmI, 0);
 				else MeleeHCSetReapply = true;
