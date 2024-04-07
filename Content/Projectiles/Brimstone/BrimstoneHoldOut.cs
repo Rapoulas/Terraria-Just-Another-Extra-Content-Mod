@@ -97,11 +97,11 @@ namespace RappleMod.Content.Projectiles.Brimstone
 			
 			if (ChargeTime == 120){
 				ChargeLevel = 2;
-				Main.NewText(ChargeLevel);
+				SoundEngine.PlaySound(SoundID.Item113 with {Pitch = -1f}, Projectile.position);
 			}
 			if (ChargeTime == 299){
 				ChargeLevel = 3;
-				Main.NewText(ChargeLevel);
+				SoundEngine.PlaySound(SoundID.Item113, Projectile.position);
 			}
 
 			player.itemAnimation = player.itemAnimationMax;

@@ -1,7 +1,6 @@
-    Just another mod that adds some stuff that i think would be cool.
+    Just another mod that adds some stuff that i think would be cool. Also my first mod.
 
-    Includes a handful of items, some of them dont have a way to be obtained yet, so maybe just activate some
-Cheat mod and try them out.
+    Includes a handful of items, some of them dont have a way to be obtained yet, so maybe just activate some Cheat mod and try them out.
     
     Currently also adds some hybrid set bonuses:
     (Ranged)
@@ -15,3 +14,6 @@ Cheat mod and try them out.
         Orichalcum + Mythril + Frost
         Titanium + Adamantite + Frost
         Hallowed + Chlorophyte
+    For the frost armor sets combinations, you cant get the hybrid set bonus with the frost helmet since its 2 classes.
+    Also needs atleast 1 frost armor piece to get the hybrid set bonus.
+    Please let me know any bugs or feedback!

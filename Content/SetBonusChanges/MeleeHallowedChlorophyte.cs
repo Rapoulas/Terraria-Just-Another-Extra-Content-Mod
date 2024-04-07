@@ -24,7 +24,8 @@ namespace RappleMod.Content.SetBonusChanges
                 (head.type == S1H || head.type == S2H || head.type == S3H) && (body.type == S1B || body.type == S2B || body.type == S3B)  && (legs.type == S1L || legs.type == S2L || legs.type == S3L) &&
                 !(head.type == S1H && body.type == S1B && legs.type == S1L) &&
                 !(head.type == S2H && body.type == S2B && legs.type == S2L) &&
-                !(head.type == S3H && body.type == S3B && legs.type == S3L)
+                !(head.type == S3H && body.type == S3B && legs.type == S3L) &&
+                !((head.type == S1H || head.type == S2H) && (body.type == S1B || body.type == S2B)  && (legs.type == S1L || legs.type == S2L))
                 ) return "MeleeHallowedChlorophyteSet";
 
             return base.IsArmorSet(head, body, legs);
