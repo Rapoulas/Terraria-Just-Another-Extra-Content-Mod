@@ -9,11 +9,13 @@
         Orichalcum + Mythril + Frost
         Titanium + Adamantite + Frost
         Hallowed + Chlorophyte
+        
     (Melee)
         Cobalt + Palladium + Frost
         Orichalcum + Mythril + Frost
         Titanium + Adamantite + Frost
         Hallowed + Chlorophyte
-    For the frost armor sets combinations, you cant get the hybrid set bonus with the frost helmet since its 2 classes.
+
+    For the frost armor sets combinations, you cant get the hybrid set bonus with *only* the frost helmet since its 2 classes.
     Also needs atleast 1 frost armor piece to get the hybrid set bonus.
     Please let me know any bugs or feedback!
