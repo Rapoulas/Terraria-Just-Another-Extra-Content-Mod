@@ -12,7 +12,6 @@ namespace RappleMod.Content.Projectiles.DryadWardCopy
 	{
         double radius;
         float timer;
-        bool runOnce = true;
         NPC npc;
         public override void SetStaticDefaults() {
             Main.projFrames[Projectile.type] = 5;
