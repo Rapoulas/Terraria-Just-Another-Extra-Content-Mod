@@ -107,6 +107,11 @@ Mods: {
 					'''
 				DisplayName: Anarchist's Cookbook
 			}
+
+			Ouroboros: {
+				DisplayName: Ouroboros
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -158,6 +163,7 @@ Mods: {
 			BrimstoneBeamL.DisplayName: Brimstone Beam L
 			BrimstoneBeamS.DisplayName: Brimstone Beam S
 			DryadWardCopy.DisplayName: Dryad Ward Copy
+			OuroborosProjectile.DisplayName: Ouroboros Projectile
 		}
 	}
 }
