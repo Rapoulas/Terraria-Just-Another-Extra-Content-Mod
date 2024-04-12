@@ -12,6 +12,9 @@ namespace RappleMod.Content.Projectiles.Ouroboros
 {
     public class OuroborosProjectile : ModProjectile
     {
+		public bool runOnce = true;
+		public bool facingDirection;
+		Player player = Main.LocalPlayer;
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.Flames}";
 
 		public override void SetStaticDefaults() {
@@ -32,41 +35,46 @@ namespace RappleMod.Content.Projectiles.Ouroboros
         }
 
         public override void AI(){
-			if (++Projectile.frameCounter >= 15) {
+			if (++Projectile.frameCounter >= 17) {
 				Projectile.frameCounter = 0;
 				if (++Projectile.frame >= Main.projFrames[Projectile.type])
 					Projectile.frame = 0;
 			}
 
             Projectile.localAI[0] += 1f;
-			int num = 108;
+			int num = 124;
 			int num2 = 12;
 			int num3 = num + num2;
 			if (Projectile.localAI[0] >= (float)num3)
-			{
 				Projectile.Kill();
-			}
-			if (Projectile.localAI[0] >= (float)num)
-			{
-				Projectile.velocity *= 0.95f;
-			}
 			
-			Projectile.rotation += 0.0007f;
+			if (Projectile.localAI[0] >= (float)num)
+				Projectile.velocity *= 0.95f;
+			
+			if (runOnce && player.direction == -1){
+				facingDirection = true;
+				runOnce = false;
+			}
+			else if (runOnce && player.direction == 1){
+				facingDirection = false;
+				runOnce = false;
+			}
+
+			if (facingDirection)
+				Projectile.rotation += 0.0007f;
+			else if (!facingDirection)
+				Projectile.rotation -= 0.0007f;
 			Projectile.velocity = Projectile.velocity.RotatedBy(Projectile.rotation);
 
-			int num4 = 50;
-			int num5 = num4;
-			if (Projectile.localAI[0] < (float)num5 && Main.rand.NextFloat() < 0.25f){
+			if (Projectile.localAI[0] < 50f && Main.rand.NextFloat() < 0.25f){
 				Dust dust = Dust.NewDustDirect(Projectile.Center + Main.rand.NextVector2Circular(60f, 60f) * Utils.Remap(Projectile.localAI[0], 0f, 72f, 0.5f, 1f), 4, 4, DustID.Torch, Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 100);
-				if (Main.rand.NextBool(4))
-				{
+				if (Main.rand.NextBool(4)){
 					dust.noGravity = true;
 					dust.scale *= 3f;
 					dust.velocity.X *= 2f;
 					dust.velocity.Y *= 2f;
 				}
-				else
-				{
+				else{
 					dust.scale *= 1.5f;
 				}
 				dust.scale *= 1.5f;
@@ -74,12 +82,10 @@ namespace RappleMod.Content.Projectiles.Ouroboros
 				dust.velocity += Projectile.velocity * 1f * Utils.Remap(Projectile.localAI[0], 0f, (float)num * 0.75f, 1f, 0.1f) * Utils.Remap(Projectile.localAI[0], 0f, (float)num * 0.1f, 0.1f, 1f);
 				dust.customData = 1;
 			}
-			if (num4 > 0 && Projectile.localAI[0] >= (float)num4 && Main.rand.NextFloat() < 0.5f)
-			{
+			if (Projectile.localAI[0] >= 50f && Main.rand.NextFloat() < 0.5f){
 				Vector2 center = Main.player[Projectile.owner].Center;
 				Vector2 vector = (Projectile.Center - center).SafeNormalize(Vector2.Zero).RotatedByRandom(0.19634954631328583) * 7f;
-				short num7 = 31;
-				Dust dust2 = Dust.NewDustDirect(Projectile.Center + Main.rand.NextVector2Circular(50f, 50f) - vector * 2f, 4, 4, num7, 0f, 0f, 150, new Color(80, 80, 80));
+				Dust dust2 = Dust.NewDustDirect(Projectile.Center + Main.rand.NextVector2Circular(50f, 50f) - vector * 2f, 4, 4, DustID.Smoke, 0f, 0f, 150, new Color(80, 80, 80));
 				dust2.noGravity = true;
 				dust2.velocity = vector;
 				dust2.scale *= 1.1f + Main.rand.NextFloat() * 0.2f;
@@ -91,7 +97,7 @@ namespace RappleMod.Content.Projectiles.Ouroboros
         }
 
         public override bool PreDraw(ref Color lightColor){
-			float num = 120f;
+			float num = 124f;
 			float num10 = 12f;
 			float fromMax = num + num10;
 			Texture2D value = TextureAssets.Projectile[Projectile.type].Value;
@@ -109,6 +115,7 @@ namespace RappleMod.Content.Projectiles.Ouroboros
 			float num2 = Math.Min(Projectile.localAI[0], 20f);
 			float num3 = Utils.Remap(Projectile.localAI[0], 0f, fromMax, 0f, 1f);
 			float num4 = Utils.Remap(num3, 0.2f, 0.5f, 0.25f, 1f);
+			num4 *= MathHelper.Min(1f + player.GetModPlayer<MyPlayer>().amountEnemiesOnFire/10f, 2.5f);
 			Rectangle rectangle = value.Frame(1, verticalFrames, 0, 3);
 			if (!(num3 < 1f)){
 				return false;
@@ -120,7 +127,7 @@ namespace RappleMod.Content.Projectiles.Ouroboros
 					Vector2 vector = Projectile.Center - Main.screenPosition + Projectile.velocity * (0f - num2) * num5;
 					Color color5 = obj * num6;
 					Color color6 = color5;
-					
+
 					color6.G /= 2;
 					color6.B /= 2;
 					color6.A = (byte)Math.Min((float)(int)color5.A + 80f * num6, 255f);
@@ -145,23 +152,35 @@ namespace RappleMod.Content.Projectiles.Ouroboros
             return false;
         }
 
-        public override bool OnTileCollide(Vector2 oldVelocity)
-        {
+        public override bool OnTileCollide(Vector2 oldVelocity){
 			Projectile.velocity = oldVelocity * 0.95f;
 			Projectile.position -= Projectile.velocity;
             return false;
         }
 
-        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
-        {
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox){
+			float x = MathHelper.Min(1f + player.GetModPlayer<MyPlayer>().amountEnemiesOnFire/10f, 2.5f);
 			Rectangle result = new Rectangle((int)Projectile.position.X, (int)Projectile.position.Y, Projectile.width, Projectile.height);
 			int num = (int)Utils.Remap(Projectile.localAI[0], 0f, 72f, 10f, 40f);
 			result.Inflate(num, num);
+			result.Width *= (int)x;
+			result.Height *= (int)x;
 
             if (!result.Intersects(targetHitbox))
 				return false;
 				
 			return Collision.CanHit(Projectile.Center, 0, 0, targetHitbox.Center.ToVector2(), 0, 0);
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone){
+            target.AddBuff(BuffID.OnFire, 240);
+			target.AddBuff(BuffID.OnFire3, 120);
+        }
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+			modifiers.FinalDamage *= MathHelper.Min(1f + player.GetModPlayer<MyPlayer>().amountEnemiesOnFire/60f, 1.25f);
+            base.ModifyHitNPC(target, ref modifiers);
         }
     }
 

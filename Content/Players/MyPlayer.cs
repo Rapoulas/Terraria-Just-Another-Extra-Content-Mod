@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using RappleMod.Content.Acessories;
 using RappleMod.Content.Buffs;
 using Terraria.DataStructures;
+using RappleMod.Content.Weapons;
 
 namespace RappleMod{
     public class MyPlayer : ModPlayer {
@@ -12,12 +13,15 @@ namespace RappleMod{
         public Item hasZetaReference;
 		public Item hasMeatShield;
 		public Item hasBuffer;
+		public Item hasOuroboros;
         #endregion
 
         public bool hasAbsorbTeamDamageEffect;
 		public bool defendedByAbsorbTeamDamageEffect;
 		public bool isHoldingHawkEye;
 		public int anarchistCookbookMode;
+		public float amountEnemiesOnFire;
+		public int counter;
 		public float anarchistCookbookCounter = 0;
         public override void ResetEffects(){
             hasAbsorbTeamDamageEffect = false;
@@ -26,6 +30,7 @@ namespace RappleMod{
 			hasZetaReference = null;
 			hasMeatShield = null;
 			hasBuffer = null;
+			hasOuroboros = null;
         }
 
         public override void ModifyHurt(ref Player.HurtModifiers modifiers) {
@@ -50,6 +55,14 @@ namespace RappleMod{
 			}
         }
 
+        public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+			if (hasOuroboros != null){
+				OuroborosEffect();
+			}
+            return base.Shoot(item, source, position, velocity, type, damage, knockback);
+        }
+
         private void MeatShieldOnHurt(Player.HurtInfo info){
 			if (hasMeatShield == null) return;
 			
@@ -66,6 +79,15 @@ namespace RappleMod{
 					closestNPC.AddBuff(BuffID.Confused, 300);
 				}
 			}
+		}
+		
+		private void OuroborosEffect(){
+			for (int i = 0; i < Main.maxNPCs; i++){
+				if (Main.npc[i].HasBuff(BuffID.OnFire) || Main.npc[i].HasBuff(BuffID.OnFire3))
+					counter++;
+			}
+			amountEnemiesOnFire = counter;
+			counter = 0;
 		}
 
         private bool TeammateCanAbsorbDamage() {

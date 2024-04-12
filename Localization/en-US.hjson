@@ -110,7 +110,12 @@ Mods: {
 
 			Ouroboros: {
 				DisplayName: Ouroboros
-				Tooltip: ""
+				Tooltip:
+					'''
+					Uses gel for ammo
+					Shoots flames that travel in a loop
+					Damage and size of flames increase based on amount of enemies set ablaze
+					'''
 			}
 		}
 
