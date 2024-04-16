@@ -39,8 +39,13 @@ namespace RappleMod.Content.Weapons{
 			position.Y += Main.screenHeight/2;
 			position.X += Main.screenWidth/2;
 
-			int proj = Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f);
+			int proj = Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f, 0f, player.ownedProjectileCounts[ModContent.ProjectileType<SpiritStaffProjectile>()]);
             return false;
+        }
+
+        public override bool CanUseItem(Player player)
+        {
+            return player.ownedProjectileCounts[ModContent.ProjectileType<SpiritStaffProjectile>()] < 26;
         }
     }
 }

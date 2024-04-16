@@ -10,6 +10,7 @@ namespace RappleMod.Content.Projectiles.SpiritStaff
 {
 	public class SpiritStaffProjectile : ModProjectile
 	{
+        Vector2 randomV = new(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1));
         private enum AIState {
             Idle,
             Spawning,
@@ -30,14 +31,21 @@ namespace RappleMod.Content.Projectiles.SpiritStaff
 			Projectile.penetrate = 1; 
             Projectile.tileCollide = false;
             Projectile.alpha = 255;
+            Projectile.timeLeft = 1000;
 		}
 
         public override void AI()
         {
-
-            Projectile.timeLeft = 5;
             Player player = Main.player[Projectile.owner];
+            int projCounter = player.ownedProjectileCounts[ModContent.ProjectileType<SpiritStaffProjectile>()];
             if (Projectile.alpha > 1) Projectile.alpha -= 7;
+            Vector2 circle = new Vector2(0f, 0f - 300f);
+            float circleRotation = (float)Math.PI / 5 * Projectile.ai[2];
+            if (projCounter >= 10 && Projectile.ai[2] > 9){
+                circle.Y = -500f;
+                circleRotation = (float)Math.PI / 8 * Projectile.ai[2];
+            }
+            Vector2 circlePositionInWorld = circle.RotatedBy(circleRotation) / 3f + player.Center;
 
             switch (CurrentAIState){
                 case AIState.Idle: {
@@ -49,10 +57,12 @@ namespace RappleMod.Content.Projectiles.SpiritStaff
                     }
 
                     Projectile.velocity *= 0;
-
+                    Projectile.Center = circlePositionInWorld;
                     if (!player.channel){
+                        Projectile.timeLeft = 120;
                         CurrentAIState = AIState.Spawning;
                     }
+
                     break;
                 }
                 case AIState.Spawning: {
@@ -85,7 +95,10 @@ namespace RappleMod.Content.Projectiles.SpiritStaff
                         Vector2 desiredVelocity = Projectile.DirectionTo(closestNPC.Center) * 17;
                         Projectile.velocity = Vector2.Lerp(Projectile.velocity, desiredVelocity, 0.05f);
                     }
-                    
+                    else {
+                        randomV.Normalize();
+                        Projectile.velocity = randomV * 7f;
+                    }
                     break;
                 }
             }
