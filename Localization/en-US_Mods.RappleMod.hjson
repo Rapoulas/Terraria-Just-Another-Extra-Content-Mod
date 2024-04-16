@@ -39,13 +39,9 @@ Items: {
 	}
 
 	Brimstone: {
-		Tooltip: ""
-		DisplayName: Brimstone
 	}
 
 	Bonetrousle: {
-		Tooltip: ""
-		DisplayName: Bonetrousle
 	}
 }
 
@@ -71,4 +67,5 @@ Projectiles: {
 	BonetrousleProjectile.DisplayName: Bonetrousle Projectile
 	BonetrousleBoneProjectile.DisplayName: Bonetrousle Bone Projectile
 	BonetrousleSpiritProjectile.DisplayName: Bonetrousle Spirit Projectile
+	SpiritStaffProjectile.DisplayName: Spirit Staff Projectile
 }

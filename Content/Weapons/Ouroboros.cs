@@ -30,6 +30,15 @@ namespace RappleMod.Content.Weapons{
 			Item.consumeAmmoOnFirstShotOnly = true;
 		}
 
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient(ItemID.FragmentVortex, 18)
+				.AddIngredient(ItemID.LunarBar, 12)
+				.AddTile(TileID.LunarCraftingStation)
+				.Register();
+		}
+
 		public override void HoldItem(Player player)
         {
             player.GetModPlayer<MyPlayer>().hasOuroboros = Item;

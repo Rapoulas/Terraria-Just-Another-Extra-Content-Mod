@@ -113,9 +113,32 @@ Mods: {
 				Tooltip:
 					'''
 					Uses gel for ammo
-					Shoots flames that travel in a loop
 					Damage and size of flames increase based on amount of enemies set ablaze
+					'The salamander devours his tail!'
 					'''
+			}
+
+			Brimstone: {
+				Tooltip:
+					'''
+					Charges a blood laser barrage
+					Size and power based on charge time
+					'''
+				DisplayName: Brimstone
+			}
+
+			Bonetrousle: {
+				Tooltip:
+					'''
+					Releases bones nearby 
+					Releases homing spirits when inside blocks
+					'''
+				DisplayName: Bonetrousle
+			}
+
+			SpiritStaff: {
+				DisplayName: Spirit Staff
+				Tooltip: ""
 			}
 		}
 
