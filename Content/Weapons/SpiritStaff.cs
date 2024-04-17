@@ -1,3 +1,5 @@
+using System;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RappleMod.Content.Projectiles.Bonetrousle;
@@ -12,6 +14,7 @@ namespace RappleMod.Content.Weapons{
     
     public class SpiritStaff : ModItem
     {
+		float id = 0;
 		public override void SetStaticDefaults() {
 			Item.staff[Type] = true; // This makes the useStyle animate as a staff instead of as a gun.
 		}
@@ -33,19 +36,32 @@ namespace RappleMod.Content.Weapons{
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
 			velocity *= 0;
+			float amountProj = player.ownedProjectileCounts[ModContent.ProjectileType<SpiritStaffProjectile>()];
+			Vector2 circle = new Vector2(0f, 0f - 300f);
+            float circleRotation = (float)Math.PI / 5 * amountProj;
+			if (amountProj >= 10){
+                circle.Y = -500f;
+                circleRotation = (float)Math.PI / 8 * amountProj;
+            }
+			Vector2 circlePositionInWorld = circle.RotatedBy(circleRotation) / 3f + player.Center;
 
-			position = new(Main.rand.NextFloat(-200, 200), Main.rand.NextFloat(-200, 200));
-			position += Main.screenPosition;
-			position.Y += Main.screenHeight/2;
-			position.X += Main.screenWidth/2;
+			position = circlePositionInWorld;
 
-			int proj = Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f, 0f, player.ownedProjectileCounts[ModContent.ProjectileType<SpiritStaffProjectile>()]);
-            return false;
+			int proj = Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f, 0f, id);
+            id++;
+			return false;
         }
 
         public override bool CanUseItem(Player player)
         {
-            return player.ownedProjectileCounts[ModContent.ProjectileType<SpiritStaffProjectile>()] < 26;
+            return id < 26;
+        }
+
+        public override void HoldItem(Player player)
+        {
+            if (!player.channel){
+				id = 0;
+			}
         }
     }
 }

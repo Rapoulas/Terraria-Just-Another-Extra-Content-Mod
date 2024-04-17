@@ -10,7 +10,6 @@ namespace RappleMod.Content.Projectiles.SpiritStaff
 {
 	public class SpiritStaffProjectile : ModProjectile
 	{
-        Vector2 randomV = new(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1));
         private enum AIState {
             Idle,
             Spawning,
@@ -37,10 +36,13 @@ namespace RappleMod.Content.Projectiles.SpiritStaff
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
-            int projCounter = player.ownedProjectileCounts[ModContent.ProjectileType<SpiritStaffProjectile>()];
             if (Projectile.alpha > 1) Projectile.alpha -= 7;
+
+            int projCounter = player.ownedProjectileCounts[ModContent.ProjectileType<SpiritStaffProjectile>()];
+            
             Vector2 circle = new Vector2(0f, 0f - 300f);
             float circleRotation = (float)Math.PI / 5 * Projectile.ai[2];
+            
             if (projCounter >= 10 && Projectile.ai[2] > 9){
                 circle.Y = -500f;
                 circleRotation = (float)Math.PI / 8 * Projectile.ai[2];
@@ -49,6 +51,7 @@ namespace RappleMod.Content.Projectiles.SpiritStaff
 
             switch (CurrentAIState){
                 case AIState.Idle: {
+                    Projectile.timeLeft = 1000;
                     Projectile.frameCounter++;
                     if (Projectile.frameCounter >= 12) {
                         Projectile.frameCounter = 0;
@@ -57,9 +60,9 @@ namespace RappleMod.Content.Projectiles.SpiritStaff
                     }
 
                     Projectile.velocity *= 0;
-                    Projectile.Center = circlePositionInWorld;
+                    Projectile.Center = Vector2.Lerp(Projectile.Center, circlePositionInWorld, 0.2f);
                     if (!player.channel){
-                        Projectile.timeLeft = 120;
+                        Projectile.timeLeft = 150;
                         CurrentAIState = AIState.Spawning;
                     }
 
@@ -76,7 +79,10 @@ namespace RappleMod.Content.Projectiles.SpiritStaff
 
                     if (Projectile.ai[1] > 30) CurrentAIState = AIState.Moving;
 
-                    Projectile.velocity *= 0;
+                    Vector2 awayFromPlayer = Projectile.Center.DirectionTo(player.Center) * -1f;
+                    awayFromPlayer.Normalize();
+                    Projectile.velocity = awayFromPlayer * 8f;
+                    Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
                     break;
                 }
                 case AIState.Moving: {
@@ -94,10 +100,6 @@ namespace RappleMod.Content.Projectiles.SpiritStaff
                     if (closestNPC != null){
                         Vector2 desiredVelocity = Projectile.DirectionTo(closestNPC.Center) * 17;
                         Projectile.velocity = Vector2.Lerp(Projectile.velocity, desiredVelocity, 0.05f);
-                    }
-                    else {
-                        randomV.Normalize();
-                        Projectile.velocity = randomV * 7f;
                     }
                     break;
                 }
