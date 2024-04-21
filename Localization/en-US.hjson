@@ -140,6 +140,11 @@ Mods: {
 				DisplayName: Spirit Staff
 				Tooltip: ""
 			}
+
+			Purgatory: {
+				DisplayName: Purgatory
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

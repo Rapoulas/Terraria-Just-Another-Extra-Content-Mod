@@ -6,6 +6,7 @@ using RappleMod.Content.Acessories;
 using RappleMod.Content.Buffs;
 using Terraria.DataStructures;
 using RappleMod.Content.Weapons;
+using RappleMod.Content.Projectiles.PurgatoryProjectile;
 
 namespace RappleMod{
     public class MyPlayer : ModPlayer {
@@ -14,6 +15,7 @@ namespace RappleMod{
 		public Item hasMeatShield;
 		public Item hasBuffer;
 		public Item hasOuroboros;
+		public Item hasPurgatory;
         #endregion
 
         public bool hasAbsorbTeamDamageEffect;
@@ -23,6 +25,7 @@ namespace RappleMod{
 		public float amountEnemiesOnFire;
 		public int counter;
 		public float anarchistCookbookCounter = 0;
+		public float hitClass;
         public override void ResetEffects(){
             hasAbsorbTeamDamageEffect = false;
 			defendedByAbsorbTeamDamageEffect = false;
@@ -31,6 +34,8 @@ namespace RappleMod{
 			hasMeatShield = null;
 			hasBuffer = null;
 			hasOuroboros = null;
+			hasPurgatory = null;
+			hitClass = 0;
         }
 
         public override void ModifyHurt(ref Player.HurtModifiers modifiers) {
@@ -55,6 +60,11 @@ namespace RappleMod{
 			}
         }
 
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {	
+            PurgatoryOnKill(target, hit, damageDone);
+        }
+
         public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
 			if (hasOuroboros != null){
@@ -62,6 +72,25 @@ namespace RappleMod{
 			}
             return base.Shoot(item, source, position, velocity, type, damage, knockback);
         }
+
+		private void PurgatoryOnKill(NPC target, NPC.HitInfo hit, int damageDone){
+			if (hasPurgatory == null){
+				return;
+			}
+
+			if (hit.DamageType == DamageClass.Melee) hitClass = 1;
+			else if (hit.DamageType == DamageClass.Magic) hitClass = 2;
+			else if (hit.DamageType == DamageClass.Ranged) hitClass = 3;
+			else if (hit.DamageType == DamageClass.Summon) hitClass = 4;
+			else hitClass = 5;
+			
+			Player player = Main.LocalPlayer;
+			target.GetLifeStats(out int currentHp, out int maxHp);
+			
+            if (!target.active && Main.rand.NextBool(4)){
+				Projectile.NewProjectile(player.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<PurgatoryProjectile>(), 0-currentHp, 0, player.whoAmI, 0, hitClass, 1);
+			}
+		}
 
         private void MeatShieldOnHurt(Player.HurtInfo info){
 			if (hasMeatShield == null) return;

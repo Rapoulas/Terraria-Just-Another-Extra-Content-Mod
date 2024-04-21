@@ -17,7 +17,7 @@ namespace RappleMod.Content.Projectiles.Bonetrousle
 			Projectile.width = 24;
 			Projectile.height = 30;
 			Projectile.friendly = true; 
-			Projectile.DamageType = DamageClass.MeleeNoSpeed;
+			Projectile.DamageType = DamageClass.Melee;
 			Projectile.penetrate = 1; 
             Projectile.tileCollide = false;
             Projectile.scale = 0.8f;

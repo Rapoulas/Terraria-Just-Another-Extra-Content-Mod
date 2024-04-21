@@ -68,4 +68,5 @@ Projectiles: {
 	BonetrousleBoneProjectile.DisplayName: Bonetrousle Bone Projectile
 	BonetrousleSpiritProjectile.DisplayName: Bonetrousle Spirit Projectile
 	SpiritStaffProjectile.DisplayName: Spirit Staff Projectile
+	PurgatoryProjectile.DisplayName: Purgatory Projectile
 }
