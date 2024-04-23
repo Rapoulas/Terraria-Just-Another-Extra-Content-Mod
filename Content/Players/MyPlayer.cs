@@ -87,8 +87,8 @@ namespace RappleMod{
 			Player player = Main.LocalPlayer;
 			target.GetLifeStats(out int currentHp, out int maxHp);
 			
-            if (!target.active && Main.rand.NextBool(4)){
-				Projectile.NewProjectile(player.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<PurgatoryProjectile>(), 0-currentHp, 0, player.whoAmI, 0, hitClass, 1);
+            if (!target.active && Main.rand.NextBool(5)){
+				Projectile.NewProjectile(player.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<PurgatoryProjectile>(), 0-(int)(currentHp*0.5f), 0, player.whoAmI, 0, hitClass, 1);
 			}
 		}
 

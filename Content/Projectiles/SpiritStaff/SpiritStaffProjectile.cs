@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Config;
 
 namespace RappleMod.Content.Projectiles.SpiritStaff
 {
@@ -24,7 +25,7 @@ namespace RappleMod.Content.Projectiles.SpiritStaff
             set => Projectile.ai[0] = (float)value;
         }
         public override void SetStaticDefaults() {
-            Main.projFrames[Projectile.type] = 11;
+            Main.projFrames[Projectile.type] = 5;
 		}
 		public override void SetDefaults() {
 			Projectile.width = 30;
@@ -55,9 +56,9 @@ namespace RappleMod.Content.Projectiles.SpiritStaff
                 case AIState.Idle: {
                     Projectile.timeLeft = 5;
                     Projectile.frameCounter++;
-                    if (Projectile.frameCounter >= 12) {
+                    if (Projectile.frameCounter >= 8) {
                         Projectile.frameCounter = 0;
-                        if (++Projectile.frame >= 10)
+                        if (++Projectile.frame >= 4)
                             Projectile.frame = 0;
                     }
 
@@ -72,10 +73,6 @@ namespace RappleMod.Content.Projectiles.SpiritStaff
                 }
                 case AIState.Spawning: {
                     Projectile.friendly = true;
-                    // if (++Projectile.frameCounter >= 5) {
-                    //     Projectile.frameCounter = 0;
-                    //     if (Projectile.frame < 10 || ++Projectile.frame >= Main.projFrames[Projectile.type]) Projectile.frame = 10;
-                    // }
 
                     Projectile.ai[1]++;
 
@@ -88,11 +85,6 @@ namespace RappleMod.Content.Projectiles.SpiritStaff
                     break;
                 }
                 case AIState.Moving: {
-                    // if (++Projectile.frameCounter >= 5) {
-                    //     Projectile.frameCounter = 0;
-                    //     if (Projectile.frame < 10 || ++Projectile.frame >= Main.projFrames[Projectile.type]) Projectile.frame = 10;
-                    // }
-
                     NPC closestNPC = FindClosestNPC(2000);
                     Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
 
@@ -145,7 +137,7 @@ namespace RappleMod.Content.Projectiles.SpiritStaff
         public override bool PreDraw(ref Color lightColor)
         {
             if (CurrentAIState == AIState.Moving || CurrentAIState == AIState.Spawning){
-                Projectile.frame = 10;
+                Projectile.frame = 4;
                 Projectile.scale = 0.8f;
                 Texture2D projectileTexture = ModContent.Request<Texture2D>("RappleMod/Content/Projectiles/SpiritStaff/SpiritStaffProjectileTrail").Value;
                 Vector2 drawPosition = Projectile.position + new Vector2(Projectile.width, Projectile.height) / 2f + Vector2.UnitY * Projectile.gfxOffY - Main.screenPosition;
@@ -153,6 +145,13 @@ namespace RappleMod.Content.Projectiles.SpiritStaff
                 Color drawColor = Projectile.GetAlpha(lightColor);
                 drawColor.A = 127;
                 drawColor *= 0.5f;
+
+                if (Projectile.ai[2] >= 10){
+                    drawColor.R = 235;
+                    drawColor.G = 138;
+                    drawColor.B = 138;
+                    Projectile.scale = 1f;
+                }
 
                 SpriteEffects spriteEffects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
@@ -167,7 +166,11 @@ namespace RappleMod.Content.Projectiles.SpiritStaff
         }
 
         public override Color? GetAlpha(Color lightColor) {
-            Color color = Color.White * (1f-(Projectile.alpha/255f)); 
+            Color color = Color.White * (1f-(Projectile.alpha/255f));
+            if (Projectile.ai[2] >= 10 && Projectile.frame == 4){
+                Color newColor = new(235, 138, 138);
+                return newColor;
+            }
             return color;
         }
     }

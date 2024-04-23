@@ -23,7 +23,7 @@ namespace RappleMod.Content.Weapons{
 			Item.height = 50;
 			Item.rare = ItemRarityID.Red;
 			Item.autoReuse = true;
-			Item.DefaultToStaff(ModContent.ProjectileType<SpiritStaffProjectile>(), 16, 45, 20);
+			Item.DefaultToStaff(ModContent.ProjectileType<SpiritStaffProjectile>(), 16, 25, 13);
 			Item.DamageType = DamageClass.Magic; 
 			Item.damage = 70; 
 			Item.knockBack = 0.45f;
@@ -45,18 +45,15 @@ namespace RappleMod.Content.Weapons{
 			Vector2 circlePositionInWorld = circle.RotatedBy(circleRotation) / 3f + player.Center;
 
 			position = circlePositionInWorld;
-			//position = player.Center;
 
-			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f, 0f, id);
+			if (id >= 10) Projectile.NewProjectile(source, position, velocity, type, (int)(damage * 1.25f), knockback, player.whoAmI, 0f, 0f, id);
+			else Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f, 0f, id);
+
             id++;
 			return false;
         }
 
-        public override bool CanUseItem(Player player)
-        {
-			Item.DefaultToStaff(ModContent.ProjectileType<SpiritStaffProjectile>(), 16, 45 - (int)(id*1.3), 20);
-            return id < 26;
-        }
+        public override bool CanUseItem(Player player) => id < 26;
 
         public override void HoldItem(Player player)
         {

@@ -22,21 +22,6 @@ namespace RappleMod.Content.Projectiles.PurgatoryProjectile
             Projectile.friendly = true;
 		}
 
-        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
-        {
-            
-            Player player = Main.player[Projectile.owner];
-            float baseBonus = player.GetDamage(Projectile.DamageType).Base + player.GetDamage(DamageClass.Generic).Base;
-            float addBonus = player.GetDamage(Projectile.DamageType).Additive + player.GetDamage(DamageClass.Generic).Additive - 1;
-            float multBonus = player.GetDamage(Projectile.DamageType).Multiplicative + player.GetDamage(DamageClass.Generic).Multiplicative - 1;
-            float flatBonus = player.GetDamage(Projectile.DamageType).Flat + player.GetDamage(DamageClass.Generic).Flat;
-            modifiers.FinalDamage += baseBonus;
-            modifiers.FinalDamage *= addBonus;
-            modifiers.FinalDamage *= multBonus;
-            modifiers.FinalDamage += flatBonus;
-
-        }
-
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
@@ -68,6 +53,21 @@ namespace RappleMod.Content.Projectiles.PurgatoryProjectile
                     
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, towardsMouse, 0.05f);
             }
+        }
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            
+            Player player = Main.player[Projectile.owner];
+            float baseBonus = player.GetDamage(Projectile.DamageType).Base + player.GetDamage(DamageClass.Generic).Base;
+            float addBonus = player.GetDamage(Projectile.DamageType).Additive + player.GetDamage(DamageClass.Generic).Additive - 1;
+            float multBonus = player.GetDamage(Projectile.DamageType).Multiplicative + player.GetDamage(DamageClass.Generic).Multiplicative - 1;
+            float flatBonus = player.GetDamage(Projectile.DamageType).Flat + player.GetDamage(DamageClass.Generic).Flat;
+            modifiers.FinalDamage += baseBonus;
+            modifiers.FinalDamage *= addBonus;
+            modifiers.FinalDamage *= multBonus;
+            modifiers.FinalDamage += flatBonus;
+
         }
 
         public override void OnKill(int timeLeft)

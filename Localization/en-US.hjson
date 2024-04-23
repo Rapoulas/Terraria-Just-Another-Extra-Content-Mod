@@ -123,6 +123,7 @@ Mods: {
 					'''
 					Charges a blood laser barrage
 					Size and power based on charge time
+					[way to get TBD]
 					'''
 				DisplayName: Brimstone
 			}
@@ -132,18 +133,29 @@ Mods: {
 					'''
 					Releases bones nearby 
 					Releases homing spirits when inside blocks
+					[way to get TBD]
 					'''
 				DisplayName: Bonetrousle
 			}
 
 			SpiritStaff: {
 				DisplayName: Spirit Staff
-				Tooltip: ""
+				Tooltip:
+					'''
+					Channel an army of ghosts around yourself
+					'Help from beyond!'
+					[way to get TBD]
+					'''
 			}
 
 			Purgatory: {
 				DisplayName: Purgatory
-				Tooltip: ""
+				Tooltip:
+					'''
+					On kill has a 20% chance to spawn a ghost that homes into the nearest enemy
+					Ghost damage based on overkill damage
+					[way to get TBD]
+					'''
 			}
 		}
 
