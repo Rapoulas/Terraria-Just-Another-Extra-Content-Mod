@@ -208,7 +208,7 @@ namespace RappleMod.Content.Projectiles.Brimstone
 					break;
 				case 2:
 					distCovered = 22f;
-					frame = new Rectangle(0, 0, 38, 30);
+					frame = new Rectangle(0, 0, 62, 30);
 					origin = new Vector2(frame.Width / 2, 1f);
 					break;
 				default:

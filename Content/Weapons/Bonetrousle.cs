@@ -34,5 +34,6 @@ namespace RappleMod.Content.Weapons
 			Item.shoot = ModContent.ProjectileType<BonetrousleProjectile>(); 
 			Item.shootSpeed = 16f;		
 		}
+		
 	}
 }

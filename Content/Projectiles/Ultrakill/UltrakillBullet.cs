@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Audio;
+using Microsoft.Xna.Framework.Graphics;
 
 
 namespace RappleMod.Content.Projectiles.Ultrakill
@@ -15,8 +16,8 @@ namespace RappleMod.Content.Projectiles.Ultrakill
         bool alreadySpawnedText = false;
         
         public override void SetDefaults() {
-            Projectile.width = 4;
-            Projectile.height = 4;
+            Projectile.width = 2;
+            Projectile.height = 2;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.penetrate = -1;
@@ -162,6 +163,16 @@ namespace RappleMod.Content.Projectiles.Ultrakill
                 modifiers.FinalDamage *= 1 + amountCoinsHit*amountCoinsHit/2.67f;
             }
             base.ModifyHitNPC(target, ref modifiers);
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D projectileTexture = ModContent.Request<Texture2D>("RappleMod/Content/Projectiles/Ultrakill/UltrakillBullet").Value;
+            Vector2 drawOrigin = new Vector2(projectileTexture.Width, projectileTexture.Height);
+            Vector2 drawPosition = Projectile.position + new Vector2(Projectile.width, Projectile.height) / 2f + Vector2.UnitY * Projectile.gfxOffY - Main.screenPosition;
+
+            Main.EntitySpriteDraw(projectileTexture, drawPosition, null, Color.White, Projectile.rotation, drawOrigin, Projectile.scale, 0);
+            return false;
         }
     }
 }

@@ -25,12 +25,23 @@ namespace RappleMod.Content.Weapons{
 			Item.autoReuse = true;
 			Item.DefaultToStaff(ModContent.ProjectileType<SpiritStaffProjectile>(), 16, 25, 13);
 			Item.DamageType = DamageClass.Magic; 
-			Item.damage = 70; 
+			Item.damage = 85; 
 			Item.knockBack = 0.45f;
 			Item.noMelee = true;
 			Item.channel = true;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.UseSound = SoundID.Item20;
+		}
+
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient(ItemID.SpectreStaff, 1)
+				.AddIngredient(ItemID.Ectoplasm, 20)
+				.AddIngredient(ItemID.SoulofNight, 15)
+				.AddIngredient(ItemID.SoulofSight, 15)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
 		}
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

@@ -20,7 +20,7 @@ namespace RappleMod.Content.Weapons{
 			Item.autoReuse = true;
 
 			Item.DamageType = DamageClass.Ranged; 
-			Item.damage = 27; 
+			Item.damage = 40; 
 			Item.knockBack = 5f; 
 			Item.noMelee = true;
 			Item.useStyle = ItemUseStyleID.Shoot;

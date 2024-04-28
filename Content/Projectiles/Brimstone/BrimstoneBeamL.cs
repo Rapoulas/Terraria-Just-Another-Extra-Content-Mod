@@ -196,17 +196,17 @@ namespace RappleMod.Content.Projectiles.Brimstone
 			{
 				case 0:
 					distCovered = 33f;
-					frame = new Rectangle(0, 0, 46, 22);
+					frame = new Rectangle(0, 0, 56, 44);
 					origin = frame.Size() / 2f;
 					break;
 				case 1:
-					frame = new Rectangle(0, 0, 46, 22);
+					frame = new Rectangle(0, 0, 56, 30);
 					distCovered = frame.Height;
 					origin = new Vector2(frame.Width / 2, 0f);
 					break;
 				case 2:
 					distCovered = 22f;
-					frame = new Rectangle(0, 0, 46, 22);
+					frame = new Rectangle(0, 0, 88, 30);
 					origin = new Vector2(frame.Width / 2, 1f);
 					break;
 				default:
@@ -229,11 +229,11 @@ namespace RappleMod.Content.Projectiles.Brimstone
 			}
 			Texture2D brimstoneStartTexture = ModContent.Request<Texture2D>("RappleMod/Content/Projectiles/Brimstone/BrimstoneBeamLstart", AssetRequestMode.ImmediateLoad).Value;
 
-			// Rectangle brimstoneStartRectangle = new Rectangle(0, 22 * (timer / 5 % 2), brimstoneStartTexture.Width, 22);
+			Rectangle brimstoneStartRectangle = new Rectangle(0, 46 * (timer / 7 % 4), brimstoneStartTexture.Width, 44);
 			// timer / (ticks per animation frame) % amount of frames in animation
 			// switch 'frame' for 'brimstoneStartRectangle'
 			framing(0, vector, num, default(Rectangle), out var distanceCovered, out var frame, out var origin, out var color);
-			sb.Draw(tex, vector, frame, color, rotation, frame.Size() / 2f, scale, SpriteEffects.None, 0f);
+			sb.Draw(tex, vector, brimstoneStartRectangle, color, rotation, frame.Size() / 2f, scale, SpriteEffects.None, 0f);
     	}
 
 		public static void DrawBeamBody(SpriteBatch sb, Texture2D tex, Vector2 start, Vector2 end, Vector2 scale, Color beamColor, LaserLineFraming framing, int timer){
@@ -261,10 +261,10 @@ namespace RappleMod.Content.Projectiles.Brimstone
 						distanceCovered *= (num - num2) / (float)frame.Height;
 						frame.Height = (int)(num - num2);
 					}
-					// Rectangle brimstoneBodyRectangle = new Rectangle(0, 22 * (timer / 5 % 2), brimstoneBodyTexture.Width, 22);
+					Rectangle brimstoneBodyRectangle = new Rectangle(0, 30 * (timer / 7 % 4), brimstoneBodyTexture.Width, 30);
 					// timer / (ticks per animation frame) % amount of frames in animation
 					// switch 'frame' for 'brimstoneBodyRectangle'
-					sb.Draw(tex, vector, frame, color, rotation, origin, scale, SpriteEffects.None, 0f);
+					sb.Draw(tex, vector, brimstoneBodyRectangle, color, rotation, origin, scale, SpriteEffects.None, 0f);
 					num2 += distanceCovered * scale.Y;
 					vector += vector2 * distanceCovered * scale.Y;
 				}
@@ -303,11 +303,11 @@ namespace RappleMod.Content.Projectiles.Brimstone
 					vector += vector2 * distanceCovered * scale.Y;
 				}
 			}
-			// Rectangle brimstoneEndRectangle = new Rectangle(0, 22 * (timer / 5 % 2), brimstoneEndTexture.Width, 22);
+			Rectangle brimstoneEndRectangle = new Rectangle(0, 30 * (timer / 7 % 4), brimstoneEndTexture.Width, 30);
 			// timer / (ticks per animation frame) % amount of frames in animation
 			// switch 'frame' for 'brimstoneEndRectangle'
 			framing(2, vector, num, default(Rectangle), out distanceCovered, out frame, out origin, out color);
-			sb.Draw(tex, vector, frame, color, rotation, origin, scale, SpriteEffects.None, 0f);
+			sb.Draw(tex, vector, brimstoneEndRectangle, color, rotation, origin, scale, SpriteEffects.None, 0f);
     	}	
 
         public override void CutTiles() {
