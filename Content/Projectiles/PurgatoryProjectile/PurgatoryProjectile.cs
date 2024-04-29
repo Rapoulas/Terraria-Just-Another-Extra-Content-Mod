@@ -24,7 +24,6 @@ namespace RappleMod.Content.Projectiles.PurgatoryProjectile
 
         public override void AI()
         {
-            Player player = Main.player[Projectile.owner];
             if (Projectile.ai[1] == 1) Projectile.DamageType = DamageClass.Melee;
 			else if (Projectile.ai[1] == 2) Projectile.DamageType = DamageClass.Magic;
 			else if (Projectile.ai[1] == 3) Projectile.DamageType = DamageClass.Ranged;
