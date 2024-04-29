@@ -41,6 +41,8 @@ namespace RappleMod.Content.Weapons{
                 Projectile.NewProjectile(source, position, newVelocity, type, damage, knockback, player.whoAmI);
             }
 			ammo--;
+			player.GetModPlayer<MyPlayer>().deliveranceAmmo = ammo;
+			player.GetModPlayer<MyPlayer>().deliveranceUICounter = 100;
             return false;
         }
 
