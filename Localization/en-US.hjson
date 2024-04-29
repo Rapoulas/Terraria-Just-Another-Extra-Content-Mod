@@ -153,6 +153,11 @@ Mods: {
 					Ghost damage based on overkill damage
 					'''
 			}
+
+			Deliverance: {
+				DisplayName: Deliverance
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -205,6 +210,8 @@ Mods: {
 			BrimstoneBeamS.DisplayName: Brimstone Beam S
 			DryadWardCopy.DisplayName: Dryad Ward Copy
 			OuroborosProjectile.DisplayName: Ouroboros Projectile
+			DeliveranceProjectile.DisplayName: Deliverance Projectile
+			DeliveranceExplosion.DisplayName: Deliverance Explosion
 		}
 	}
 }

@@ -13,7 +13,7 @@ namespace RappleMod.Content.Weapons{
 			Item.width = 64;
 			Item.height = 36;
 			Item.scale = 0.75f;
-			Item.rare = ItemRarityID.Lime;
+			Item.rare = ItemRarityID.Expert;
 
 			Item.useTime = 7; 
 			Item.useAnimation = 7;

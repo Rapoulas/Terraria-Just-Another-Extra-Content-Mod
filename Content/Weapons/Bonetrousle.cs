@@ -28,7 +28,7 @@ namespace RappleMod.Content.Weapons
 			Item.DamageType = DamageClass.MeleeNoSpeed;
 			Item.knockBack = 2.5f;
 			Item.channel = true; 
-			Item.rare = ItemRarityID.Orange;
+			Item.rare = ItemRarityID.Expert;
 			Item.value = Item.buyPrice(gold: 5);
 
 			Item.shoot = ModContent.ProjectileType<BonetrousleProjectile>(); 
