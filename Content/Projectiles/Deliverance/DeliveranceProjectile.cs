@@ -51,7 +51,17 @@ namespace RappleMod.Content.Projectiles.Deliverance
                         Vector2 shootOffset = Projectile.velocity;
                         shootOffset.Normalize();
                         shootOffset *= 10;
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + shootOffset, newVelocity2, type, Projectile.damage, Projectile.knockBack, player.whoAmI);
+
+                        Item ammo = player.ChooseAmmo(player.HeldItem);
+
+                        float baseBonus = player.GetDamage(DamageClass.Ranged).Base + player.GetDamage(DamageClass.Generic).Base;
+                        float addBonus = player.GetDamage(DamageClass.Ranged).Additive + player.GetDamage(DamageClass.Generic).Additive - 1;
+                        float multBonus = player.GetDamage(DamageClass.Ranged).Multiplicative + player.GetDamage(DamageClass.Generic).Multiplicative - 1;
+                        float flatBonus = player.GetDamage(DamageClass.Ranged).Flat + player.GetDamage(DamageClass.Generic).Flat;
+
+                        float damage = ((ammo.damage + baseBonus) * addBonus * multBonus) + flatBonus;
+                        
+                        Projectile.NewProjectile(player.GetSource_FromThis(), Projectile.Center + shootOffset, newVelocity2, type, Projectile.damage + (int)damage, Projectile.knockBack, player.whoAmI);
                         
                         SoundEngine.PlaySound(SoundID.Item36, Projectile.Center);
                     }

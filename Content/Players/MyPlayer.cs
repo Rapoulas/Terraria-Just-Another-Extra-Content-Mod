@@ -26,8 +26,7 @@ namespace RappleMod{
 		public int counter;
 		public float anarchistCookbookCounter = 0;
 		public float hitClass;
-		public int deliveranceAmmo;
-		public float deliveranceUICounter;
+		public int deliveranceAmmo = 8;
         public override void ResetEffects(){
             hasAbsorbTeamDamageEffect = false;
 			defendedByAbsorbTeamDamageEffect = false;
@@ -89,7 +88,7 @@ namespace RappleMod{
 			Player player = Main.LocalPlayer;
 			target.GetLifeStats(out int currentHp, out int maxHp);
 			
-            if (!target.active && Main.rand.NextBool(5)){
+            if (!target.active && Main.rand.NextBool(1)){
 				Projectile.NewProjectile(player.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<PurgatoryProjectile>(), 0-(int)(currentHp*0.5f), 0, player.whoAmI, 0, hitClass, 1);
 			}
 		}

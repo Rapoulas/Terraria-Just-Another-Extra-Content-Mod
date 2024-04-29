@@ -4,6 +4,7 @@ using RappleMod.Content.Weapons;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
@@ -16,50 +17,57 @@ namespace RappleMod.Content.UI.DeliveranceUI
 {
 	internal class DeliveranceUI : UIState
 	{
-		private Player player = Main.LocalPlayer;
         private UIText text;
-        private UIElement area;
-        private int ammo = 0;
-
+		int ammo = 0;
+		int timer = 0;
 		public override void OnInitialize() {
             text = new UIText("[8/8]");
-            area = new UIElement();
 
             text.Width.Set(32, 0);
             text.Height.Set(32, 0);
-            text.Top.Set(400, 0);
-            text.Left.Set(400, 0);
+            text.Top.Set(Main.screenHeight/2 + 10, 0);
+            text.Left.Set(Main.screenWidth/2 - 70, 0);
 
-            text.Width.Set(32, 0);
-            text.Height.Set(32, 0);
-            text.Top.Set(400, 0);
-            text.Left.Set(400, 0);
-
-            area.Append(text);
-            Append(area);
+            Append(text);
         }
 
 		public override void Draw(SpriteBatch spriteBatch) {
 			if (Main.LocalPlayer.HeldItem.ModItem is not Deliverance){
 				return;
 			}
-
+			
             base.Draw(spriteBatch);
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch) {
-            base.DrawSelf(spriteBatch);
+			Player player = Main.LocalPlayer;
+			ammo = player.GetModPlayer<MyPlayer>().deliveranceAmmo;
 
-            spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(0, 0, 32, 32), Color.White);
+            spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(0, 0, 32, 32), Color.White * 0);
         }
 
         public override void Update(GameTime gameTime) {
 			if (Main.LocalPlayer.HeldItem.ModItem is not Deliverance)
 				return;
 
-			int ammo = player.GetModPlayer<MyPlayer>().deliveranceAmmo;
-
-			text.SetText($"[{ammo}/8]");
+			if (ammo == 0){
+				if (timer == 15) 
+					text.SetText("Reloading.");
+				else if (timer == 30)
+					text.SetText("Reloading..");
+				else if (timer == 45)
+					text.SetText("Reloading...");
+				else if (timer == 60)
+					timer = 14;
+				else if (timer < 15)
+					text.SetText($"  [{ammo}/8]");
+					
+				timer++;
+			}
+			else {
+				text.SetText($"  [{ammo}/8]");
+				timer = 0;
+			}
 			base.Update(gameTime);
 		}
     }
@@ -70,7 +78,6 @@ namespace RappleMod.Content.UI.DeliveranceUI
 		private UserInterface DeliveranceUIMag;
 
 		internal DeliveranceUI DeliveranceUI;
-        public static LocalizedText AmmoText { get; private set; }
 
 		public override void Load() {
 			DeliveranceUI = new();

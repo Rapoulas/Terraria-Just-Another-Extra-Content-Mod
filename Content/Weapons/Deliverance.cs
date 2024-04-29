@@ -41,8 +41,6 @@ namespace RappleMod.Content.Weapons{
                 Projectile.NewProjectile(source, position, newVelocity, type, damage, knockback, player.whoAmI);
             }
 			ammo--;
-			player.GetModPlayer<MyPlayer>().deliveranceAmmo = ammo;
-			player.GetModPlayer<MyPlayer>().deliveranceUICounter = 100;
             return false;
         }
 
@@ -52,7 +50,8 @@ namespace RappleMod.Content.Weapons{
         }
 
         public override void HoldItem(Player player)
-        {
+        {	
+			player.GetModPlayer<MyPlayer>().deliveranceAmmo = ammo;
             if (ammo == 0){
 				timer++;
 				if (timer == 120) {
@@ -62,7 +61,14 @@ namespace RappleMod.Content.Weapons{
 				if (timer == 40){
 					Vector2 velocity = player.position.DirectionTo(Main.MouseWorld) * 5f;
 
-					Projectile.NewProjectile(Item.GetSource_FromThis(), player.position, velocity, ModContent.ProjectileType<DeliveranceProjectile>(), Item.damage, Item.knockBack, player.whoAmI, 0, projType);
+					float baseBonus = player.GetDamage(DamageClass.Ranged).Base + player.GetDamage(DamageClass.Generic).Base;
+					float addBonus = player.GetDamage(DamageClass.Ranged).Additive + player.GetDamage(DamageClass.Generic).Additive - 1;
+					float multBonus = player.GetDamage(DamageClass.Ranged).Multiplicative + player.GetDamage(DamageClass.Generic).Multiplicative - 1;
+					float flatBonus = player.GetDamage(DamageClass.Ranged).Flat + player.GetDamage(DamageClass.Generic).Flat;
+
+					float damage = ((Item.damage + baseBonus) * addBonus * multBonus) + flatBonus;
+
+					Projectile.NewProjectile(player.GetSource_FromThis(), player.position, velocity, ModContent.ProjectileType<DeliveranceProjectile>(), (int)damage, Item.knockBack, player.whoAmI, 0, projType);
 					SoundStyle reload = new($"{nameof(RappleMod)}/Assets/Sounds/DeliveranceReload");
             		SoundEngine.PlaySound(reload, player.Center);
 				}
