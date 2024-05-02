@@ -156,6 +156,15 @@ Mods: {
 
 			Deliverance: {
 				DisplayName: Deliverance
+				Tooltip:
+					'''
+						Has a magazine size of 8
+						Reloading throws a drone that homes into nearby enemies and periodically shoots
+					'''
+			}
+
+			GunSummon: {
+				DisplayName: Dark Army
 				Tooltip: ""
 			}
 		}
@@ -190,6 +199,11 @@ Mods: {
 				Description: ""
 				DisplayName: Shard Empowerment
 			}
+
+			GunSummonBuff: {
+				DisplayName: Gun Summon Buff
+				Description: Mods.RappleMod.Buffs.GunSummonBuff.Description
+			}
 		}
 
 		Projectiles: {
@@ -212,6 +226,7 @@ Mods: {
 			OuroborosProjectile.DisplayName: Ouroboros Projectile
 			DeliveranceProjectile.DisplayName: Deliverance Projectile
 			DeliveranceExplosion.DisplayName: Deliverance Explosion
+			GunSummonMinion.DisplayName: Gun Summon Minion
 		}
 	}
 }

@@ -114,6 +114,8 @@ namespace RappleMod.Content.Projectiles.Deliverance
             Player player = Main.player[Projectile.owner];
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<DeliveranceExplosion>(), Projectile.damage*2, Projectile.knockBack, player.whoAmI);
         }
+
+        public override Color? GetAlpha(Color lightColor) => Color.White;
     }
 
     public class DeliveranceExplosion : ModProjectile
