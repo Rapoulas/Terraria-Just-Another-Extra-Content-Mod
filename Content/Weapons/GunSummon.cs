@@ -41,20 +41,24 @@ namespace RappleMod.Content.Weapons
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			player.AddBuff(Item.buffType, 2);
-			
+			int counter = 0;
+
 			for (int i = 0; i < player.GetModPlayer<MyPlayer>().gunSummonSpawnCheck.Length; i++){
 				if (!player.GetModPlayer<MyPlayer>().gunSummonSpawnCheck[i]) {
 					var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer, i);
 					projectile.originalDamage = Item.damage;
-
 					player.GetModPlayer<MyPlayer>().gunSummonSpawnCheck[i] = true;
-					break;
+					
+					continue;
 				}
+				counter++;
 			}
-
+			
+			if (counter == 3){
+				var p = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer, 3);
+				p.originalDamage = Item.damage;
+			}
 		    return false;
 		}
-        
-        public override bool CanUseItem(Player player) => player.ownedProjectileCounts[ModContent.ProjectileType<GunSummonMinion>()] < 4;
     }
 }

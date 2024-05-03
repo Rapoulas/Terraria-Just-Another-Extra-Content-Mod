@@ -115,12 +115,12 @@ namespace RappleMod.Content.Projectiles.GunSummon
 					idlePosition.Y += 160f;
 					Projectile.position = Vector2.Lerp(Projectile.position, idlePosition, 0.15f);
 					break;
-				case 3:
-					idlePosition.X += 160f;
-					Projectile.position = Vector2.Lerp(Projectile.position, idlePosition, 0.15f);
-					break;
 				default:
-					idlePosition.Y -= 160f;
+					idlePosition.X += 160f;
+
+					float minionPositionOffsetX = 10 + (Projectile.minionPos-3) * 40;
+					idlePosition.X += minionPositionOffsetX;
+
 					Projectile.position = Vector2.Lerp(Projectile.position, idlePosition, 0.15f);
 					break;
 			}
@@ -167,15 +167,17 @@ namespace RappleMod.Content.Projectiles.GunSummon
 
 		private void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition) {
 			Player player = Main.player[Projectile.owner];
+			Vector2 velocity;
 
-			if (foundTarget){
-					Vector2 velocity = Projectile.Center.DirectionTo(targetCenter);
-					velocity.Normalize();
-					Projectile.velocity = velocity;
-					Projectile.rotation = Projectile.Center.DirectionTo(targetCenter).ToRotation();
-					Projectile.direction = Projectile.spriteDirection = (Projectile.velocity.X > 0f) ? 1 : -1;
-			}
-			else Projectile.rotation += 0.001f;
+			if (foundTarget)
+				velocity = Projectile.Center.DirectionTo(targetCenter);
+			else 
+				velocity = Projectile.Center.DirectionTo(Main.MouseWorld);
+
+			velocity.Normalize();
+			Projectile.velocity = Vector2.Lerp(Projectile.velocity, velocity, 0.05f);
+			Projectile.rotation = Projectile.velocity.ToRotation();
+			Projectile.direction = Projectile.spriteDirection = (Projectile.velocity.X > 0f) ? 1 : -1;
 		}
 
         public override bool PreDraw(ref Color lightColor)
@@ -191,9 +193,6 @@ namespace RappleMod.Content.Projectiles.GunSummon
 					break;
 				case 2:
 					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.SniperRifle}", AssetRequestMode.ImmediateLoad).Value;
-					break;
-				case 3:
-					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.Revolver}", AssetRequestMode.ImmediateLoad).Value;
 					break;
 				default:
 					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.Revolver}", AssetRequestMode.ImmediateLoad).Value;
@@ -211,6 +210,8 @@ namespace RappleMod.Content.Projectiles.GunSummon
 
         public override void OnKill(int timeLeft)
         {
+			if (Projectile.ai[0] >= 3) return;
+
 			Player player = Main.player[Projectile.owner];
             player.GetModPlayer<MyPlayer>().gunSummonSpawnCheck[(int)Projectile.ai[0]] = false;
         }

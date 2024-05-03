@@ -165,7 +165,13 @@ Mods: {
 
 			GunSummon: {
 				DisplayName: Dark Army
-				Tooltip: ""
+				Tooltip:
+					'''
+					Summons an army of weapons
+					Extra uses summons pistols and enhances the other weapon types
+
+					'I am the gun'
+					'''
 			}
 		}
 

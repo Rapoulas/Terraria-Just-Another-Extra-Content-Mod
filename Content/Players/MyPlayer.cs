@@ -27,7 +27,8 @@ namespace RappleMod{
 		public float anarchistCookbookCounter = 0;
 		public float hitClass;
 		public int deliveranceAmmo = 8;
-		public bool[] gunSummonSpawnCheck = [false, false, false, false];
+		Player player = Main.LocalPlayer;
+		public bool[] gunSummonSpawnCheck = {false, false, false};
         public override void ResetEffects(){
             hasAbsorbTeamDamageEffect = false;
 			defendedByAbsorbTeamDamageEffect = false;
