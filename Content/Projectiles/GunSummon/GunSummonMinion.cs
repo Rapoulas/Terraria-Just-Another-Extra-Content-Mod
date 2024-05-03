@@ -1,7 +1,10 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -33,8 +36,8 @@ namespace RappleMod.Content.Projectiles.GunSummon
 	// If it isn't attacking, it will float near the player with minimal movement
 	public class GunSummonMinion : ModProjectile
 	{
+		public override string Texture => "RappleMod/Content/Projectiles/InvisibleProj";
 		public override void SetStaticDefaults() {
-			Main.projFrames[Projectile.type] = 4;
 			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
 
 			Main.projPet[Projectile.type] = true;
@@ -47,8 +50,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			Projectile.height = 28;
 			Projectile.tileCollide = false;
 
-			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
-			Projectile.minion = true; // Declares this as a minion (has many effects)
+			Projectile.minion = true;
 			Projectile.DamageType = DamageClass.Summon; 
 			Projectile.minionSlots = 1f;
 			Projectile.penetrate = -1;
@@ -57,11 +59,6 @@ namespace RappleMod.Content.Projectiles.GunSummon
 		// Here you can decide if your minion breaks things like grass or pots
 		public override bool? CanCutTiles() {
 			return false;
-		}
-
-		// This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
-		public override bool MinionContactDamage() {
-			return true;
 		}
 
 		// The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
@@ -75,7 +72,6 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
 			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
 			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
-			Visuals();
 		}
 
 		// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
@@ -95,7 +91,6 @@ namespace RappleMod.Content.Projectiles.GunSummon
 
 		private void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition) {
 			Vector2 idlePosition = owner.Center;
-			idlePosition.Y -= 80f;
 
 			// Teleport to player if distance is too big
 			vectorToIdlePosition = idlePosition - Projectile.Center;
@@ -107,21 +102,39 @@ namespace RappleMod.Content.Projectiles.GunSummon
 				Projectile.netUpdate = true;
 			}
 			
-			
+			switch (Projectile.ai[0]){
+				case 0:
+					idlePosition.Y -= 160f;
+					Projectile.position = Vector2.Lerp(Projectile.position, idlePosition, 0.15f);
+					break;
+				case 1:
+					idlePosition.X -= 160f;
+					Projectile.position = Vector2.Lerp(Projectile.position, idlePosition, 0.15f);
+					break;
+				case 2:
+					idlePosition.Y += 160f;
+					Projectile.position = Vector2.Lerp(Projectile.position, idlePosition, 0.15f);
+					break;
+				case 3:
+					idlePosition.X += 160f;
+					Projectile.position = Vector2.Lerp(Projectile.position, idlePosition, 0.15f);
+					break;
+				default:
+					idlePosition.Y -= 160f;
+					Projectile.position = Vector2.Lerp(Projectile.position, idlePosition, 0.15f);
+					break;
+			}
 		}
 
 		private void SearchForTargets(Player owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter) {
-			// Starting search distance
 			distanceFromTarget = 700f;
 			targetCenter = Projectile.position;
 			foundTarget = false;
 
-			// This code is required if your minion weapon has the targeting feature
 			if (owner.HasMinionAttackTargetNPC) {
 				NPC npc = Main.npc[owner.MinionAttackTargetNPC];
 				float between = Vector2.Distance(npc.Center, Projectile.Center);
 
-				// Reasonable distance away so it doesn't target across multiple screens
 				if (between < 2000f) {
 					distanceFromTarget = between;
 					targetCenter = npc.Center;
@@ -130,7 +143,6 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			}
 
 			if (!foundTarget) {
-				// This code is required either way, used for finding a target
 				for (int i = 0; i < Main.maxNPCs; i++) {
 					NPC npc = Main.npc[i];
 
@@ -151,97 +163,56 @@ namespace RappleMod.Content.Projectiles.GunSummon
 					}
 				}
 			}
-
-			// friendly needs to be set to true so the minion can deal contact damage
-			// friendly needs to be set to false so it doesn't damage things like target dummies while idling
-			// Both things depend on if it has a target or not, so it's just one assignment here
-			// You don't need this assignment if your minion is shooting things instead of dealing contact damage
-			Projectile.friendly = foundTarget;
 		}
 
 		private void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition) {
-			// Default movement parameters (here for attacking)
-			float speed = 8f;
-			float inertia = 20f;
+			Player player = Main.player[Projectile.owner];
 
-			if (foundTarget) {
-				// Minion has a target: attack (here, fly towards the enemy)
-				if (distanceFromTarget > 40f) {
-					// The immediate range around the target (so it doesn't latch onto it when close)
-					Vector2 direction = targetCenter - Projectile.Center;
-					direction.Normalize();
-					direction *= speed;
-
-					Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
-				}
+			if (foundTarget){
+					Vector2 velocity = Projectile.Center.DirectionTo(targetCenter);
+					velocity.Normalize();
+					Projectile.velocity = velocity;
+					Projectile.rotation = Projectile.Center.DirectionTo(targetCenter).ToRotation();
+					Projectile.direction = Projectile.spriteDirection = (Projectile.velocity.X > 0f) ? 1 : -1;
 			}
-			else {
-				// Minion doesn't have a target: return to player and idle
-				if (distanceToIdlePosition > 600f) {
-					// Speed up the minion if it's away from the player
-					speed = 12f;
-					inertia = 60f;
-				}
-				else {
-					// Slow down the minion if closer to the player
-					speed = 4f;
-					inertia = 80f;
-				}
-
-				if (distanceToIdlePosition > 20f) {
-					// The immediate range around the player (when it passively floats about)
-
-					// This is a simple movement formula using the two parameters and its desired direction to create a "homing" movement
-					vectorToIdlePosition.Normalize();
-					vectorToIdlePosition *= speed;
-					Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
-				}
-				else if (Projectile.velocity == Vector2.Zero) {
-					// If there is a case where it's not moving at all, give it a little "poke"
-					Projectile.velocity.X = -0.15f;
-					Projectile.velocity.Y = -0.05f;
-				}
-			}
+			else Projectile.rotation += 0.001f;
 		}
 
-		private void Visuals() {
-			// So it will lean slightly towards the direction it's moving
-			Projectile.rotation = Projectile.velocity.X * 0.05f;
+        public override bool PreDraw(ref Color lightColor)
+        {
+			Texture2D Texture = TextureAssets.Projectile[Projectile.type].Value;
 
-			// This is a simple "loop through all frames from top to bottom" animation
-			int frameSpeed = 5;
-
-			Projectile.frameCounter++;
-
-			if (Projectile.frameCounter >= frameSpeed) {
-				Projectile.frameCounter = 0;
-				Projectile.frame++;
-
-				if (Projectile.frame >= Main.projFrames[Projectile.type]) {
-					Projectile.frame = 0;
-				}
+			switch (Projectile.ai[0]){
+				case 0:
+					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.RocketLauncher}", AssetRequestMode.ImmediateLoad).Value;
+					break;
+				case 1:
+					Texture =ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.Shotgun}", AssetRequestMode.ImmediateLoad).Value;
+					break;
+				case 2:
+					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.SniperRifle}", AssetRequestMode.ImmediateLoad).Value;
+					break;
+				case 3:
+					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.Revolver}", AssetRequestMode.ImmediateLoad).Value;
+					break;
+				default:
+					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.Revolver}", AssetRequestMode.ImmediateLoad).Value;
+					break;
 			}
-
-			// Some visuals here
-			Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
-		}
+			
+			Vector2 drawOrigin = new Vector2(Texture.Width, Texture.Height) / 2f;
+			if (Projectile.direction == 1)
+				Main.EntitySpriteDraw(Texture, Projectile.position - Main.screenPosition, null, lightColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None);
+			else
+				Main.EntitySpriteDraw(Texture, Projectile.position - Main.screenPosition, null, lightColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.FlipVertically);
+            
+			return false;
+        }
 
         public override void OnKill(int timeLeft)
         {
 			Player player = Main.player[Projectile.owner];
             player.GetModPlayer<MyPlayer>().gunSummonSpawnCheck[(int)Projectile.ai[0]] = false;
-        }
-
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return Projectile.ai[0] switch
-            {
-                1 => Color.Red,
-                2 => Color.White,
-                3 => Color.Green,
-                4 => Color.Black,
-                _ => Color.Blue,
-            };
         }
     }
 }
