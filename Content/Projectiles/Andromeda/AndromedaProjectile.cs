@@ -48,7 +48,7 @@ namespace RappleMod.Content.Projectiles.Andromeda
 			Projectile.penetrate = -1; 
 			Projectile.DamageType = DamageClass.Melee; 
 			Projectile.scale = 0.8f;
-			Projectile.usesLocalNPCImmunity = true; 
+			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = 10;
 		}
 
@@ -192,7 +192,7 @@ namespace RappleMod.Content.Projectiles.Andromeda
 								Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center, starVelocity.RotatedByRandom(0.34f), 955, (int)(Projectile.damage * 1.33), Projectile.knockBack, player.whoAmI);
 								starReleaseQuant--;
 							}
-								Projectile.ai[2]++;
+							Projectile.ai[2]++;
 						}
 
 						if (player.controlUseItem) // If the player clicks, transition to the Dropping state

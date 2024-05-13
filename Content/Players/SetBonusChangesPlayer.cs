@@ -40,7 +40,7 @@ namespace RappleMod{
         {
 			Player player = Main.LocalPlayer;
 
-			if (proj.DamageType == DamageClass.Ranged && hit.Crit && NecroFossilSet && proj.type != ModContent.ProjectileType<NecroFossilBone>()){
+			if (proj.DamageType == DamageClass.Ranged && hit.Crit && NecroFossilSet){
 				for (int i = 0; i < 3; i++){
 					Vector2 velocity = new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 0));
 					velocity.Normalize();
@@ -66,8 +66,6 @@ namespace RappleMod{
 
 			if (MeleeCobaltPalladiumFrostSet && Main.rand.NextBool(5) && (hit.DamageType == DamageClass.Melee || hit.DamageType == DamageClass.MeleeNoSpeed)){
 				target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(3, 6));
-			}
-			if (MeleeCobaltPalladiumFrostSet && Main.rand.NextBool(5) && (hit.DamageType == DamageClass.Melee || hit.DamageType == DamageClass.MeleeNoSpeed)){
 				target.AddBuff(BuffID.Frostburn2, 60 * Main.rand.Next(3, 6));
 			}
 

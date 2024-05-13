@@ -133,3 +133,4 @@ C:\Users\Rafael\Documents\my games\Terraria\tModLoader\ModSources\RappleMod\obj\
 C:\Users\Rafael\Documents\my games\Terraria\tModLoader\ModSources\RappleMod\obj\Debug\net6.0\refint\RappleMod.dll
 C:\Users\Rafael\Documents\my games\Terraria\tModLoader\ModSources\RappleMod\obj\Debug\net6.0\RappleMod.pdb
 C:\Users\Rafael\Documents\my games\Terraria\tModLoader\ModSources\RappleMod\obj\Debug\net6.0\ref\RappleMod.dll
+C:\Users\Rafael\Documents\my games\Terraria\tModLoader\ModSources\RappleMod\obj\Debug\net6.0\RappleMod.sourcelink.json

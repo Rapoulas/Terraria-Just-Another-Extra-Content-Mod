@@ -69,12 +69,11 @@ namespace RappleMod.Content.Projectiles.GunSummon
 				return;
 			}
 
-			GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
-			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
+			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out NPC target);
+			GeneralBehavior(owner, foundTarget, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition, out Vector2 idlePosition);
+			Movement(foundTarget, distanceFromTarget, target, distanceToIdlePosition, vectorToIdlePosition, idlePosition);
 		}
 
-		// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
 		private bool CheckActive(Player owner) {
 			if (owner.dead || !owner.active) {
 				owner.ClearBuff(ModContent.BuffType<GunSummonBuff>());
@@ -89,10 +88,27 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			return true;
 		}
 
-		private void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition) {
-			Vector2 idlePosition = owner.Center;
-
-			// Teleport to player if distance is too big
+		private void GeneralBehavior(Player owner, bool foundTarget, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition, out Vector2 idlePosition) {
+			idlePosition = owner.Center;
+			
+			if (!foundTarget)
+				switch (Projectile.ai[0]){
+					case 0:
+						idlePosition.Y -= 160f;
+						break;
+					case 1:
+						idlePosition.X -= 160f;
+						break;
+					case 2:
+						idlePosition.Y += 160f;
+						break;
+					default:
+						idlePosition.X += 160f;
+						float minionPositionOffsetX = 10 + (Projectile.minionPos-3) * 40;
+						idlePosition.X += minionPositionOffsetX;
+						break;
+				}
+			
 			vectorToIdlePosition = idlePosition - Projectile.Center;
 			distanceToIdlePosition = vectorToIdlePosition.Length();
 
@@ -101,35 +117,70 @@ namespace RappleMod.Content.Projectiles.GunSummon
 				Projectile.velocity *= 0.1f;
 				Projectile.netUpdate = true;
 			}
-			
-			switch (Projectile.ai[0]){
-				case 0:
-					idlePosition.Y -= 160f;
-					Projectile.position = Vector2.Lerp(Projectile.position, idlePosition, 0.15f);
-					break;
-				case 1:
-					idlePosition.X -= 160f;
-					Projectile.position = Vector2.Lerp(Projectile.position, idlePosition, 0.15f);
-					break;
-				case 2:
-					idlePosition.Y += 160f;
-					Projectile.position = Vector2.Lerp(Projectile.position, idlePosition, 0.15f);
-					break;
-				default:
-					idlePosition.X += 160f;
-
-					float minionPositionOffsetX = 10 + (Projectile.minionPos-3) * 40;
-					idlePosition.X += minionPositionOffsetX;
-
-					Projectile.position = Vector2.Lerp(Projectile.position, idlePosition, 0.15f);
-					break;
-			}
 		}
 
-		private void SearchForTargets(Player owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter) {
+		private void Movement(bool foundTarget, float distanceFromTarget, NPC target, float distanceToIdlePosition, Vector2 vectorToIdlePosition, Vector2 idlePosition) {
+			Player player = Main.player[Projectile.owner];
+			float inertia = 20f;
+			float speed;
+
+			if (foundTarget) {
+				Vector2 vecToTarget = target.position - Projectile.Center;
+				Vector2 vecToPlayer = player.position - Projectile.Center;
+				Vector2 vecSniper = Projectile.Center.DirectionTo(player.position.DirectionTo(target.position)*-1);
+                float targetDist = vecToTarget.Length();
+				float playerDist = vecToPlayer.Length();
+				vecToPlayer.Normalize();
+                vecToTarget.Normalize();
+				
+				switch (Projectile.ai[0]){
+					case 0:
+						speed = 12f;
+						vecToPlayer *= speed;
+						Projectile.velocity = (Projectile.velocity * 40f + vecToPlayer) / 41f;
+						break;
+					case 1: 
+						if (targetDist > 200f){
+							speed = 8f;
+							vecToTarget *= speed;
+							Projectile.velocity = (Projectile.velocity * 40f + vecToTarget) / 41f;
+						}
+						else{
+							speed = -4f;
+							vecToTarget *= speed;
+							Projectile.velocity = (Projectile.velocity * 40f + vecToTarget) / 41f;
+						}
+						break;
+					case 2:
+						speed = 20f;
+						vecSniper *= speed;
+						Projectile.velocity = (Projectile.velocity * 40f + vecSniper) / 41f;
+						break;
+				}
+				Projectile.rotation = Projectile.rotation.AngleTowards(Projectile.AngleTo(target.position), 0.1f);
+			}
+			else {
+				Projectile.rotation = Projectile.rotation.AngleTowards(Projectile.AngleTo(Main.MouseWorld), 0.1f);
+				if (distanceToIdlePosition > 20f) {
+					speed = 12f;
+					vectorToIdlePosition.Normalize();
+					vectorToIdlePosition *= speed;
+					Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
+				}
+				else if (Projectile.velocity == Vector2.Zero) {
+					Projectile.velocity.X = -0.15f;
+					Projectile.velocity.Y = -0.05f;
+				}
+			}
+			float piOv2 = MathHelper.PiOver2;
+			Projectile.direction = Projectile.spriteDirection = (Projectile.rotation < piOv2 && Projectile.rotation > -piOv2) ? 1 : -1;
+		}
+
+		private void SearchForTargets(Player owner, out bool foundTarget, out float distanceFromTarget, out NPC target) {
 			distanceFromTarget = 700f;
-			targetCenter = Projectile.position;
+			Vector2 targetCenter = Projectile.position;
 			foundTarget = false;
+			target = null;
 
 			if (owner.HasMinionAttackTargetNPC) {
 				NPC npc = Main.npc[owner.MinionAttackTargetNPC];
@@ -150,34 +201,16 @@ namespace RappleMod.Content.Projectiles.GunSummon
 						float between = Vector2.Distance(npc.Center, Projectile.Center);
 						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
 						bool inRange = between < distanceFromTarget;
-						bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
-						// Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
-						// The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
-						bool closeThroughWall = between < 100f;
 
-						if (((closest && inRange) || !foundTarget) && (lineOfSight || closeThroughWall)) {
+						if ((closest && inRange) || !foundTarget) {
 							distanceFromTarget = between;
 							targetCenter = npc.Center;
+							target = npc;
 							foundTarget = true;
 						}
 					}
 				}
 			}
-		}
-
-		private void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition) {
-			Player player = Main.player[Projectile.owner];
-			Vector2 velocity;
-
-			if (foundTarget)
-				velocity = Projectile.Center.DirectionTo(targetCenter);
-			else 
-				velocity = Projectile.Center.DirectionTo(Main.MouseWorld);
-
-			velocity.Normalize();
-			Projectile.velocity = Vector2.Lerp(Projectile.velocity, velocity, 0.05f);
-			Projectile.rotation = Projectile.velocity.ToRotation();
-			Projectile.direction = Projectile.spriteDirection = (Projectile.velocity.X > 0f) ? 1 : -1;
 		}
 
         public override bool PreDraw(ref Color lightColor)
@@ -189,7 +222,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.RocketLauncher}", AssetRequestMode.ImmediateLoad).Value;
 					break;
 				case 1:
-					Texture =ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.Shotgun}", AssetRequestMode.ImmediateLoad).Value;
+					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.Shotgun}", AssetRequestMode.ImmediateLoad).Value;
 					break;
 				case 2:
 					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.SniperRifle}", AssetRequestMode.ImmediateLoad).Value;
@@ -199,12 +232,10 @@ namespace RappleMod.Content.Projectiles.GunSummon
 					break;
 			}
 			
+			SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
 			Vector2 drawOrigin = new Vector2(Texture.Width, Texture.Height) / 2f;
-			if (Projectile.direction == 1)
-				Main.EntitySpriteDraw(Texture, Projectile.position - Main.screenPosition, null, lightColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None);
-			else
-				Main.EntitySpriteDraw(Texture, Projectile.position - Main.screenPosition, null, lightColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.FlipVertically);
-            
+			Main.EntitySpriteDraw(Texture, Projectile.position - Main.screenPosition, null, lightColor, Projectile.rotation, drawOrigin, Projectile.scale, spriteEffects);
+			
 			return false;
         }
 

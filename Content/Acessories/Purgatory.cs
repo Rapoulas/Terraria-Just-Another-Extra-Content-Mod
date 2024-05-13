@@ -21,8 +21,9 @@ namespace RappleMod.Content.Acessories
 
         public override void AddRecipes() {
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.DirtBlock, 10);
-			recipe.AddTile(TileID.WorkBenches);
+			recipe.AddIngredient(ItemID.Ectoplasm, 10);
+			recipe.AddIngredient(ItemID.SpectreBar, 5);
+			recipe.AddTile(TileID.TinkerersWorkbench);
 			recipe.Register();
 		}
 	}
