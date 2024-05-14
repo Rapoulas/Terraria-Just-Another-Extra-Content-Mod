@@ -127,7 +127,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			if (foundTarget) {
 				Vector2 vecToTarget = target.position - Projectile.Center;
 				Vector2 vecToPlayer = player.position - Projectile.Center;
-				Vector2 vecSniper = Projectile.Center.DirectionTo(player.position.DirectionTo(target.position)*-1);
+				Vector2 vecSniper = player.position.DirectionTo(target.position) * 500f;
                 float targetDist = vecToTarget.Length();
 				float playerDist = vecToPlayer.Length();
 				vecToPlayer.Normalize();
@@ -140,7 +140,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 						Projectile.velocity = (Projectile.velocity * 40f + vecToPlayer) / 41f;
 						break;
 					case 1: 
-						if (targetDist > 200f){
+						if (targetDist > 120f){
 							speed = 8f;
 							vecToTarget *= speed;
 							Projectile.velocity = (Projectile.velocity * 40f + vecToTarget) / 41f;
@@ -152,9 +152,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 						}
 						break;
 					case 2:
-						speed = 20f;
-						vecSniper *= speed;
-						Projectile.velocity = (Projectile.velocity * 40f + vecSniper) / 41f;
+						Projectile.position = Vector2.Lerp(Projectile.position, player.position - vecSniper, 0.1f);
 						break;
 				}
 				Projectile.rotation = Projectile.rotation.AngleTowards(Projectile.AngleTo(target.position), 0.1f);
