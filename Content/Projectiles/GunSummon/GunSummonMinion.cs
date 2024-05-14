@@ -49,7 +49,6 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			Projectile.width = 18;
 			Projectile.height = 28;
 			Projectile.tileCollide = false;
-
 			Projectile.minion = true;
 			Projectile.DamageType = DamageClass.Summon; 
 			Projectile.minionSlots = 1f;
@@ -117,6 +116,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 				Projectile.velocity *= 0.1f;
 				Projectile.netUpdate = true;
 			}
+
 		}
 
 		private void Movement(bool foundTarget, float distanceFromTarget, NPC target, float distanceToIdlePosition, Vector2 vectorToIdlePosition, Vector2 idlePosition) {
@@ -154,6 +154,10 @@ namespace RappleMod.Content.Projectiles.GunSummon
 					case 2:
 						Projectile.position = Vector2.Lerp(Projectile.position, player.position - vecSniper, 0.1f);
 						break;
+					case 3:
+						speed = 10f;
+						Projectile.velocity = (Projectile.velocity * 40f + (Projectile.Center.DirectionTo(new(player.position.X-((player.position.X-target.position.X)/2), player.position.Y-((player.position.Y-target.position.Y)/2))) * speed)) / 41f;
+						break;
 				}
 				Projectile.rotation = Projectile.rotation.AngleTowards(Projectile.AngleTo(target.position), 0.1f);
 			}
@@ -172,6 +176,28 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			}
 			float piOv2 = MathHelper.PiOver2;
 			Projectile.direction = Projectile.spriteDirection = (Projectile.rotation < piOv2 && Projectile.rotation > -piOv2) ? 1 : -1;
+
+			float overlapVelocity = 2f;
+			// Fix overlap with other minions
+			for (int i = 0; i < Main.maxProjectiles; i++) {
+				Projectile other = Main.projectile[i];
+
+				if (i != Projectile.whoAmI && other.active && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
+					if (Projectile.position.X < other.position.X) {
+						Projectile.velocity.X -= overlapVelocity;
+					}
+					else {
+						Projectile.velocity.X += overlapVelocity;
+					}
+
+					if (Projectile.position.Y < other.position.Y) {
+						Projectile.velocity.Y -= overlapVelocity;
+					}
+					else {
+						Projectile.velocity.Y += overlapVelocity;
+					}
+				}
+			}
 		}
 
 		private void SearchForTargets(Player owner, out bool foundTarget, out float distanceFromTarget, out NPC target) {
