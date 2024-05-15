@@ -12,7 +12,6 @@ namespace RappleMod.Content.Projectiles.GunSummon
 {
 	public class GunSummonBuff : ModBuff
 	{
-		int aaa = 0;
 		public override void SetStaticDefaults() {
 			Main.buffNoSave[Type] = true; // This buff won't save when you exit the world
 			Main.buffNoTimeDisplay[Type] = true; // The time remaining won't display on this buff
@@ -30,12 +29,9 @@ namespace RappleMod.Content.Projectiles.GunSummon
 		}
 	}
 
-	// This minion shows a few mandatory things that make it behave properly.
-	// Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
-	// If the player targets a certain NPC with right-click, it will fly through tiles to it
-	// If it isn't attacking, it will float near the player with minimal movement
 	public class GunSummonMinion : ModProjectile
 	{
+		int timer = 0;
 		public override string Texture => "RappleMod/Content/Projectiles/InvisibleProj";
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
@@ -69,7 +65,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			}
 
 			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out NPC target);
-			GeneralBehavior(owner, foundTarget, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition, out Vector2 idlePosition);
+			GeneralBehavior(owner, target, foundTarget, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition, out Vector2 idlePosition);
 			Movement(foundTarget, distanceFromTarget, target, distanceToIdlePosition, vectorToIdlePosition, idlePosition);
 		}
 
@@ -87,7 +83,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			return true;
 		}
 
-		private void GeneralBehavior(Player owner, bool foundTarget, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition, out Vector2 idlePosition) {
+		private void GeneralBehavior(Player owner, NPC target, bool foundTarget, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition, out Vector2 idlePosition) {
 			idlePosition = owner.Center;
 			
 			if (!foundTarget)
@@ -117,6 +113,26 @@ namespace RappleMod.Content.Projectiles.GunSummon
 				Projectile.netUpdate = true;
 			}
 
+			timer++;
+
+			if (foundTarget){
+				switch (Projectile.ai[0]){
+					case 0:
+						if (timer % 60 == 0)
+							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.RocketLauncher], out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId)){
+								Vector2 velocity = Projectile.Center.DirectionTo(target.Center);
+								Projectile.NewProjectile(owner.GetSource_FromThis(), Projectile.Center, velocity * speed, projToShoot, damage, knockBack);
+								timer = 0;
+							}
+						break;
+					case 1:
+						break;
+					case 2:
+						break;
+					default:
+						break;
+				}
+			}
 		}
 
 		private void Movement(bool foundTarget, float distanceFromTarget, NPC target, float distanceToIdlePosition, Vector2 vectorToIdlePosition, Vector2 idlePosition) {
@@ -156,7 +172,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 						break;
 					case 3:
 						speed = 10f;
-						Projectile.velocity = (Projectile.velocity * 40f + (Projectile.Center.DirectionTo(new(player.position.X-((player.position.X-target.position.X)/2), player.position.Y-((player.position.Y-target.position.Y)/2))) * speed)) / 41f;
+						Projectile.velocity = (Projectile.velocity * 40f + Projectile.Center.DirectionTo(player.position-((player.position-target.position)/2)) * speed) / 41f;
 						break;
 				}
 				Projectile.rotation = Projectile.rotation.AngleTowards(Projectile.AngleTo(target.position), 0.1f);

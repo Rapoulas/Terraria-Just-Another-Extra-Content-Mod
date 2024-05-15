@@ -94,7 +94,6 @@ namespace RappleMod.Content.Projectiles.Brimstone
 			}
 
 			ChargeTime++;
-			
 			if (ChargeTime == 120){
 				ChargeLevel = 2;
 				SoundEngine.PlaySound(SoundID.Item113 with {Pitch = -1f}, Projectile.position);

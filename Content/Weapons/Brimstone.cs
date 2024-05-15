@@ -3,6 +3,8 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using RappleMod.Content.Projectiles.Brimstone;
+using Terraria.DataStructures;
+using Terraria.Audio;
 
 namespace RappleMod.Content.Weapons
 {
@@ -38,5 +40,5 @@ namespace RappleMod.Content.Weapons
 		public override bool CanUseItem(Player player) {
 			return player.ownedProjectileCounts[ModContent.ProjectileType<BrimstoneHoldOut>()] <= 0;
 		}
-	}
+    }
 }
