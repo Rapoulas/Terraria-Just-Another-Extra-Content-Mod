@@ -42,8 +42,8 @@ namespace RappleMod.Content.Projectiles.GunSummon
 		}
 
 		public sealed override void SetDefaults() {
-			Projectile.width = 18;
-			Projectile.height = 28;
+			Projectile.width = 52;
+			Projectile.height = 22;
 			Projectile.tileCollide = false;
 			Projectile.minion = true;
 			Projectile.DamageType = DamageClass.Summon; 
@@ -63,7 +63,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			if (!CheckActive(owner)) {
 				return;
 			}
-
+			SetSpriteSize();
 			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out NPC target);
 			GeneralBehavior(owner, target, foundTarget, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition, out Vector2 idlePosition);
 			Movement(foundTarget, distanceFromTarget, target, distanceToIdlePosition, vectorToIdlePosition, idlePosition);
@@ -81,6 +81,27 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			}
 
 			return true;
+		}
+
+		private void SetSpriteSize(){
+			switch (Projectile.ai[0]){
+				case 0:
+					Projectile.width = 52;
+					Projectile.height = 22;
+					break;
+				case 1:
+					Projectile.width = 40;
+					Projectile.height = 16;
+					break;
+				case 2:
+					Projectile.width = 62;
+					Projectile.height = 24;
+					break;
+				default:
+					Projectile.width = 52;
+					Projectile.height = 20;
+					break;
+			}
 		}
 
 		private void GeneralBehavior(Player owner, NPC target, bool foundTarget, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition, out Vector2 idlePosition) {
@@ -118,18 +139,43 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			if (foundTarget){
 				switch (Projectile.ai[0]){
 					case 0:
-						if (timer % 60 == 0)
-							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.RocketLauncher], out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId)){
+						if (timer % 150 == 0)
+							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.RocketLauncher], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
 								Vector2 velocity = Projectile.Center.DirectionTo(target.Center);
-								Projectile.NewProjectile(owner.GetSource_FromThis(), Projectile.Center, velocity * speed, projToShoot, damage, knockBack);
+								Projectile proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity * projSpeed, projToShoot, damage, knockBack);
+								proj.tileCollide = false;
 								timer = 0;
 							}
 						break;
 					case 1:
+					if (timer % 65 == 0)
+							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.Shotgun], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
+								for (int i = 0; i < 8; i++){
+									Vector2 velocity = Projectile.Center.DirectionTo(target.Center).RotatedByRandom(MathHelper.ToRadians(35));
+									Projectile proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.position, velocity * (projSpeed + Main.rand.NextFloat(-2.5f, 2.5f)), projToShoot, damage, knockBack);
+									proj.tileCollide = false;
+								}
+								timer = 0;
+							}
 						break;
 					case 2:
+						if (timer % 120 == 0)
+							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.SniperRifle], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
+								Vector2 velocity = Projectile.Center.DirectionTo(target.Center);
+								Projectile proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity * projSpeed * 2, projToShoot, damage, knockBack);
+								proj.tileCollide = false;
+								proj.penetrate += 2;
+								timer = 0;
+							}
 						break;
 					default:
+						if (timer % 45 == 0)
+							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.Revolver], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
+								Vector2 velocity = Projectile.Center.DirectionTo(target.Center);
+								Projectile proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity * projSpeed, projToShoot, damage, knockBack);
+								proj.tileCollide = false;
+								timer = 0;
+							}
 						break;
 				}
 			}
@@ -198,7 +244,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			for (int i = 0; i < Main.maxProjectiles; i++) {
 				Projectile other = Main.projectile[i];
 
-				if (i != Projectile.whoAmI && other.active && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
+				if (i != Projectile.whoAmI && other.minion && other.active && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
 					if (Projectile.position.X < other.position.X) {
 						Projectile.velocity.X -= overlapVelocity;
 					}
