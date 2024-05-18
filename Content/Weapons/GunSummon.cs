@@ -54,8 +54,8 @@ namespace RappleMod.Content.Weapons
 				counter++;
 			}
 			
-			if (counter == 3){
-				var p = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer, 3);
+			if (counter == 4){
+				var p = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer, counter);
 				p.originalDamage = Item.damage;
 			}
 		    return false;

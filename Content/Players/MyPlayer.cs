@@ -28,7 +28,7 @@ namespace RappleMod{
 		public float hitClass;
 		public int deliveranceAmmo = 8;
 		Player player = Main.LocalPlayer;
-		public bool[] gunSummonSpawnCheck = {false, false, false};
+		public bool[] gunSummonSpawnCheck = {false, false, false, false};
         public override void ResetEffects(){
             hasAbsorbTeamDamageEffect = false;
 			defendedByAbsorbTeamDamageEffect = false;

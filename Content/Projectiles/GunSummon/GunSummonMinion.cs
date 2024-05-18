@@ -97,6 +97,10 @@ namespace RappleMod.Content.Projectiles.GunSummon
 					Projectile.width = 62;
 					Projectile.height = 24;
 					break;
+				case 3:
+					Projectile.width = 28;
+					Projectile.height = 46;
+					break;
 				default:
 					Projectile.width = 52;
 					Projectile.height = 20;
@@ -106,8 +110,9 @@ namespace RappleMod.Content.Projectiles.GunSummon
 
 		private void GeneralBehavior(Player owner, NPC target, bool foundTarget, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition, out Vector2 idlePosition) {
 			idlePosition = owner.Center;
+			int amountPistol = 0;
 			
-			if (!foundTarget)
+			if (!foundTarget){
 				switch (Projectile.ai[0]){
 					case 0:
 						idlePosition.Y -= 160f;
@@ -118,13 +123,18 @@ namespace RappleMod.Content.Projectiles.GunSummon
 					case 2:
 						idlePosition.Y += 160f;
 						break;
+					case 3:
+						idlePosition.Y += Main.rand.NextFloat(-240f, 240f);
+						idlePosition.X += Main.rand.NextFloat(-240f, 240f);
+						break;
 					default:
 						idlePosition.X += 160f;
 						float minionPositionOffsetX = 10 + (Projectile.minionPos-3) * 40;
 						idlePosition.X += minionPositionOffsetX;
 						break;
 				}
-			
+			}
+
 			vectorToIdlePosition = idlePosition - Projectile.Center;
 			distanceToIdlePosition = vectorToIdlePosition.Length();
 
@@ -135,11 +145,17 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			}
 
 			timer++;
+			
+			for (int j = 0; j < Main.maxProjectiles; j++){
+				if (Main.projectile[j].type == ModContent.ProjectileType<GunSummonMinion>() && Main.projectile[j].active && Main.projectile[j].ai[0] == 3){
+					amountPistol++;
+				}
+			}
 
 			if (foundTarget){
 				switch (Projectile.ai[0]){
 					case 0:
-						if (timer % 150 == 0)
+						if (timer % (150 - MathHelper.Min(amountPistol*7, 120)) == 0)
 							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.RocketLauncher], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
 								Vector2 velocity = Projectile.Center.DirectionTo(target.Center);
 								Projectile proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity * projSpeed, projToShoot, damage, knockBack);
@@ -148,7 +164,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 							}
 						break;
 					case 1:
-					if (timer % 65 == 0)
+					if (timer % (65 - MathHelper.Min(amountPistol*3, 45)) == 0)
 							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.Shotgun], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
 								for (int i = 0; i < 8; i++){
 									Vector2 velocity = Projectile.Center.DirectionTo(target.Center).RotatedByRandom(MathHelper.ToRadians(35));
@@ -159,7 +175,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 							}
 						break;
 					case 2:
-						if (timer % 120 == 0)
+						if (timer % (120 - MathHelper.Min(amountPistol*6, 100)) == 0)
 							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.SniperRifle], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
 								Vector2 velocity = Projectile.Center.DirectionTo(target.Center);
 								Projectile proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity * projSpeed * 2, projToShoot, damage, knockBack);
@@ -168,8 +184,17 @@ namespace RappleMod.Content.Projectiles.GunSummon
 								timer = 0;
 							}
 						break;
+					case 3:
+						if (timer % (65 - MathHelper.Min(amountPistol*3, 55)) == 0)
+							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.PulseBow], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
+								Vector2 velocity = Projectile.Center.DirectionTo(target.Center);
+								Projectile proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity * projSpeed * 2, projToShoot, damage, knockBack);
+								proj.tileCollide = false;
+								timer = 0;
+							}
+						break;
 					default:
-						if (timer % 45 == 0)
+						if (timer % (45 - MathHelper.Min(amountPistol*2, 30)) == 0)
 							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.Revolver], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
 								Vector2 velocity = Projectile.Center.DirectionTo(target.Center);
 								Projectile proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity * projSpeed, projToShoot, damage, knockBack);
@@ -183,7 +208,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 
 		private void Movement(bool foundTarget, float distanceFromTarget, NPC target, float distanceToIdlePosition, Vector2 vectorToIdlePosition, Vector2 idlePosition) {
 			Player player = Main.player[Projectile.owner];
-			float inertia = 20f;
+			float inertia = 40f;
 			float speed;
 
 			if (foundTarget) {
@@ -214,9 +239,13 @@ namespace RappleMod.Content.Projectiles.GunSummon
 						}
 						break;
 					case 2:
-						Projectile.position = Vector2.Lerp(Projectile.position, player.position - vecSniper, 0.1f);
+						Projectile.position = Vector2.Lerp(Projectile.position, player.position - vecSniper, 0.05f);
 						break;
 					case 3:
+						speed = 13f;
+						Projectile.velocity = (Projectile.velocity * 40f + Projectile.Center.DirectionTo(new(target.Center.X, target.Center.Y-300f)) * speed) / 41f;
+						break;
+					default:
 						speed = 10f;
 						Projectile.velocity = (Projectile.velocity * 40f + Projectile.Center.DirectionTo(player.position-((player.position-target.position)/2)) * speed) / 41f;
 						break;
@@ -269,12 +298,12 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			target = null;
 
 			if (owner.HasMinionAttackTargetNPC) {
-				NPC npc = Main.npc[owner.MinionAttackTargetNPC];
-				float between = Vector2.Distance(npc.Center, Projectile.Center);
+				target = Main.npc[owner.MinionAttackTargetNPC];
+				float between = Vector2.Distance(target.Center, Projectile.Center);
 
 				if (between < 2000f) {
 					distanceFromTarget = between;
-					targetCenter = npc.Center;
+					targetCenter = target.Center;
 					foundTarget = true;
 				}
 			}
@@ -313,6 +342,9 @@ namespace RappleMod.Content.Projectiles.GunSummon
 				case 2:
 					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.SniperRifle}", AssetRequestMode.ImmediateLoad).Value;
 					break;
+				case 3:
+					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.PulseBow}", AssetRequestMode.ImmediateLoad).Value;
+					break;
 				default:
 					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.Revolver}", AssetRequestMode.ImmediateLoad).Value;
 					break;
@@ -327,7 +359,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 
         public override void OnKill(int timeLeft)
         {
-			if (Projectile.ai[0] >= 3) return;
+			if (Projectile.ai[0] >= 4) return;
 
 			Player player = Main.player[Projectile.owner];
             player.GetModPlayer<MyPlayer>().gunSummonSpawnCheck[(int)Projectile.ai[0]] = false;
