@@ -66,7 +66,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			SetSpriteSize();
 			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out NPC target);
 			GeneralBehavior(owner, target, foundTarget, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition, out Vector2 idlePosition);
-			Movement(foundTarget, distanceFromTarget, target, distanceToIdlePosition, vectorToIdlePosition, idlePosition);
+			Movement(foundTarget, target, distanceToIdlePosition, vectorToIdlePosition, idlePosition);
 		}
 
 		private bool CheckActive(Player owner) {
@@ -157,48 +157,35 @@ namespace RappleMod.Content.Projectiles.GunSummon
 					case 0:
 						if (timer % (150 - MathHelper.Min(amountPistol*7, 120)) == 0)
 							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.RocketLauncher], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
-								Vector2 velocity = Projectile.Center.DirectionTo(target.Center);
-								Projectile proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity * projSpeed, projToShoot, damage, knockBack);
-								proj.tileCollide = false;
+								ShootingHandler(target, owner, 1, projSpeed, projToShoot, knockBack, 0, 0, 0, damage);
 								timer = 0;
 							}
 						break;
 					case 1:
 					if (timer % (65 - MathHelper.Min(amountPistol*3, 45)) == 0)
 							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.Shotgun], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
-								for (int i = 0; i < 8; i++){
-									Vector2 velocity = Projectile.Center.DirectionTo(target.Center).RotatedByRandom(MathHelper.ToRadians(35));
-									Projectile proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.position, velocity * (projSpeed + Main.rand.NextFloat(-2.5f, 2.5f)), projToShoot, damage, knockBack);
-									proj.tileCollide = false;
-								}
+								ShootingHandler(target, owner, 8, projSpeed, projToShoot, knockBack, 35, 2.5f, 0, damage);
 								timer = 0;
 							}
 						break;
 					case 2:
 						if (timer % (120 - MathHelper.Min(amountPistol*6, 100)) == 0)
 							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.SniperRifle], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
-								Vector2 velocity = Projectile.Center.DirectionTo(target.Center);
-								Projectile proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity * projSpeed * 2, projToShoot, damage, knockBack);
-								proj.tileCollide = false;
-								proj.penetrate += 2;
+								ShootingHandler(target, owner, 1, projSpeed * 2f, projToShoot, knockBack, 0, 0, 2, damage);
 								timer = 0;
 							}
 						break;
 					case 3:
 						if (timer % (65 - MathHelper.Min(amountPistol*3, 55)) == 0)
 							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.PulseBow], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
-								Vector2 velocity = Projectile.Center.DirectionTo(target.Center);
-								Projectile proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity * projSpeed * 2, projToShoot, damage, knockBack);
-								proj.tileCollide = false;
+								ShootingHandler(target, owner, 1, projSpeed, projToShoot, knockBack, 0, 0, 0, damage);
 								timer = 0;
 							}
 						break;
 					default:
 						if (timer % (45 - MathHelper.Min(amountPistol*2, 30)) == 0)
 							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.Revolver], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
-								Vector2 velocity = Projectile.Center.DirectionTo(target.Center);
-								Projectile proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity * projSpeed, projToShoot, damage, knockBack);
-								proj.tileCollide = false;
+								ShootingHandler(target, owner, 1, projSpeed * 1.25f, projToShoot, knockBack, 0, 0, 0, damage);
 								timer = 0;
 							}
 						break;
@@ -206,7 +193,16 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			}
 		}
 
-		private void Movement(bool foundTarget, float distanceFromTarget, NPC target, float distanceToIdlePosition, Vector2 vectorToIdlePosition, Vector2 idlePosition) {
+		private void ShootingHandler(NPC target, Player owner, int amountBullets, float projSpeedMultiplier, int projToShoot, float knockBack, float degreesRotation, float speedVariation, int amountPenetration, int damage){
+			for (int i = 0; i < amountBullets; i++){
+				Vector2 velocity = Projectile.Center.DirectionTo(target.Center).RotatedByRandom(MathHelper.ToRadians(degreesRotation));
+				Projectile proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.position, velocity * (projSpeedMultiplier + Main.rand.NextFloat(-speedVariation, speedVariation)), projToShoot, damage, knockBack);
+				proj.penetrate += amountPenetration;
+				proj.tileCollide = false;
+			}
+		}
+
+		private void Movement(bool foundTarget, NPC target, float distanceToIdlePosition, Vector2 vectorToIdlePosition, Vector2 idlePosition) {
 			Player player = Main.player[Projectile.owner];
 			float inertia = 40f;
 			float speed;

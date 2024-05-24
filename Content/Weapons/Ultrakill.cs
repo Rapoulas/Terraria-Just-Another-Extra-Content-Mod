@@ -26,7 +26,7 @@ namespace RappleMod.Content.Weapons{
 			Item.noMelee = true;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.shoot = ModContent.ProjectileType<UltrakillBullet>();
-			Item.shootSpeed = 3f;
+			Item.shootSpeed = 5f;
 		}
 
         public override void AddRecipes()
