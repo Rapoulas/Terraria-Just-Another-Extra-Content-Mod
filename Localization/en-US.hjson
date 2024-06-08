@@ -169,6 +169,7 @@ Mods: {
 					'''
 					Summons an army of weapons
 					Extra uses summons pistols and enhances the other weapon types
+					Damage is increased by both Ranged and Summon bonuses
 
 					'I am the gun'
 					'''
@@ -207,8 +208,8 @@ Mods: {
 			}
 
 			GunSummonBuff: {
-				DisplayName: Gun Summon Buff
-				Description: Mods.RappleMod.Buffs.GunSummonBuff.Description
+				DisplayName: Dark Army
+				Description: Your arsenal follows you
 			}
 		}
 

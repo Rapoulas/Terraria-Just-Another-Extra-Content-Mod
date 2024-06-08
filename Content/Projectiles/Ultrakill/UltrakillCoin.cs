@@ -31,7 +31,7 @@ namespace RappleMod.Content.Projectiles.Ultrakill
 
             if (Projectile.ai[0] >= 100 && Projectile.ai[0] < 300){
                 if (Projectile.ai[0] % 10 == 0){
-                    Projectile.velocity *= 1-(Projectile.ai[0]/1500);
+                    Projectile.velocity *= 1-(Projectile.ai[0]/1000);
                 }
             }
             if (Projectile.ai[0] >= 430){

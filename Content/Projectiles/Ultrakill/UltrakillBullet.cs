@@ -67,7 +67,6 @@ namespace RappleMod.Content.Projectiles.Ultrakill
             if (Projectile.ai[2] % 3 == 0 && hitFirstCoin){
                 int bulletTrail = Dust.NewDust(Projectile.Center, 0, 0, DustID.Firework_Yellow, 0f, 0f, 0, Color.Transparent);
                 Main.dust[bulletTrail].position = Projectile.Center;
-                Main.dust[bulletTrail].velocity = Projectile.velocity;
                 Main.dust[bulletTrail].scale = 1f;
                 Main.dust[bulletTrail].noGravity = true;
             }

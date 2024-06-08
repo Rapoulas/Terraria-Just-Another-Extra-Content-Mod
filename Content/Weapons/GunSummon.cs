@@ -17,18 +17,17 @@ namespace RappleMod.Content.Weapons
 		}
 
 		public override void SetDefaults() {
-			Item.damage = 30;
+			Item.damage = 60;
 			Item.knockBack = 3f;
 			Item.mana = 10;
 			Item.width = 32;
 			Item.height = 32;
 			Item.useTime = 36;
 			Item.useAnimation = 36;
-			Item.useStyle = ItemUseStyleID.Swing;
-			Item.value = Item.sellPrice(gold: 30);
-			Item.rare = ItemRarityID.Cyan;
+			Item.useStyle = ItemUseStyleID.Shoot;
+			Item.value = Item.sellPrice(gold: 15);
+			Item.rare = ItemRarityID.Lime;
 			Item.UseSound = SoundID.Item44;
-
 			Item.noMelee = true;
 			Item.DamageType = DamageClass.Summon; 
 			Item.buffType = ModContent.BuffType<GunSummonBuff>();

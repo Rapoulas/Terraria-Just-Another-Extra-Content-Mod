@@ -34,6 +34,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 	{
 		public static Item FalsePistol = null;
 		public static Item FalseLauncher = null;
+		public static Item FalseBow = null;
 		int timer = 0;
 		public override string Texture => "RappleMod/Content/Projectiles/InvisibleProj";
 		public override void SetStaticDefaults() {
@@ -54,13 +55,15 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			Projectile.penetrate = -1;
 		}
 
-		// Here you can decide if your minion breaks things like grass or pots
 		public override bool? CanCutTiles() {
 			return false;
 		}
 
-		// The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
-		public override void AI() {
+        public override bool? CanDamage()
+        {
+            return false;
+        }
+        public override void AI() {
 			Player owner = Main.player[Projectile.owner];
 
 			if (!CheckActive(owner)) {
@@ -89,24 +92,24 @@ namespace RappleMod.Content.Projectiles.GunSummon
 		private void SetSpriteSize(){
 			switch (Projectile.ai[0]){
 				case 0:
-					Projectile.width = 52;
-					Projectile.height = 22;
+					Projectile.width = 60;
+					Projectile.height = 30;
 					break;
 				case 1:
-					Projectile.width = 40;
-					Projectile.height = 16;
+					Projectile.width = 44;
+					Projectile.height = 20;
 					break;
 				case 2:
-					Projectile.width = 62;
-					Projectile.height = 24;
+					Projectile.width = 70;
+					Projectile.height = 22;
 					break;
 				case 3:
-					Projectile.width = 28;
-					Projectile.height = 46;
+					Projectile.width = 26;
+					Projectile.height = 42;
 					break;
 				default:
-					Projectile.width = 52;
-					Projectile.height = 20;
+					Projectile.width = 48;
+					Projectile.height = 24;
 					break;
 			}
 		}
@@ -157,52 +160,55 @@ namespace RappleMod.Content.Projectiles.GunSummon
 
             FalsePistol = new Item();
             FalseLauncher = new Item();
+			FalseBow = new Item();
 
             FalsePistol.SetDefaults(ItemID.Revolver, true);
             FalseLauncher.SetDefaults(ItemID.SnowmanCannon, true);
+            FalseBow.SetDefaults(ItemID.WoodenBow, true);
 
             FalsePistol.damage = 0;
-            FalsePistol.DamageType = DamageClass.Summon;
             FalsePistol.knockBack = 4;
 
             FalseLauncher.damage = 0;
-            FalseLauncher.DamageType = DamageClass.Summon;
 			FalseLauncher.knockBack = 4;
+
+            FalseBow.damage = 0;
+			FalseBow.knockBack = 4;
 
 			if (foundTarget){
 				switch (Projectile.ai[0]){
 					case 0:
 						if (timer % (150 - MathHelper.Min(amountPistol*7, 120)) == 0)
 							if (owner.PickAmmo(FalseLauncher, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
-								ShootingHandler(target, owner, 1, projSpeed, projToShoot, knockBack, 0, 0, 0, damage);
+								ShootingHandler(target, owner, 1, projSpeed, projToShoot, knockBack, 0, 0, 0, damage + 65);
 								timer = 0;
 							}
 						break;
 					case 1:
 					if (timer % (65 - MathHelper.Min(amountPistol*3, 45)) == 0)
 							if (owner.PickAmmo(FalsePistol, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
-								ShootingHandler(target, owner, 8, projSpeed, projToShoot, knockBack, 35, 2.5f, 0, damage);
+								ShootingHandler(target, owner, 8, projSpeed, projToShoot, knockBack, 35, 2.5f, 0, damage + 30);
 								timer = 0;
 							}
 						break;
 					case 2:
 						if (timer % (120 - MathHelper.Min(amountPistol*6, 100)) == 0)
 							if (owner.PickAmmo(FalsePistol, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
-								ShootingHandler(target, owner, 1, projSpeed * 2f, projToShoot, knockBack, 0, 0, 2, damage);
+								ShootingHandler(target, owner, 1, projSpeed * 3f, projToShoot, knockBack, 0, 0, 2, damage + 150);
 								timer = 0;
 							}
 						break;
 					case 3:
 						if (timer % (65 - MathHelper.Min(amountPistol*3, 55)) == 0)
-							if (owner.PickAmmo(FalsePistol, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
-								ShootingHandler(target, owner, 1, projSpeed, projToShoot, knockBack, 0, 0, 0, damage);
+							if (owner.PickAmmo(FalseBow, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
+								ShootingHandler(target, owner, 1, projSpeed, projToShoot, knockBack, 0, 0, 0, damage + 45);
 								timer = 0;
 							}
 						break;
 					default:
 						if (timer % (45 - MathHelper.Min(amountPistol*2, 30)) == 0)
 							if (owner.PickAmmo(FalsePistol, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
-								ShootingHandler(target, owner, 1, projSpeed * 1.25f, projToShoot, knockBack, 0, 0, 0, damage);
+								ShootingHandler(target, owner, 1, projSpeed * 1.25f, projToShoot, knockBack, 0, 0, 0, damage + 35);
 								timer = 0;
 							}
 						break;
@@ -211,9 +217,16 @@ namespace RappleMod.Content.Projectiles.GunSummon
 		}
 
 		private void ShootingHandler(NPC target, Player owner, int amountBullets, float projSpeedMultiplier, int projToShoot, float knockBack, float degreesRotation, float speedVariation, int amountPenetration, int damage){
+			float baseBonus = owner.GetDamage(DamageClass.Summon).Base;
+			float addBonus = owner.GetDamage(DamageClass.Summon).Additive;
+			float multBonus = owner.GetDamage(DamageClass.Summon).Multiplicative;
+			float flatBonus = owner.GetDamage(DamageClass.Summon).Flat;
+
+			float finalDamage = ((damage + baseBonus) * addBonus * multBonus) + flatBonus;
+			
 			for (int i = 0; i < amountBullets; i++){
 				Vector2 velocity = Projectile.Center.DirectionTo(target.Center).RotatedByRandom(MathHelper.ToRadians(degreesRotation));
-				Projectile proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.position, velocity * (projSpeedMultiplier + Main.rand.NextFloat(-speedVariation, speedVariation)), projToShoot, damage, knockBack);
+				Projectile proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.position, velocity * (projSpeedMultiplier + Main.rand.NextFloat(-speedVariation, speedVariation)), projToShoot, (int)finalDamage, knockBack);
 				proj.penetrate += amountPenetration;
 				proj.tileCollide = false;
 			}
