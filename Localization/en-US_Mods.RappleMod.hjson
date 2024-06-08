@@ -43,6 +43,16 @@ Items: {
 
 	Bonetrousle: {
 	}
+
+	DummyLauncher: {
+		DisplayName: Dummy Launcher
+		Tooltip: ""
+	}
+
+	DummyPistol: {
+		DisplayName: Dummy Pistol
+		Tooltip: ""
+	}
 }
 
 Buffs: {

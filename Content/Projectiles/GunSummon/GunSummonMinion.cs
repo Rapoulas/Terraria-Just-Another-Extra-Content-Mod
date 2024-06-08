@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RappleMod.Content.Weapons;
 using ReLogic.Content;
 using System;
 using Terraria;
@@ -31,6 +32,8 @@ namespace RappleMod.Content.Projectiles.GunSummon
 
 	public class GunSummonMinion : ModProjectile
 	{
+		public static Item FalsePistol = null;
+		public static Item FalseLauncher = null;
 		int timer = 0;
 		public override string Texture => "RappleMod/Content/Projectiles/InvisibleProj";
 		public override void SetStaticDefaults() {
@@ -152,39 +155,53 @@ namespace RappleMod.Content.Projectiles.GunSummon
 				}
 			}
 
+            FalsePistol = new Item();
+            FalseLauncher = new Item();
+
+            FalsePistol.SetDefaults(ItemID.Revolver, true);
+            FalseLauncher.SetDefaults(ItemID.SnowmanCannon, true);
+
+            FalsePistol.damage = 0;
+            FalsePistol.DamageType = DamageClass.Summon;
+            FalsePistol.knockBack = 4;
+
+            FalseLauncher.damage = 0;
+            FalseLauncher.DamageType = DamageClass.Summon;
+			FalseLauncher.knockBack = 4;
+
 			if (foundTarget){
 				switch (Projectile.ai[0]){
 					case 0:
 						if (timer % (150 - MathHelper.Min(amountPistol*7, 120)) == 0)
-							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.RocketLauncher], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
+							if (owner.PickAmmo(FalseLauncher, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
 								ShootingHandler(target, owner, 1, projSpeed, projToShoot, knockBack, 0, 0, 0, damage);
 								timer = 0;
 							}
 						break;
 					case 1:
 					if (timer % (65 - MathHelper.Min(amountPistol*3, 45)) == 0)
-							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.Shotgun], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
+							if (owner.PickAmmo(FalsePistol, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
 								ShootingHandler(target, owner, 8, projSpeed, projToShoot, knockBack, 35, 2.5f, 0, damage);
 								timer = 0;
 							}
 						break;
 					case 2:
 						if (timer % (120 - MathHelper.Min(amountPistol*6, 100)) == 0)
-							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.SniperRifle], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
+							if (owner.PickAmmo(FalsePistol, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
 								ShootingHandler(target, owner, 1, projSpeed * 2f, projToShoot, knockBack, 0, 0, 2, damage);
 								timer = 0;
 							}
 						break;
 					case 3:
 						if (timer % (65 - MathHelper.Min(amountPistol*3, 55)) == 0)
-							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.PulseBow], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
+							if (owner.PickAmmo(FalsePistol, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
 								ShootingHandler(target, owner, 1, projSpeed, projToShoot, knockBack, 0, 0, 0, damage);
 								timer = 0;
 							}
 						break;
 					default:
 						if (timer % (45 - MathHelper.Min(amountPistol*2, 30)) == 0)
-							if (owner.PickAmmo(ContentSamples.ItemsByType[ItemID.Revolver], out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
+							if (owner.PickAmmo(FalsePistol, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
 								ShootingHandler(target, owner, 1, projSpeed * 1.25f, projToShoot, knockBack, 0, 0, 0, damage);
 								timer = 0;
 							}
@@ -328,25 +345,15 @@ namespace RappleMod.Content.Projectiles.GunSummon
         {
 			Texture2D Texture = TextureAssets.Projectile[Projectile.type].Value;
 
-			switch (Projectile.ai[0]){
-				case 0:
-					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.RocketLauncher}", AssetRequestMode.ImmediateLoad).Value;
-					break;
-				case 1:
-					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.Shotgun}", AssetRequestMode.ImmediateLoad).Value;
-					break;
-				case 2:
-					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.SniperRifle}", AssetRequestMode.ImmediateLoad).Value;
-					break;
-				case 3:
-					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.PulseBow}", AssetRequestMode.ImmediateLoad).Value;
-					break;
-				default:
-					Texture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.Revolver}", AssetRequestMode.ImmediateLoad).Value;
-					break;
-			}
-			
-			SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
+            Texture = Projectile.ai[0] switch
+            {
+                0 => ModContent.Request<Texture2D>("RappleMod/Content/Projectiles/GunSummon/GunSummonLauncher", AssetRequestMode.ImmediateLoad).Value,
+                1 => ModContent.Request<Texture2D>("RappleMod/Content/Projectiles/GunSummon/GunSummonShotgun", AssetRequestMode.ImmediateLoad).Value,
+                2 => ModContent.Request<Texture2D>("RappleMod/Content/Projectiles/GunSummon/GunSummonSniper", AssetRequestMode.ImmediateLoad).Value,
+                3 => ModContent.Request<Texture2D>("RappleMod/Content/Projectiles/GunSummon/GunSummonBow", AssetRequestMode.ImmediateLoad).Value,
+                _ => ModContent.Request<Texture2D>("RappleMod/Content/Projectiles/GunSummon/GunSummonRevolver", AssetRequestMode.ImmediateLoad).Value,
+            };
+            SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
 			Vector2 drawOrigin = new Vector2(Texture.Width, Texture.Height) / 2f;
 			Main.EntitySpriteDraw(Texture, Projectile.position - Main.screenPosition, null, lightColor, Projectile.rotation, drawOrigin, Projectile.scale, spriteEffects);
 			
