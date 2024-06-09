@@ -12,10 +12,14 @@ namespace CalamityMod.Items
         public override void ModifyItemLoot(Item item, ItemLoot loot)
         {
             if (item.type == ItemID.SkeletronBossBag){
-                loot.Add(new CommonDrop(ModContent.ItemType<Bonetrousle>(), 15)); // 10% Drop chance
+                loot.Add(new CommonDrop(ModContent.ItemType<Bonetrousle>(), 15)); 
             }
             if (item.type == ItemID.GolemBossBag){
-                loot.Add(new CommonDrop(ModContent.ItemType<Linoge>(), 15)); // 10% Drop chance
+                loot.Add(new CommonDrop(ModContent.ItemType<Linoge>(), 15)); 
+            }
+
+            if (item.type == ItemID.PlanteraBossBag){
+                loot.Add(new CommonDrop(ModContent.ItemType<GunSummon>(), 15));
             }
         }
     }
