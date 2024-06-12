@@ -175,6 +175,11 @@ Mods: {
 					'I am the gun'
 					'''
 			}
+
+			Heartbreaker: {
+				DisplayName: Heartbreaker
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -235,6 +240,7 @@ Mods: {
 			DeliveranceProjectile.DisplayName: Deliverance Projectile
 			DeliveranceExplosion.DisplayName: Deliverance Explosion
 			GunSummonMinion.DisplayName: Gun Summon Minion
+			HeartbreakerBullet.DisplayName: Heartbreaker Bullet
 		}
 	}
 }
