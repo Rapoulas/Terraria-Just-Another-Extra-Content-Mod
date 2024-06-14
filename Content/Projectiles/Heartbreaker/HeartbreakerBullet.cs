@@ -14,7 +14,7 @@ namespace RappleMod.Content.Projectiles.Heartbreaker
         int heartbeatTimer = 0;
         int heartbeatProgress = 1;
         int direction = 1;
-        public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.MeteorShot;
+        
         public override void SetDefaults() {
             Projectile.width = 2;
             Projectile.height = 2;
@@ -24,11 +24,16 @@ namespace RappleMod.Content.Projectiles.Heartbreaker
             Projectile.tileCollide = true;
             Projectile.usesLocalNPCImmunity = false;
             Projectile.timeLeft = 600;
+            Projectile.alpha = 255;
+            Projectile.scale = 1.25f;
+            Projectile.light = 0.5f;
         }
 
         public override void AI(){
+            if (Projectile.alpha > 0) Projectile.alpha -= 25;
+
             float rotation = 0;
-            Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
+            Projectile.rotation = Projectile.velocity.ToRotation();
 
             if (isHeartbeat){
                 if (heartbeatTimer == 0) heartbeatProgress = 1;
@@ -87,7 +92,16 @@ namespace RappleMod.Content.Projectiles.Heartbreaker
                     direction = Projectile.direction;
             }
 
-            int bulletTrail = Dust.NewDust(Projectile.Center, 0, 0, DustID.Firework_Yellow, 0f, 0f, 0, Color.Transparent);
+            for (int i = 0; i < 10; i ++){
+                Vector2 posOffset = Projectile.velocity.SafeNormalize(Vector2.One) * (3f * i);
+                int dust = Dust.NewDust(Projectile.position, 1, 1, 60);
+                
+                Main.dust[dust].alpha = Projectile.alpha;
+                Main.dust[dust].position += posOffset - 2f * Vector2.UnitY;
+                Main.dust[dust].velocity *= 0f;
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].scale = 1.2f;
+            }
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)

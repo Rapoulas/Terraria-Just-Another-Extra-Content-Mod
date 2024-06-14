@@ -23,14 +23,14 @@ namespace RappleMod.Content.Weapons{
 			Item.noMelee = true;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.shoot = ModContent.ProjectileType<HeartbreakerBullet>();
-			Item.shootSpeed = 7f; 
+			Item.shootSpeed = 15f; 
 			Item.useAmmo = AmmoID.Bullet;
 			Item.UseSound = SoundID.Item11;
 		}
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-			type = type = ModContent.ProjectileType<HeartbreakerBullet>();;
+			type = ModContent.ProjectileType<HeartbreakerBullet>();
         }
     }
 }
