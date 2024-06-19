@@ -14,6 +14,7 @@ namespace RappleMod.Content.Acessories
 			Item.DefaultToAccessory(26, 34);
 			Item.SetShopValues(ItemRarityColor.Green2, Item.buyPrice(gold: 1));
 			Item.rare = ItemRarityID.Expert;
+			Item.expert = true;
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {

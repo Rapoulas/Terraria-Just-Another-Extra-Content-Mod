@@ -18,4 +18,12 @@
 
     For the frost armor sets combinations, you cant get the hybrid set bonus with *only* the frost helmet since its 2 classes.
     Also needs atleast 1 frost armor piece to get the hybrid set bonus.
+
+    Currently most weapons are craftable (im bad at having ideas on drop locations lmao if you have any just let me know :D )
+
+    Weapon drop locations:
+    Bonetrousle 20% drop chance from Skeletron's lootbag (Expert only)
+    Linoge 20% drop chance from Golem's lootbag (Expert only)
+    Dark Army 20% drop chance from Plantera
+
     Please let me know any bugs or feedback!

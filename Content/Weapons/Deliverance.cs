@@ -31,6 +31,7 @@ namespace RappleMod.Content.Weapons{
 			Item.shootSpeed = 15f; 
 			Item.useAmmo = AmmoID.Bullet;
 			Item.UseSound = SoundID.Item36;
+			Item.expert = true;
 		}
 		
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

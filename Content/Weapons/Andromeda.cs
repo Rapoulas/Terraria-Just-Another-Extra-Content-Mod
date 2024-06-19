@@ -31,6 +31,7 @@ namespace RappleMod.Content.Weapons
 			Item.DamageType = DamageClass.MeleeNoSpeed;
 			Item.channel = true;
 			Item.noMelee = true; // This makes sure the item does not deal damage from the swinging animation
+			Item.expert = true;
 		}
 		public override void AddRecipes()
 		{

@@ -180,35 +180,55 @@ namespace RappleMod.Content.Projectiles.GunSummon
 					case 0:
 						if (timer % (150 - MathHelper.Min(amountPistol*7, 120)) == 0)
 							if (owner.PickAmmo(FalseLauncher, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
-								ShootingHandler(target, owner, 1, projSpeed, projToShoot, knockBack, 0, 0, 0, damage + 65);
+								// Launcher
+								int newDamage = damage + 70;
+								float mult = 1;
+								if (owner.head == 105) mult = 1.15f;
+								ShootingHandler(target, owner, 1, projSpeed, projToShoot, knockBack, 0, 0, 0, (int)(newDamage * mult));
 								timer = 0;
 							}
 						break;
 					case 1:
 					if (timer % (65 - MathHelper.Min(amountPistol*3, 45)) == 0)
 							if (owner.PickAmmo(FalsePistol, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
-								ShootingHandler(target, owner, 8, projSpeed, projToShoot, knockBack, 35, 2.5f, 0, damage + 30);
+								// Shotgun
+								int newDamage = damage + 30;
+								float mult = 1;
+								if (owner.head == 104) mult = 1.15f;
+								ShootingHandler(target, owner, 8, projSpeed, projToShoot, knockBack, 35, 2.5f, 0, (int)(newDamage * mult));
 								timer = 0;
 							}
 						break;
 					case 2:
 						if (timer % (120 - MathHelper.Min(amountPistol*6, 100)) == 0)
 							if (owner.PickAmmo(FalsePistol, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
-								ShootingHandler(target, owner, 1, projSpeed * 3f, projToShoot, knockBack, 0, 0, 2, damage + 150);
+								// Sniper
+								int newDamage = damage + 150;
+								float mult = 1;
+								if (owner.head == 104) mult = 1.15f;
+								ShootingHandler(target, owner, 1, projSpeed * 3f, projToShoot, knockBack, 0, 0, 2, (int)(newDamage * mult));
 								timer = 0;
 							}
 						break;
 					case 3:
 						if (timer % (65 - MathHelper.Min(amountPistol*3, 55)) == 0)
 							if (owner.PickAmmo(FalseBow, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
-								ShootingHandler(target, owner, 1, projSpeed, projToShoot, knockBack, 0, 0, 0, damage + 45);
+								// Bow
+								int newDamage = damage + 45;
+								float mult = 1;
+								if (owner.head == 103) mult = 1.15f;
+								ShootingHandler(target, owner, 1, projSpeed, projToShoot, knockBack, 0, 0, 0, (int)(newDamage * mult));
 								timer = 0;
 							}
 						break;
 					default:
-						if (timer % (45 - MathHelper.Min(amountPistol*2, 30)) == 0)
+						if (timer % (45 - MathHelper.Min(amountPistol, 30)) == 0)
 							if (owner.PickAmmo(FalsePistol, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
-								ShootingHandler(target, owner, 1, projSpeed * 1.25f, projToShoot, knockBack, 0, 0, 0, damage + 35);
+								// Revolver
+								int newDamage = damage + 35;
+								float mult = 1;
+								if (owner.head == 104) mult = 1.15f;
+								ShootingHandler(target, owner, 1, projSpeed * 1.25f, projToShoot, knockBack, 0, 0, 0, (int)(newDamage * mult));
 								timer = 0;
 							}
 						break;
@@ -217,10 +237,10 @@ namespace RappleMod.Content.Projectiles.GunSummon
 		}
 
 		private void ShootingHandler(NPC target, Player owner, int amountBullets, float projSpeedMultiplier, int projToShoot, float knockBack, float degreesRotation, float speedVariation, int amountPenetration, int damage){
-			float baseBonus = owner.GetDamage(DamageClass.Summon).Base;
-			float addBonus = owner.GetDamage(DamageClass.Summon).Additive;
-			float multBonus = owner.GetDamage(DamageClass.Summon).Multiplicative;
-			float flatBonus = owner.GetDamage(DamageClass.Summon).Flat;
+			float baseBonus = owner.GetDamage(DamageClass.Summon).Base + owner.GetDamage(DamageClass.Ranged).Base;
+			float addBonus = owner.GetDamage(DamageClass.Summon).Additive + owner.GetDamage(DamageClass.Ranged).Additive -1;
+			float multBonus = owner.GetDamage(DamageClass.Summon).Multiplicative + owner.GetDamage(DamageClass.Ranged).Multiplicative -1;
+			float flatBonus = owner.GetDamage(DamageClass.Summon).Flat + owner.GetDamage(DamageClass.Ranged).Flat;
 
 			float finalDamage = ((damage + baseBonus) * addBonus * multBonus) + flatBonus;
 			
@@ -229,6 +249,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 				Projectile proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.position, velocity * (projSpeedMultiplier + Main.rand.NextFloat(-speedVariation, speedVariation)), projToShoot, (int)finalDamage, knockBack);
 				proj.penetrate += amountPenetration;
 				proj.tileCollide = false;
+				proj.minion = true;
 			}
 		}
 
@@ -295,11 +316,10 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			Projectile.direction = Projectile.spriteDirection = (Projectile.rotation < piOv2 && Projectile.rotation > -piOv2) ? 1 : -1;
 
 			float overlapVelocity = 2f;
-			// Fix overlap with other minions
 			for (int i = 0; i < Main.maxProjectiles; i++) {
 				Projectile other = Main.projectile[i];
 
-				if (i != Projectile.whoAmI && other.minion && other.active && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
+				if (i != Projectile.whoAmI && other.minion && other.active && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width && other.DamageType == DamageClass.Summon) {
 					if (Projectile.position.X < other.position.X) {
 						Projectile.velocity.X -= overlapVelocity;
 					}

@@ -30,6 +30,7 @@ namespace RappleMod.Content.Weapons
 			Item.channel = true; 
 			Item.rare = ItemRarityID.Expert;
 			Item.value = Item.buyPrice(gold: 5);
+			Item.expert = true;
 
 			Item.shoot = ModContent.ProjectileType<BonetrousleProjectile>(); 
 			Item.shootSpeed = 16f;		

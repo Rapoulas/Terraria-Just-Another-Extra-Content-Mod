@@ -37,19 +37,19 @@ namespace RappleMod.Content.Projectiles.Heartbreaker
 
             if (isHeartbeat){
                 if (heartbeatTimer == 0) heartbeatProgress = 1;
-                else if (heartbeatTimer == 15) heartbeatProgress = 2;
-                else if (heartbeatTimer == 30) heartbeatProgress = 3;
-                else if (heartbeatTimer == 45) heartbeatProgress = 4;
-                else if (heartbeatTimer == 60) heartbeatProgress = 5;
-                else if (heartbeatTimer == 75) heartbeatProgress = 6;
-                else if (heartbeatTimer == 90) heartbeatProgress = 7;
+                else if (heartbeatTimer == 2) heartbeatProgress = 2;
+                else if (heartbeatTimer == 8) heartbeatProgress = 3;
+                else if (heartbeatTimer == 18) heartbeatProgress = 4;
+                else if (heartbeatTimer == 26) heartbeatProgress = 5;
+                else if (heartbeatTimer == 30) heartbeatProgress = 6;
+                else if (heartbeatTimer == 34) heartbeatProgress = 7;
 
                 if (heartbeatProgress == 1){
                     rotation = -70 * direction;
                     Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(rotation));
                     heartbeatProgress = -1;
                 }
-                if (heartbeatProgress == 2){
+                else if (heartbeatProgress == 2){
                     rotation = 140 * direction;
                     Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(rotation));
                     heartbeatProgress = -1;
@@ -102,6 +102,9 @@ namespace RappleMod.Content.Projectiles.Heartbreaker
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].scale = 1.2f;
             }
+
+            if (isHeartbeat) Projectile.extraUpdates = 1;
+            else Projectile.extraUpdates = 0;
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -117,6 +120,13 @@ namespace RappleMod.Content.Projectiles.Heartbreaker
             Projectile.Kill();
 
             return false;
+        }
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            if (isHeartbeat){
+                modifiers.FinalDamage *= 1.3f;
+            }
         }
 
     }
