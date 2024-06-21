@@ -13,8 +13,7 @@ namespace RappleMod.Content.Acessories
 			ItemID.Sets.AnimatesAsSoul[Item.type] = true; 
 			Item.DefaultToAccessory(26, 34);
 			Item.SetShopValues(ItemRarityColor.Green2, Item.buyPrice(gold: 1));
-			Item.rare = ItemRarityID.Expert;
-			Item.expert = true;
+			Item.rare = ItemRarityID.Green;
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {

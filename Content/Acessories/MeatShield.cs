@@ -41,22 +41,5 @@ namespace RappleMod.Content.Acessories
 				}
 			}
 		}
-
-        public override void AddRecipes() {
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.PaladinsShield, 1);
-			recipe.AddIngredient(ItemID.FleshBlock, 20);
-			recipe.AddIngredient(ItemID.CharmofMyths, 1);
-			recipe.AddTile(TileID.TinkerersWorkbench);
-			recipe.Register();
-
-			Recipe recipeSecond = CreateRecipe();
-			recipeSecond.AddIngredient(ItemID.PaladinsShield, 1);
-			recipeSecond.AddIngredient(ItemID.LesionBlock, 20);
-			recipeSecond.AddIngredient(ItemID.CharmofMyths, 1);
-			recipeSecond.AddTile(TileID.TinkerersWorkbench);
-			recipeSecond.Register();
-		}
-
 	}
 }

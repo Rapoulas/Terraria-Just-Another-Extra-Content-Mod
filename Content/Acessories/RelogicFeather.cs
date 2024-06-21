@@ -20,14 +20,6 @@ namespace RappleMod.Content.Acessories
 			player.GetJumpState<RelogicFeatherExtraJump>().Enable();
 			player.AddBuff(BuffID.Featherfall, 2);
 		}
-
-		public override void AddRecipes() {
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Feather, 15);
-			recipe.AddIngredient(ItemID.FeatherfallPotion, 1);
-			recipe.AddTile(TileID.TinkerersWorkbench);
-			recipe.Register();
-		}
 	}
 
 	public class RelogicFeatherExtraJump : ExtraJump

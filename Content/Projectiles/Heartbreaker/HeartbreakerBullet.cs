@@ -23,19 +23,27 @@ namespace RappleMod.Content.Projectiles.Heartbreaker
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = true;
             Projectile.usesLocalNPCImmunity = false;
-            Projectile.timeLeft = 600;
+            Projectile.timeLeft = 800;
             Projectile.alpha = 255;
             Projectile.scale = 1.25f;
             Projectile.light = 0.5f;
         }
 
         public override void AI(){
+            Player player = Main.player[Projectile.owner];
+
+            float currentHP = player.statLife;
+            float maxHP = player.statLifeMax2;
+            float hpPercent = 100/(maxHP/currentHP);
+            int timerReducer = 53-(int)(hpPercent/1.9);
+
             if (Projectile.alpha > 0) Projectile.alpha -= 25;
 
             float rotation = 0;
             Projectile.rotation = Projectile.velocity.ToRotation();
 
             if (isHeartbeat){
+                Projectile.tileCollide = false;
                 if (heartbeatTimer == 0) heartbeatProgress = 1;
                 else if (heartbeatTimer == 2) heartbeatProgress = 2;
                 else if (heartbeatTimer == 8) heartbeatProgress = 3;
@@ -84,9 +92,12 @@ namespace RappleMod.Content.Projectiles.Heartbreaker
                 
                 heartbeatTimer++;
             }
-            else Projectile.ai[0]++;
+            else {
+                Projectile.tileCollide = true;
+                Projectile.ai[0]++;
+            }
 
-            if (Projectile.ai[0] % 60 == 0){
+            if (Projectile.ai[0] % (55-timerReducer) == 0){
                     Projectile.ai[0] = 1;
                     isHeartbeat = true;
                     direction = Projectile.direction;

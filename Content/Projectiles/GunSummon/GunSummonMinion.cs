@@ -178,10 +178,10 @@ namespace RappleMod.Content.Projectiles.GunSummon
 			if (foundTarget){
 				switch (Projectile.ai[0]){
 					case 0:
-						if (timer % (150 - MathHelper.Min(amountPistol*7, 120)) == 0)
+						if (timer % (150 - MathHelper.Min(amountPistol*2, 120)) == 0)
 							if (owner.PickAmmo(FalseLauncher, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
 								// Launcher
-								int newDamage = damage + 70;
+								int newDamage = damage + 65;
 								float mult = 1;
 								if (owner.head == 105) mult = 1.15f;
 								ShootingHandler(target, owner, 1, projSpeed, projToShoot, knockBack, 0, 0, 0, (int)(newDamage * mult));
@@ -189,10 +189,10 @@ namespace RappleMod.Content.Projectiles.GunSummon
 							}
 						break;
 					case 1:
-					if (timer % (65 - MathHelper.Min(amountPistol*3, 45)) == 0)
+					if (timer % (65 - MathHelper.Min(amountPistol*2, 45)) == 0)
 							if (owner.PickAmmo(FalsePistol, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
 								// Shotgun
-								int newDamage = damage + 30;
+								int newDamage = damage + 25;
 								float mult = 1;
 								if (owner.head == 104) mult = 1.15f;
 								ShootingHandler(target, owner, 8, projSpeed, projToShoot, knockBack, 35, 2.5f, 0, (int)(newDamage * mult));
@@ -200,10 +200,10 @@ namespace RappleMod.Content.Projectiles.GunSummon
 							}
 						break;
 					case 2:
-						if (timer % (120 - MathHelper.Min(amountPistol*6, 100)) == 0)
+						if (timer % (120 - MathHelper.Min(amountPistol*2, 100)) == 0)
 							if (owner.PickAmmo(FalsePistol, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
 								// Sniper
-								int newDamage = damage + 150;
+								int newDamage = damage + 135;
 								float mult = 1;
 								if (owner.head == 104) mult = 1.15f;
 								ShootingHandler(target, owner, 1, projSpeed * 3f, projToShoot, knockBack, 0, 0, 2, (int)(newDamage * mult));
@@ -211,10 +211,10 @@ namespace RappleMod.Content.Projectiles.GunSummon
 							}
 						break;
 					case 3:
-						if (timer % (65 - MathHelper.Min(amountPistol*3, 55)) == 0)
+						if (timer % (65 - MathHelper.Min(amountPistol*2, 45)) == 0)
 							if (owner.PickAmmo(FalseBow, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
 								// Bow
-								int newDamage = damage + 45;
+								int newDamage = damage + 40;
 								float mult = 1;
 								if (owner.head == 103) mult = 1.15f;
 								ShootingHandler(target, owner, 1, projSpeed, projToShoot, knockBack, 0, 0, 0, (int)(newDamage * mult));
@@ -225,7 +225,7 @@ namespace RappleMod.Content.Projectiles.GunSummon
 						if (timer % (45 - MathHelper.Min(amountPistol, 30)) == 0)
 							if (owner.PickAmmo(FalsePistol, out int projToShoot, out float projSpeed, out int damage, out float knockBack, out int usedAmmoItemId)){
 								// Revolver
-								int newDamage = damage + 35;
+								int newDamage = damage + 20;
 								float mult = 1;
 								if (owner.head == 104) mult = 1.15f;
 								ShootingHandler(target, owner, 1, projSpeed * 1.25f, projToShoot, knockBack, 0, 0, 0, (int)(newDamage * mult));

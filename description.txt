@@ -22,8 +22,11 @@
     Currently most weapons are craftable (im bad at having ideas on drop locations lmao if you have any just let me know :D )
 
     Weapon drop locations:
-    Bonetrousle 20% drop chance from Skeletron's lootbag (Expert only)
-    Linoge 20% drop chance from Golem's lootbag (Expert only)
-    Dark Army 20% drop chance from Plantera
+    Bonetrousle has 20% drop chance from Skeletron's lootbag (Expert only)
+    Linoge has 20% drop chance from Golem's lootbag (Expert only)
+    Dark Army has 20% drop chance from Plantera
+    Relogic Feather has 2% drop chance from Harpies
+    Ale has 100% drop chance from Tavernkeeper
+    Meat Shield has 5% drop chance from Diabolists and Ragged Casters 
 
     Please let me know any bugs or feedback!

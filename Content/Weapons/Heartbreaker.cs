@@ -10,7 +10,6 @@ namespace RappleMod.Content.Weapons{
     
     public class Heartbreaker : ModItem
     {
-		public override string Texture => "Terraria/Images/Item_" + ItemID.Revolver;
         public override void SetDefaults() {
 			Item.width = 52;
 			Item.height = 20;
@@ -23,7 +22,7 @@ namespace RappleMod.Content.Weapons{
 			Item.noMelee = true;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.shoot = ModContent.ProjectileType<HeartbreakerBullet>();
-			Item.shootSpeed = 15f; 
+			Item.shootSpeed = 22f; 
 			Item.useAmmo = AmmoID.Bullet;
 			Item.UseSound = SoundID.Item11;
 		}

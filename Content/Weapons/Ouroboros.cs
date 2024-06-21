@@ -10,7 +10,6 @@ namespace RappleMod.Content.Weapons{
     
     public class Ouroboros : ModItem
     {
-        public override string Texture => $"Terraria/Images/Item_{ItemID.Flamethrower}";
         public override void SetDefaults() {
 			Item.width = 50;
 			Item.height = 18;
@@ -35,6 +34,7 @@ namespace RappleMod.Content.Weapons{
 			CreateRecipe()
 				.AddIngredient(ItemID.FragmentVortex, 18)
 				.AddIngredient(ItemID.LunarBar, 12)
+				.AddIngredient(ItemID.Flamethrower, 1)
 				.AddTile(TileID.LunarCraftingStation)
 				.Register();
 		}
