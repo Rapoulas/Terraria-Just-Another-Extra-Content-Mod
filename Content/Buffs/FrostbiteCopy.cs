@@ -1,4 +1,4 @@
-using RappleMod.Content.NPCs;
+using RappleMod.Content.GlobalNPCandProj;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

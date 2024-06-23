@@ -9,7 +9,6 @@ namespace RappleMod.Content.Buffs
 {
 	public class MeatShieldAbsorb : ModBuff
 	{
-		public override string Texture => $"Terraria/Images/Buff_{BuffID.PaladinsShield}";
 		public override LocalizedText Description => base.Description.WithFormatArgs(MeatShield.DamageAbsorptionPercent);
 
 		public override void SetStaticDefaults() {

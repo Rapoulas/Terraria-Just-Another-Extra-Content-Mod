@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using RappleMod.Content.Buffs;
 
 
 namespace RappleMod.Content.Projectiles.Heartbreaker
@@ -16,8 +17,8 @@ namespace RappleMod.Content.Projectiles.Heartbreaker
         int direction = 1;
         
         public override void SetDefaults() {
-            Projectile.width = 2;
-            Projectile.height = 2;
+            Projectile.width = 10;
+            Projectile.height = 6;
             Projectile.friendly = true;
             Projectile.penetrate = 4;
             Projectile.DamageType = DamageClass.Ranged;
@@ -138,6 +139,16 @@ namespace RappleMod.Content.Projectiles.Heartbreaker
             if (isHeartbeat){
                 modifiers.FinalDamage *= 1.3f;
             }
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (isHeartbeat) target.AddBuff(ModContent.BuffType<HeartbrokenDebuff>(), 300);
+        }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            if (isHeartbeat) target.AddBuff(ModContent.BuffType<HeartbrokenDebuff>(), 300);
         }
 
     }

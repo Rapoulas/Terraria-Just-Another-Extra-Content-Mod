@@ -1,12 +1,11 @@
 using System;
 using Microsoft.Xna.Framework;
 using RappleMod.Content.Buffs;
-using RappleMod.Content.SetBonusChanges;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace RappleMod.Content.NPCs
+namespace RappleMod.Content.GlobalNPCandProj
 {
     public class MyGlobalNPCs : GlobalNPC
     {
@@ -14,12 +13,17 @@ namespace RappleMod.Content.NPCs
 
         public bool onFrostburnCopy;
         public bool onFrostbiteCopy;
+        public bool heartbroken;
 
         public override void ResetEffects(NPC npc)
         {
             onFrostburnCopy = false;
             onFrostbiteCopy = false;
+            heartbroken = false;
         }
+        
+        public override bool InstancePerEntity => true;
+
         public override void UpdateLifeRegen(NPC npc, ref int damage){
             
             if (npc.HasBuff<FrostburnCopy>()){
@@ -52,8 +56,6 @@ namespace RappleMod.Content.NPCs
                 }
             }
         }
-
-        public override bool InstancePerEntity => true;
 
         public override void AI(NPC npc)
         {
@@ -115,6 +117,11 @@ namespace RappleMod.Content.NPCs
                     }
                 }
             }
+        }
+
+        public override void DrawEffects(NPC npc, ref Color drawColor)
+        {
+			if (heartbroken) HeartbrokenDebuff.DrawEffects(npc, ref drawColor);
         }
 
         public static NPC FindClosestNPC(float maxDetectDistance, Vector2 position) {

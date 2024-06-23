@@ -217,6 +217,11 @@ Mods: {
 				DisplayName: Dark Army
 				Description: Your arsenal follows you
 			}
+
+			HeartbrokenDebuff: {
+				DisplayName: Heartbroken Debuff
+				Description: Mods.RappleMod.Buffs.HeartbrokenDebuff.Description
+			}
 		}
 
 		Projectiles: {
