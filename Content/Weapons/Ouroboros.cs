@@ -27,6 +27,7 @@ namespace RappleMod.Content.Weapons{
 			Item.useAmmo = AmmoID.Gel;
 			Item.UseSound = SoundID.Item34;
 			Item.consumeAmmoOnFirstShotOnly = true;
+			Item.value = Item.buyPrice(0, 10, 0, 0);
 		}
 
 		public override void AddRecipes()

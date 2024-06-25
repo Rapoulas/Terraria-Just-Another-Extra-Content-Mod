@@ -1,5 +1,5 @@
 using Microsoft.Xna.Framework;
-using RappleMod.Content.Projectiles.Deliverance;
+using RappleMod.Content.Projectiles.DeliveranceProj;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -13,7 +13,6 @@ namespace RappleMod.Content.Weapons{
 		public int ammo = 8;
 		public int timer = 0;
 		float projType = 0;
-        public override string Texture => $"Terraria/Images/Item_{ItemID.Shotgun}";
         public override void SetDefaults() {
 			Item.width = 40;
 			Item.height = 16;
@@ -32,6 +31,17 @@ namespace RappleMod.Content.Weapons{
 			Item.useAmmo = AmmoID.Bullet;
 			Item.UseSound = SoundID.Item36;
 			Item.expert = true;
+			Item.value = Item.buyPrice(0, 10, 0, 0);
+		}
+
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ItemID.HallowedBar, 12);
+			recipe.AddIngredient(ItemID.Shotgun, 1);
+			recipe.AddIngredient(ItemID.SoulofFright, 10);
+			recipe.AddTile(TileID.MythrilAnvil);
+			recipe.Register();
 		}
 		
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -43,6 +53,13 @@ namespace RappleMod.Content.Weapons{
             }
 			ammo--;
             return false;
+        }
+
+		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+			Vector2 muzzleOffset = Vector2.Normalize(velocity) * 5f;
+			if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0))
+				position += muzzleOffset;
         }
 
         public override bool CanUseItem(Player player)

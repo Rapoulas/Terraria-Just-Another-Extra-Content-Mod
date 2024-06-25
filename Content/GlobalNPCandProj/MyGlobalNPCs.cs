@@ -59,6 +59,8 @@ namespace RappleMod.Content.GlobalNPCandProj
 
         public override void AI(NPC npc)
         {
+            if (heartbroken) npc.damage = (int)(npc.damage * 0.85f);
+
             if (npc.HasBuff<FrostburnCopy>() || npc.HasBuff<FrostbiteCopy>()){
                 if (Main.rand.Next(4) < 3)
                 {

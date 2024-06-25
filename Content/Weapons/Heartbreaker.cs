@@ -13,18 +13,30 @@ namespace RappleMod.Content.Weapons{
         public override void SetDefaults() {
 			Item.width = 52;
 			Item.height = 20;
-			Item.useTime = 60; 
-			Item.useAnimation = 60;
+			Item.useTime = 45; 
+			Item.useAnimation = 45;
 			Item.autoReuse = true;
 			Item.DamageType = DamageClass.Ranged; 
-			Item.damage = 40; 
+			Item.damage = 63; 
 			Item.knockBack = 5f; 
+			Item.crit = 6;
 			Item.noMelee = true;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.shoot = ModContent.ProjectileType<HeartbreakerBullet>();
-			Item.shootSpeed = 22f; 
+			Item.shootSpeed = 20f; 
+			Item.rare = ItemRarityID.LightRed;
 			Item.useAmmo = AmmoID.Bullet;
-			Item.UseSound = SoundID.Item11;
+			Item.UseSound = SoundID.Item91;
+			Item.value = Item.buyPrice(0, 10, 0, 0);
+		}
+
+		public override void AddRecipes() {
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ItemID.SoulofLight, 10);
+			recipe.AddIngredient(ItemID.IllegalGunParts, 1);
+			recipe.AddIngredient(ItemID.LifeCrystal, 1);
+			recipe.AddTile(TileID.MythrilAnvil);
+			recipe.Register();
 		}
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)

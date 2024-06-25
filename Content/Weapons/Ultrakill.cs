@@ -15,11 +15,10 @@ namespace RappleMod.Content.Weapons{
 			Item.width = 64;
 			Item.height = 36;
 			Item.rare = ItemRarityID.Yellow;
-
 			Item.useTime = 25; 
 			Item.useAnimation = 25;
 			Item.autoReuse = true;
-
+            Item.value = Item.buyPrice(0, 20, 0, 0);
 			Item.DamageType = DamageClass.Ranged; 
 			Item.damage = 100; 
 			Item.knockBack = 5f; 

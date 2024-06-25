@@ -12,7 +12,7 @@ namespace RappleMod.Content.Weapons
 
 		public override void SetDefaults()
 		{
-			Item.damage = 20;
+			Item.damage = 14;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 40;
 			Item.height = 40;
@@ -20,7 +20,7 @@ namespace RappleMod.Content.Weapons
 			Item.useAnimation = 20;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 6;
-			Item.value = 10000;
+			Item.value = Item.buyPrice(0, 10, 0, 0);
 			Item.rare = ItemRarityID.Orange;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
@@ -42,7 +42,7 @@ namespace RappleMod.Content.Weapons
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.EnchantedBoomerang, 1);
-			recipe.AddIngredient(ItemID.Dynamite, 99);
+			recipe.AddIngredient(ItemID.Dynamite, 50);
 			recipe.AddTile(TileID.TinkerersWorkbench);
 			recipe.Register();
 		}

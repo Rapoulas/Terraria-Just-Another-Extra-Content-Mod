@@ -14,7 +14,7 @@ namespace RappleMod.Content.Acessories
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(1, 30));
 			ItemID.Sets.AnimatesAsSoul[Item.type] = true; 
 			Item.DefaultToAccessory(34, 29);
-			Item.SetShopValues(ItemRarityColor.Green2, Item.buyPrice(silver: 50));
+			Item.SetShopValues(ItemRarityColor.Green2, Item.buyPrice(gold: 5));
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {

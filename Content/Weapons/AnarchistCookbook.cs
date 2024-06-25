@@ -23,16 +23,7 @@ namespace RappleMod.Content.Weapons
             Item.DamageType = DamageClass.Magic;
 			Item.useStyle = ItemUseStyleID.Shoot;
             Item.useLimitPerAnimation = 6;
-		}
-
-		public override void AddRecipes() {
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.SpellTome, 1);
-			recipe.AddIngredient(ItemID.Grenade, 50);
-			recipe.AddIngredient(ItemID.BouncyGrenade, 50);
-			recipe.AddIngredient(ItemID.StickyGrenade, 50);
-			recipe.AddTile(TileID.Bookcases);
-			recipe.Register();
+            Item.value = Item.buyPrice(0, 10, 0, 0);
 		}
         
         public override bool CanUseItem(Player player) {

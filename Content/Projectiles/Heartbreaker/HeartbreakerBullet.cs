@@ -36,7 +36,7 @@ namespace RappleMod.Content.Projectiles.Heartbreaker
             float currentHP = player.statLife;
             float maxHP = player.statLifeMax2;
             float hpPercent = 100/(maxHP/currentHP);
-            int timerReducer = 53-(int)(hpPercent/1.9);
+            int timerReducer = 80-(int)(hpPercent/1.25f);
 
             if (Projectile.alpha > 0) Projectile.alpha -= 25;
 
@@ -47,50 +47,51 @@ namespace RappleMod.Content.Projectiles.Heartbreaker
                 Projectile.tileCollide = false;
                 if (heartbeatTimer == 0) heartbeatProgress = 1;
                 else if (heartbeatTimer == 2) heartbeatProgress = 2;
-                else if (heartbeatTimer == 8) heartbeatProgress = 3;
-                else if (heartbeatTimer == 18) heartbeatProgress = 4;
-                else if (heartbeatTimer == 26) heartbeatProgress = 5;
-                else if (heartbeatTimer == 30) heartbeatProgress = 6;
-                else if (heartbeatTimer == 34) heartbeatProgress = 7;
+                else if (heartbeatTimer == 6) heartbeatProgress = 3;
+                else if (heartbeatTimer == 13) heartbeatProgress = 4;
+                else if (heartbeatTimer == 21) heartbeatProgress = 5;
+                else if (heartbeatTimer == 25) heartbeatProgress = 6;
+                else if (heartbeatTimer == 28) heartbeatProgress = 7;
 
-                if (heartbeatProgress == 1){
-                    rotation = -70 * direction;
-                    Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(rotation));
-                    heartbeatProgress = -1;
+                switch (heartbeatProgress){
+                    case 1:
+                        rotation = -70 * direction;
+                        Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(rotation));
+                        heartbeatProgress = -1;
+                        break;
+                    case 2:
+                        rotation = 140 * direction;
+                        Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(rotation));
+                        heartbeatProgress = -1;
+                        break;
+                    case 3:
+                        rotation = 210 * direction;
+                        Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(rotation));
+                        heartbeatProgress = -1;
+                        break;
+                    case 4:
+                        rotation = 140 * direction;
+                        Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(rotation));
+                        heartbeatProgress = -1;
+                        break;
+                    case 5:
+                        rotation = 210 * direction;
+                        Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(rotation));
+                        heartbeatProgress = -1;
+                        break;
+                    case 6:
+                        rotation = 140 * direction;
+                        Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(rotation));
+                        heartbeatProgress = -1;
+                        break;
+                    case 7:
+                        rotation = -50 * direction;
+                        Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(rotation));
+                        heartbeatProgress = -1;
+                        isHeartbeat = false;
+                        heartbeatTimer = -1;
+                        break;
                 }
-                else if (heartbeatProgress == 2){
-                    rotation = 140 * direction;
-                    Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(rotation));
-                    heartbeatProgress = -1;
-                }
-                else if (heartbeatProgress == 3){
-                    rotation = 210 * direction;
-                    Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(rotation));
-                    heartbeatProgress = -1;
-                }
-                else if (heartbeatProgress == 4){
-                    rotation = 140 * direction;
-                    Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(rotation));
-                    heartbeatProgress = -1;
-                }
-                else if (heartbeatProgress == 5){
-                    rotation = 210 * direction;
-                    Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(rotation));
-                    heartbeatProgress = -1;
-                }
-                else if (heartbeatProgress == 6){
-                    rotation = 140 * direction;
-                    Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(rotation));
-                    heartbeatProgress = -1;
-                }
-                else if (heartbeatProgress == 7){
-                    rotation = -50 * direction;
-                    Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(rotation));
-                    heartbeatProgress = -1;
-                    isHeartbeat = false;
-                    heartbeatTimer = -1;
-                }
-                
                 heartbeatTimer++;
             }
             else {
@@ -98,7 +99,7 @@ namespace RappleMod.Content.Projectiles.Heartbreaker
                 Projectile.ai[0]++;
             }
 
-            if (Projectile.ai[0] % (55-timerReducer) == 0){
+            if (Projectile.ai[0] % (55-MathHelper.Min(timerReducer, 52)) == 0){
                     Projectile.ai[0] = 1;
                     isHeartbeat = true;
                     direction = Projectile.direction;
@@ -117,6 +118,20 @@ namespace RappleMod.Content.Projectiles.Heartbreaker
 
             if (isHeartbeat) Projectile.extraUpdates = 1;
             else Projectile.extraUpdates = 0;
+        }
+
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            if (isHeartbeat && heartbeatTimer > 6 && heartbeatTimer < 13){
+                Rectangle hitbox = new((int)Projectile.position.X, (int)Projectile.position.Y, Projectile.width+20, Projectile.height+20);
+                if (hitbox.Intersects(targetHitbox)) return true;
+            }
+            else if (isHeartbeat && heartbeatTimer >= 13 && heartbeatTimer < 21){
+                Rectangle hitbox = new((int)Projectile.position.X-30, (int)Projectile.position.Y-30, Projectile.width+40, Projectile.height+40);
+                if (hitbox.Intersects(targetHitbox)) return true;
+            }
+
+            return base.Colliding(projHitbox, targetHitbox);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -143,7 +158,10 @@ namespace RappleMod.Content.Projectiles.Heartbreaker
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (isHeartbeat) target.AddBuff(ModContent.BuffType<HeartbrokenDebuff>(), 300);
+            if (isHeartbeat) {
+                Projectile.penetrate += 1;
+                target.AddBuff(ModContent.BuffType<HeartbrokenDebuff>(), 300);
+            }
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)

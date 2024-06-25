@@ -21,7 +21,6 @@ namespace RappleMod.Content.Weapons
 		public override void SetDefaults() {
 			// Common Properties
 			Item.rare = ItemRarityID.Yellow; // Assign this item a rarity level of Pink
-			Item.value = Item.sellPrice(silver: 10); // The number and type of coins item can be sold for to an NPC
 
 			// Use Properties
 			Item.useStyle = ItemUseStyleID.Shoot; // How you use the item (swinging, holding out, etc.)
@@ -36,7 +35,7 @@ namespace RappleMod.Content.Weapons
 			Item.noUseGraphic = true; // When true, the item's sprite will not be visible while the item is in use. This is true because the spear projectile is what's shown so we do not want to show the spear sprite as well.
 			Item.DamageType = DamageClass.Melee;
 			Item.noMelee = true; // Allows the item's animation to do damage. This is important because the spear is actually a projectile instead of an item. This prevents the melee hitbox of this item.
-
+			Item.value = Item.buyPrice(0, 10, 0, 0);
 			// Projectile Properties
 			Item.shootSpeed = 10f; // The speed of the projectile measured in pixels per frame.
 			Item.shoot = ModContent.ProjectileType<ProminenceRevoltProjectile>();

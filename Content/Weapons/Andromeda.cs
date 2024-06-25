@@ -27,7 +27,7 @@ namespace RappleMod.Content.Weapons
 			Item.shootSpeed = 12f;
 			Item.UseSound = SoundID.Item1;
 			Item.rare = ItemRarityID.Expert;
-			Item.value = Item.sellPrice(gold: 1, silver: 50);
+			Item.value = Item.buyPrice(0, 3, 0, 0);
 			Item.DamageType = DamageClass.MeleeNoSpeed;
 			Item.channel = true;
 			Item.noMelee = true; // This makes sure the item does not deal damage from the swinging animation

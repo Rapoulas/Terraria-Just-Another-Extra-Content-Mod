@@ -18,7 +18,7 @@ namespace RappleMod.Content.Weapons
 			Item.useAnimation = 20;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 6;
-			Item.value = 10000;
+			Item.value = Item.buyPrice(0, 10, 0, 0);
 			Item.rare = ItemRarityID.LightRed;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;

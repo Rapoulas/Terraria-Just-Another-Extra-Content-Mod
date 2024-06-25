@@ -25,6 +25,7 @@ namespace RappleMod.Content.Weapons{
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.shoot = ModContent.ProjectileType<HawkEyeBullet>();
 			Item.useAmmo = AmmoID.Bullet;
+			Item.value = Item.buyPrice(0, 10, 0, 0);
 		}
 
         public override void AddRecipes()

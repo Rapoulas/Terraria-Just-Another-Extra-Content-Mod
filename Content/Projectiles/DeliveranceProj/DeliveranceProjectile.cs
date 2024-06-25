@@ -1,17 +1,18 @@
 using Microsoft.Xna.Framework;
+using RappleMod.Content.Weapons;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 
-namespace RappleMod.Content.Projectiles.Deliverance
+namespace RappleMod.Content.Projectiles.DeliveranceProj
 {
     public class DeliveranceProjectile : ModProjectile
     {
-        public override string Texture => $"Terraria/Images/Item_{ItemID.Shotgun}";
+        public static Item FalsePistol = null;
         public override void SetDefaults() {
-            Projectile.width = 40;
+            Projectile.width = 50;
             Projectile.height = 16;
             Projectile.friendly = true;
             Projectile.hostile = false;
@@ -50,18 +51,26 @@ namespace RappleMod.Content.Projectiles.Deliverance
 
                         Vector2 shootOffset = Projectile.velocity;
                         shootOffset.Normalize();
-                        shootOffset *= 10;
+                        shootOffset *= 15;
 
-                        Item ammo = player.ChooseAmmo(player.HeldItem);
+                        FalsePistol = new Item{
+                            useAmmo = AmmoID.Bullet
+                        };
+                        Item ammo = player.ChooseAmmo(FalsePistol);
 
                         float baseBonus = player.GetDamage(DamageClass.Ranged).Base + player.GetDamage(DamageClass.Generic).Base;
                         float addBonus = player.GetDamage(DamageClass.Ranged).Additive + player.GetDamage(DamageClass.Generic).Additive - 1;
                         float multBonus = player.GetDamage(DamageClass.Ranged).Multiplicative + player.GetDamage(DamageClass.Generic).Multiplicative - 1;
                         float flatBonus = player.GetDamage(DamageClass.Ranged).Flat + player.GetDamage(DamageClass.Generic).Flat;
+                        
+
+                        if (player.head == 104) {
+                            multBonus += 0.15f;
+                        }
 
                         float damage = ((ammo.damage + baseBonus) * addBonus * multBonus) + flatBonus;
                         
-                        Projectile.NewProjectile(player.GetSource_FromThis(), Projectile.Center + shootOffset, newVelocity2, type, Projectile.damage + (int)damage, Projectile.knockBack, player.whoAmI);
+                        Projectile.NewProjectile(player.GetSource_FromThis(), Projectile.Center + shootOffset, newVelocity2, type, (int)(Projectile.damage * multBonus) + (int)damage, Projectile.knockBack, player.whoAmI);
                         
                         SoundEngine.PlaySound(SoundID.Item36, Projectile.Center);
                     }

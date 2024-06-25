@@ -25,6 +25,7 @@ namespace RappleMod.Content.Weapons
             Item.rare = ItemRarityID.Red;
             Item.DamageType = DamageClass.Magic;
 			Item.useStyle = ItemUseStyleID.Shoot;
+			Item.value = Item.buyPrice(0, 50, 0, 0);
 		}
 
 		public override void AddRecipes() {

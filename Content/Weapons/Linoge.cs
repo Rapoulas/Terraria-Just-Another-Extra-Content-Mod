@@ -18,7 +18,7 @@ namespace RappleMod.Content.Weapons{
 			Item.useTime = 7; 
 			Item.useAnimation = 7;
 			Item.autoReuse = true;
-
+			Item.value = Item.buyPrice(0, 10, 0, 0);
 			Item.DamageType = DamageClass.Ranged; 
 			Item.damage = 40; 
 			Item.knockBack = 5f; 

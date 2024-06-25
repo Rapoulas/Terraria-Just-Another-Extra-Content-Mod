@@ -158,8 +158,8 @@ Mods: {
 				DisplayName: Deliverance
 				Tooltip:
 					'''
-						Has a magazine size of 8
-						Reloading throws a drone that homes into nearby enemies and periodically shoots
+					Has a magazine size of 8
+					Reloading throws a drone that homes into nearby enemies and periodically shoots
 					'''
 			}
 
@@ -178,7 +178,13 @@ Mods: {
 
 			Heartbreaker: {
 				DisplayName: Heartbreaker
-				Tooltip: "[WIP NOT FINISHED YET]"
+				Tooltip:
+					'''
+					Shots move in a Heartbeat pattern
+					Heartbeat frequency based on how low the Player's hp is
+					Enemies hit by the Heartbeat gets inflicted with Heartbroken
+					Heartbroken enemies deal less damage
+					'''
 			}
 		}
 

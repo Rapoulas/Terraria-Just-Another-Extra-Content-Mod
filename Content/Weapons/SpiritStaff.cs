@@ -31,6 +31,7 @@ namespace RappleMod.Content.Weapons{
 			Item.channel = true;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.UseSound = SoundID.Item20;
+			Item.value = Item.buyPrice(0, 15, 0, 0);
 		}
 
 		public override void AddRecipes()

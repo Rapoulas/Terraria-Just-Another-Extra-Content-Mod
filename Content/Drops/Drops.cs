@@ -42,6 +42,44 @@ namespace RappleMod.Content.Drops
             if (npc.type == NPCID.DiabolistRed || npc.type == NPCID.DiabolistWhite || npc.type == NPCID.RaggedCaster || npc.type == NPCID.RaggedCasterOpenCoat){
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MeatShield>(), 20));
             }
+
+            if (npc.type == NPCID.UndeadMiner){
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AnarchistCookbook>(), 4));
+            }
+
+            if (npc.type == NPCID.DungeonSpirit){
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Purgatory>(), 25));
+            }
+
+            if (npc.type == NPCID.GiantCursedSkull){
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SpiritStaff>(), 20));
+            }
 		}
-	}
+
+         public override void ModifyShop(NPCShop shop){
+            if (shop.NpcType == NPCID.Demolitionist){
+                shop.InsertAfter(shop.GetEntry(ItemID.Dynamite), new Item(ModContent.ItemType<AnarchistCookbook>()), Condition.DownedBrainOfCthulhu);
+                shop.InsertAfter(shop.GetEntry(ItemID.Dynamite), new Item(ModContent.ItemType<AnarchistCookbook>()), Condition.DownedEaterOfWorlds);
+                shop.InsertAfter(shop.GetEntry(ItemID.Dynamite), new Item(ModContent.ItemType<Explosiverang>()), Condition.DownedBrainOfCthulhu);
+                shop.InsertAfter(shop.GetEntry(ItemID.Dynamite), new Item(ModContent.ItemType<Explosiverang>()), Condition.DownedEaterOfWorlds);
+            }
+
+            if (shop.NpcType == NPCID.BestiaryGirl){
+                shop.InsertAfter(shop.GetEntry(ItemID.DogTail), new Item(ModContent.ItemType<WaxQuail>()), Condition.DownedBrainOfCthulhu);
+                shop.InsertAfter(shop.GetEntry(ItemID.DogTail), new Item(ModContent.ItemType<WaxQuail>()), Condition.DownedEaterOfWorlds);
+            }
+
+            if (shop.NpcType == NPCID.Wizard){
+                shop.InsertAfter(shop.GetEntry(ItemID.CrystalBall), new Item(ModContent.ItemType<Brimstone>()), Condition.DownedMoonLord);
+            }
+        }
+
+        public override void SetupTravelShop(int[] shop, ref int nextSlot)
+        {
+            if (Main.rand.NextBool(10)){
+                shop[nextSlot] = ModContent.ItemType<Buffer>();
+                nextSlot++;
+            }
+        }
+    }
 }

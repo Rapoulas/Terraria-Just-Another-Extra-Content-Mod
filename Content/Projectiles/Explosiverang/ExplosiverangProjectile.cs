@@ -25,7 +25,7 @@ namespace RappleMod.Content.Projectiles.Explosiverang
 
         public override void OnHitNPC (NPC target, NPC.HitInfo hit, int damageDone) {
             Player player = Main.player[Projectile.owner];
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<ExplosiverangExplosion>(), Projectile.damage, Projectile.knockBack, player.whoAmI);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<ExplosiverangExplosion>(), Projectile.damage, 15f, player.whoAmI);
             Projectile.localNPCImmunity[target.whoAmI] = -1;
             target.immune[Projectile.owner] = 0;
 		}
@@ -33,7 +33,7 @@ namespace RappleMod.Content.Projectiles.Explosiverang
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             Player player = Main.player[Projectile.owner];
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<ExplosiverangExplosion>(), Projectile.damage, Projectile.knockBack, player.whoAmI);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<ExplosiverangExplosion>(), Projectile.damage, 15f, player.whoAmI);
             returnToPlayer = true;
             return false;
         }
@@ -42,20 +42,21 @@ namespace RappleMod.Content.Projectiles.Explosiverang
             Player player = Main.player[Projectile.owner];
 
             Projectile.ai[0]++;
-            if (Projectile.ai[0] < 20) { }
-            else if (Projectile.ai[0] < 30){
-                Projectile.velocity *= 0.85f;
-            }
-            else if (Projectile.ai[0] < 40){
-                Projectile.velocity += Projectile.Center.DirectionTo(player.Center) * 1.5f;
-                returnToPlayer = true;
-            }
-            else{
-                Projectile.velocity = Projectile.Center.DirectionTo(player.Center) * 10f;
+            if (Projectile.ai[0] > 20) {
+                if (Projectile.ai[0] < 30){
+                    Projectile.velocity *= 0.85f;
+                }
+                else if (Projectile.ai[0] < 40){
+                    Projectile.velocity += Projectile.Center.DirectionTo(player.Center) * 1.5f;
+                    returnToPlayer = true;
+                }
+                else{
+                    Projectile.velocity = Projectile.Center.DirectionTo(player.Center) * 10f;
+                }
             }
 
             if (returnToPlayer){
-                Projectile.velocity = Projectile.Center.DirectionTo(player.Center) * 10f;
+                Projectile.velocity = Projectile.Center.DirectionTo(player.Center) * (10f + Projectile.ai[0]/50f);
                 Projectile.tileCollide = false;
             }
             Projectile.rotation += 0.4f * Projectile.direction;

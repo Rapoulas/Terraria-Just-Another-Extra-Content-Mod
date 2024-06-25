@@ -12,7 +12,7 @@ namespace RappleMod.Content.Acessories
 		public override void SetDefaults() {
 			Item.DefaultToAccessory(26, 34);
 			Item.SetShopValues(ItemRarityColor.Green2, Item.buyPrice(silver: 50));
-			Item.rare = ItemRarityID.Master;
+			Item.rare = ItemRarityID.Green;
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
