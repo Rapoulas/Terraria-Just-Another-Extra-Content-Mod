@@ -19,14 +19,5 @@ namespace RappleMod.Content.Acessories
 		public override void UpdateAccessory(Player player, bool hideVisual) {
 			player.GetModPlayer<MyPlayer>().hasBuffer = Item;
 		}
-
-		public override void AddRecipes() {
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.SoulofNight, 10);
-			recipe.AddIngredient(ItemID.CobaltShield, 1);
-			recipe.AddIngredient(ItemID.ChlorophyteBar, 20);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
     }
 }
