@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using RappleMod.Content.Projectiles;
 using RappleMod.Content.Buffs;
 using RappleMod.Content.Projectiles.DryadWardCopy;
+using RappleMod.Content.Projectiles.ShroomiteVortexProj;
 
 namespace RappleMod{
 
@@ -19,6 +20,7 @@ namespace RappleMod{
 		public bool RangedTitaniumAdamantiteFrostSet;
 		public bool MeleeHallowedChlorophyteSet;
 		public bool RangedHallowedChlorophyteSet;
+		public bool ShroomiteVortexSet;
 		public bool MeleeHCSetReapply = false;
 		public int maxHitCountRangedOMFSet;
 		public int timer;
@@ -33,88 +35,25 @@ namespace RappleMod{
 			RangedTitaniumAdamantiteFrostSet = false;
 			MeleeHallowedChlorophyteSet = false;
 			RangedHallowedChlorophyteSet = false;
+			ShroomiteVortexSet = false;
 			maxHitCountRangedOMFSet = 0;
         }
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
-			Player player = Main.LocalPlayer;
-
-			if (proj.DamageType == DamageClass.Ranged && hit.Crit && NecroFossilSet){
-				for (int i = 0; i < 3; i++){
-					Vector2 velocity = new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 0));
-					velocity.Normalize();
-					velocity *= Main.rand.NextFloat(10, 15);
-					float newDamage = hit.Damage/5;
-					
-					Projectile.NewProjectile(proj.GetSource_FromThis(), target.Center, velocity, ModContent.ProjectileType<NecroFossilBone>(), (int)newDamage, hit.Knockback, player.whoAmI, 0, target.whoAmI, target.whoAmI);
-				}
-				target.AddBuff(BuffID.Slow, 120);
-			}
-
-			if (proj.DamageType == DamageClass.Ranged && RangedOrichalcumMythrilFrostSet && Main.rand.NextBool(4)){
-				if (target.onFrostBurn || target.onFrostBurn2 || target.HasBuff<FrostburnCopy>() || target.HasBuff<FrostbiteCopy>()){
-					foreach (NPC npc in Main.npc){
-                        if (npc.Center.Distance(target.Center) < 144 && maxHitCountRangedOMFSet <= 5){
-                            player.ApplyDamageToNPC(npc, damageDone, 0, 0);
-							maxHitCountRangedOMFSet++;
-							for (int i = 0; i < 3; i++) Dust.NewDust(npc.Center, 1, 1, DustID.IceRod, 0, 0, 0, Color.LightBlue, 1f);
-                        }
-                    }
-				}
-			}
-
-			if (MeleeCobaltPalladiumFrostSet && Main.rand.NextBool(5) && (hit.DamageType == DamageClass.Melee || hit.DamageType == DamageClass.MeleeNoSpeed)){
-				target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(3, 6));
-				target.AddBuff(BuffID.Frostburn2, 60 * Main.rand.Next(3, 6));
-			}
-
-			if (MeleeTitaniumAdamantiteFrostSet && (hit.DamageType == DamageClass.Melee || hit.DamageType == DamageClass.MeleeNoSpeed)){
-				ShardStormGenerate(target);
-			}
-
-			if (RangedTitaniumAdamantiteFrostSet && hit.DamageType == DamageClass.Ranged){
-				ShardStormGenerate(target);
-			}
-
-			if (proj.type == 908 && (RangedTitaniumAdamantiteFrostSet || MeleeTitaniumAdamantiteFrostSet)){
-				target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(3, 6));
-				target.AddBuff(BuffID.Frostburn2, 60 * Main.rand.Next(3, 6));
-			}
-
-			if (MeleeHallowedChlorophyteSet && (hit.DamageType == DamageClass.Melee || hit.DamageType == DamageClass.MeleeNoSpeed)){
-				if (player.ownedProjectileCounts[ModContent.ProjectileType<DryadWardCopy>()] <= 0)
-					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DryadWardCopy>(), 75, 0, player.whoAmI, 0, player.whoAmI, 1);
-				else MeleeHCSetReapply = true;
-			}
-
-			if (RangedHallowedChlorophyteSet && (hit.DamageType == DamageClass.Ranged)){
-				if (player.ownedProjectileCounts[ModContent.ProjectileType<DryadWardCopy>()] <= 0)
-					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DryadWardCopy>(), 75, 0, player.whoAmI, 0, target.whoAmI, 0);
-				else MeleeHCSetReapply = true;
-			}
+			NecroFossilSetBonus(proj, target, hit);
+			RangedOrichalcumMythrilFrostSetBonus(proj, target, damageDone);
+			MeleeCobaltPalladiumFrostSetBonus(hit, target);
+			TitaniumAdamantiteFrostSetBonus(target, hit, proj);
+			HallowedChlorophyteSetBonus(target, hit);
+			ShroomiteVortexSetBonus(target, proj, hit, damageDone);
         }
 
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
-        {	
-			Player player = Main.LocalPlayer;
-
-			if (MeleeCobaltPalladiumFrostSet && Main.rand.NextBool(5)){
-				target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(3, 6));
-			}
-			if (MeleeCobaltPalladiumFrostSet && Main.rand.NextBool(5)){
-				target.AddBuff(BuffID.Frostburn2, 60 * Main.rand.Next(3, 6));
-			}
-
-			if (MeleeTitaniumAdamantiteFrostSet && (hit.DamageType == DamageClass.Melee || hit.DamageType == DamageClass.MeleeNoSpeed)){
-				ShardStormGenerate(target);
-			}
-
-			if (MeleeHallowedChlorophyteSet && (hit.DamageType == DamageClass.Melee || hit.DamageType == DamageClass.MeleeNoSpeed)){
-				if (player.ownedProjectileCounts[ModContent.ProjectileType<DryadWardCopy>()] <= 0)
-					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DryadWardCopy>(), 50, 0, player.whoAmI, 0, player.whoAmI, player.whoAmI);
-				else MeleeHCSetReapply = true;
-			}
+        {
+			MeleeCobaltPalladiumFrostSetBonus(hit, target);
+			TitaniumAdamantiteFrostSetBonus(target, hit);
+			HallowedChlorophyteSetBonus(target, hit);
         }
 
         public override void PostUpdateEquips()
@@ -143,7 +82,7 @@ namespace RappleMod{
 			}
         }
 
-        public static NPC FindClosestNPC(float maxDetectDistance, Vector2 position) {
+        private static NPC FindClosestNPC(float maxDetectDistance, Vector2 position) {
 			NPC closestNPC = null;
 
 			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
@@ -162,7 +101,7 @@ namespace RappleMod{
             return closestNPC;
         }
 
-		public static void ShardStormGenerate(NPC target){
+		private static void ShardStormGenerate(NPC target){
 			Player player = Main.LocalPlayer;
 
 			bool flag = target is NPC && (target.type == NPCID.TargetDummy || target.SpawnedFromStatue);
@@ -185,6 +124,82 @@ namespace RappleMod{
 				}
 			}
 			
+		}
+
+		private void NecroFossilSetBonus(Projectile proj, NPC target, NPC.HitInfo hit){
+			if (!(proj.DamageType == DamageClass.Ranged && hit.Crit && NecroFossilSet)) return;
+			Player player = Main.LocalPlayer;
+
+			for (int i = 0; i < 3; i++){
+				Vector2 velocity = new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 0));
+				velocity.Normalize();
+				velocity *= Main.rand.NextFloat(10, 15);
+				float newDamage = hit.Damage/5;
+				
+				Projectile.NewProjectile(proj.GetSource_FromThis(), target.Center, velocity, ModContent.ProjectileType<NecroFossilBone>(), (int)newDamage, hit.Knockback, player.whoAmI, 0, target.whoAmI, target.whoAmI);
+			}
+			target.AddBuff(BuffID.Slow, 120);
+		}
+
+		private void RangedOrichalcumMythrilFrostSetBonus(Projectile proj, NPC target, int damageDone){
+			Player player = Main.LocalPlayer;
+			if (!(proj.DamageType == DamageClass.Ranged && RangedOrichalcumMythrilFrostSet && Main.rand.NextBool(4))) return;
+
+			if (target.onFrostBurn || target.onFrostBurn2 || target.HasBuff<FrostburnCopy>() || target.HasBuff<FrostbiteCopy>()){
+				foreach (NPC npc in Main.npc){
+					if (npc.Center.Distance(target.Center) < 144 && maxHitCountRangedOMFSet <= 5){
+						player.ApplyDamageToNPC(npc, damageDone, 0, 0);
+						maxHitCountRangedOMFSet++;
+						for (int i = 0; i < 3; i++) Dust.NewDust(npc.Center, 1, 1, DustID.IceRod, 0, 0, 0, Color.LightBlue, 1f);
+					}
+				}
+			}
+			
+		}
+
+		private void MeleeCobaltPalladiumFrostSetBonus(NPC.HitInfo hit, NPC target){
+			if (!(MeleeCobaltPalladiumFrostSet && (hit.DamageType == DamageClass.Melee || hit.DamageType == DamageClass.MeleeNoSpeed))) return;
+			
+			if (Main.rand.NextBool(5)) target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(3, 6));
+			if (Main.rand.NextBool(5)) target.AddBuff(BuffID.Frostburn2, 60 * Main.rand.Next(3, 6));
+		}
+
+		private void TitaniumAdamantiteFrostSetBonus(NPC target, NPC.HitInfo hit, Projectile proj = null){
+			if (!(MeleeTitaniumAdamantiteFrostSet || RangedTitaniumAdamantiteFrostSet)) return;
+
+			if ((MeleeTitaniumAdamantiteFrostSet && (hit.DamageType == DamageClass.Melee || hit.DamageType == DamageClass.MeleeNoSpeed)) || (RangedTitaniumAdamantiteFrostSet && hit.DamageType == DamageClass.Ranged))
+				ShardStormGenerate(target);
+
+			if (proj.type == 908){
+				target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(3, 6));
+				target.AddBuff(BuffID.Frostburn2, 60 * Main.rand.Next(3, 6));
+			}
+		}
+
+		private void HallowedChlorophyteSetBonus(NPC target, NPC.HitInfo hit){
+			if (!(MeleeHallowedChlorophyteSet || RangedHallowedChlorophyteSet)) return;
+			Player player = Main.LocalPlayer;
+
+			if (MeleeHallowedChlorophyteSet && (hit.DamageType == DamageClass.Melee || hit.DamageType == DamageClass.MeleeNoSpeed)){
+				if (player.ownedProjectileCounts[ModContent.ProjectileType<DryadWardCopy>()] <= 0)
+					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DryadWardCopy>(), 75, 0, player.whoAmI, 0, player.whoAmI, 1);
+				else MeleeHCSetReapply = true;
+			}
+
+			if (RangedHallowedChlorophyteSet && (hit.DamageType == DamageClass.Ranged)){
+				if (player.ownedProjectileCounts[ModContent.ProjectileType<DryadWardCopy>()] <= 0)
+					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DryadWardCopy>(), 75, 0, player.whoAmI, 0, target.whoAmI, 0);
+				else MeleeHCSetReapply = true;
+			}
+		}
+
+		private void ShroomiteVortexSetBonus(NPC target, Projectile proj, NPC.HitInfo hit, int damageDone){
+			if (!ShroomiteVortexSet) return;
+			Player player = Main.LocalPlayer;
+
+			if (hit.DamageType == DamageClass.Ranged && Main.rand.NextBool(10)){
+				Projectile.NewProjectile(player.GetSource_FromThis(), player.Top, new Vector2(0, -17), ModContent.ProjectileType<ShroomiteVortexProj>(), damageDone*3, 7f, player.whoAmI, target.whoAmI);
+			}
 		}
 
     }

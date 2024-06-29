@@ -28,5 +28,12 @@
     Relogic Feather has 2% drop chance from Harpies
     Ale has 100% drop chance from Tavernkeeper
     Meat Shield has 5% drop chance from Diabolists and Ragged Casters 
+    Anarchist Cookbook has 25% drop chance from Undead Miners
+    Wax Quail now also obtainable from Zoologist after defeating Brain of Cthulhu or Eater of Worlds
+    Purgatory has a 4% drop chance from Dungeon Spirits
+    Wanderlust has a 5% drop chance from Giant Cursed Skulls
+    Brimstone now also sold by Wizard after Moon Lord has been defeated
+    Buffer now sold by Traveling Merchant sometimes
+    Anarchist Cookbook & Boom-erang now sells from Demolitionist after defeating Brain of Cthulhu or Eater of Worlds
 
     Please let me know any bugs or feedback!
