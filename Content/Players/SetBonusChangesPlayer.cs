@@ -6,6 +6,7 @@ using RappleMod.Content.Projectiles;
 using RappleMod.Content.Buffs;
 using RappleMod.Content.Projectiles.DryadWardCopy;
 using RappleMod.Content.Projectiles.ShroomiteVortexProj;
+using Terraria.DataStructures;
 
 namespace RappleMod{
 
@@ -20,10 +21,12 @@ namespace RappleMod{
 		public bool RangedTitaniumAdamantiteFrostSet;
 		public bool MeleeHallowedChlorophyteSet;
 		public bool RangedHallowedChlorophyteSet;
+		public bool ChlorophyteShroomiteSet;
 		public bool ShroomiteVortexSet;
 		public bool MeleeHCSetReapply = false;
 		public int maxHitCountRangedOMFSet;
 		public int timer;
+		public float ChlorophyteShroomiteDamageBonus;
 
         public override void ResetEffects(){
 			NecroFossilSet = false;
@@ -36,6 +39,7 @@ namespace RappleMod{
 			MeleeHallowedChlorophyteSet = false;
 			RangedHallowedChlorophyteSet = false;
 			ShroomiteVortexSet = false;
+			ChlorophyteShroomiteSet = false;
 			maxHitCountRangedOMFSet = 0;
         }
 
@@ -79,6 +83,19 @@ namespace RappleMod{
 					player.GetModPlayer<TitaniumShardOnHitPlayer>().buffStacks--;
 					timer = 0;
 				}
+			}
+        }
+
+        public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {	
+			ChlorophyteShroomiteSetBonus(item, source);
+            return true;
+        }
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            if (ChlorophyteShroomiteSet && modifiers.DamageType == DamageClass.Ranged){
+				modifiers.FinalDamage *= ChlorophyteShroomiteDamageBonus;
 			}
         }
 
@@ -198,9 +215,22 @@ namespace RappleMod{
 			Player player = Main.LocalPlayer;
 
 			if (hit.DamageType == DamageClass.Ranged && Main.rand.NextBool(10)){
-				Projectile.NewProjectile(player.GetSource_FromThis(), player.Top, new Vector2(0, -17), ModContent.ProjectileType<ShroomiteVortexProj>(), damageDone*3, 7f, player.whoAmI, target.whoAmI);
+				Projectile.NewProjectile(player.GetSource_FromThis(), new Vector2(player.Top.X, player.Top.Y - 25), new Vector2(0, -17), ModContent.ProjectileType<ShroomiteVortexProj>(), damageDone*3, 7f, player.whoAmI, target.whoAmI);
 			}
 		}
 
+		private void ChlorophyteShroomiteSetBonus(Item item, EntitySource_ItemUse_WithAmmo source){
+			if (!ChlorophyteShroomiteSet) return;
+			
+			if (item.DamageType == DamageClass.Ranged){
+				int manaCost = item.useTime;
+				if (source.Player.CheckMana(manaCost, true)){
+					source.Player.manaRegenDelay = (1f - (float)source.Player.statMana / (float)source.Player.statManaMax2) * 60f * 4f + 45f;
+					source.Player.manaRegenDelay *= 0.7f;
+					ChlorophyteShroomiteDamageBonus = 1.5f - (source.Player.manaSickReduction/1.3f);
+				}
+				else ChlorophyteShroomiteDamageBonus = 1f;
+			}
+		}
     }
 }

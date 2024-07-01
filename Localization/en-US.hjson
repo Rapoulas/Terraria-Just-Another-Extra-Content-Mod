@@ -186,6 +186,11 @@ Mods: {
 					Heartbroken enemies deal less damage
 					'''
 			}
+
+			ZenithBow: {
+				DisplayName: Zenith Bow?
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

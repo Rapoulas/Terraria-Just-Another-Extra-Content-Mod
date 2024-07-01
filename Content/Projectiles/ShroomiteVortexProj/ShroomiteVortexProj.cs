@@ -12,7 +12,7 @@ namespace RappleMod.Content.Projectiles.ShroomiteVortexProj
 		public override void SetDefaults() {
 			Projectile.width = 10;
 			Projectile.height = 16;
-            Projectile.tileCollide = false;
+            Projectile.tileCollide = true;
             Projectile.timeLeft = 300;
             Projectile.alpha = 255;
             Projectile.friendly = true;
@@ -21,18 +21,21 @@ namespace RappleMod.Content.Projectiles.ShroomiteVortexProj
 
         public override void AI(){   
             Projectile.alpha -= 10;
+            Projectile.ai[1]++;
 
             NPC mainTarget = Main.npc[(int)Projectile.ai[0]];
-            NPC closestNPC = FindClosestNPC(2000);
+            NPC closestNPC = FindClosestNPC(1200);
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
-            if (mainTarget.active && mainTarget.CanBeChasedBy()){
-                Vector2 desiredVelocity = Projectile.DirectionTo(mainTarget.Center) * 23;
-                Projectile.velocity = Vector2.Lerp(Projectile.velocity, desiredVelocity, 0.07f);
-            }
-            else if (closestNPC != null){
-                Vector2 desiredVelocity = Projectile.DirectionTo(closestNPC.Center) * 23;
-                Projectile.velocity = Vector2.Lerp(Projectile.velocity, desiredVelocity, 0.07f);
+            if (Projectile.ai[1] > 10){
+                if (mainTarget.active && mainTarget.CanBeChasedBy()){
+                    Vector2 desiredVelocity = Projectile.DirectionTo(mainTarget.Center) * 23;
+                    Projectile.velocity = Vector2.Lerp(Projectile.velocity, desiredVelocity, 0.07f);
+                }
+                else if (closestNPC != null){
+                    Vector2 desiredVelocity = Projectile.DirectionTo(closestNPC.Center) * 23;
+                    Projectile.velocity = Vector2.Lerp(Projectile.velocity, desiredVelocity, 0.07f);
+                }
             }
         }
 
