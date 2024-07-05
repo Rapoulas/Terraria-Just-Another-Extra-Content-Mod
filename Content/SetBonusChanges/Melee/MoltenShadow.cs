@@ -33,8 +33,17 @@ namespace RappleMod.Content.SetBonusChanges
         public override void UpdateArmorSet(Player player, string set)
         {
             if (set == "MoltenShadowSet"){
-                player.setBonus = "Increases crit chance based on amount of enemies set on fire";
+                player.setBonus = "Increases Melee crit chance based on amount of enemies set on fire";
                 player.GetModPlayer<SetBonusChangesPlayer>().MoltenShadowSet = true;
+
+                int MoltenShadowCounter = 0;
+				foreach (NPC npc in Main.npc){
+					if ((npc.HasBuff(BuffID.OnFire) || npc.HasBuff(BuffID.OnFire3)) && npc.type != NPCID.TargetDummy && npc.active){
+						MoltenShadowCounter++;
+					}
+				}
+
+                player.GetCritChance(DamageClass.Melee) += MoltenShadowCounter * 3;
             }
         }
     }

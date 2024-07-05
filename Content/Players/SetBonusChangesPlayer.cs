@@ -7,6 +7,7 @@ using RappleMod.Content.Buffs;
 using RappleMod.Content.Projectiles.DryadWardCopy;
 using RappleMod.Content.Projectiles.ShroomiteVortexProj;
 using Terraria.DataStructures;
+using RappleMod.Content.SetBonusChanges;
 
 namespace RappleMod{
 
@@ -24,6 +25,7 @@ namespace RappleMod{
 		public bool ChlorophyteShroomiteSet;
 		public bool ShroomiteVortexSet;
 		public bool MoltenShadowSet;
+		public bool MoltenCrimsonSet;
 		public bool MeleeHCSetReapply = false;
 		public int maxHitCountRangedOMFSet;
 		public int timer;
@@ -42,6 +44,7 @@ namespace RappleMod{
 			ShroomiteVortexSet = false;
 			ChlorophyteShroomiteSet = false;
 			MoltenShadowSet = false;
+			MoltenCrimsonSet = false;
 			maxHitCountRangedOMFSet = 0;
         }
 
@@ -80,7 +83,6 @@ namespace RappleMod{
 
 			if (RangedTitaniumAdamantiteFrostSet){
 				timer++;
-
 				if (timer % 90 == 0) {
 					player.GetModPlayer<TitaniumShardOnHitPlayer>().buffStacks--;
 					timer = 0;

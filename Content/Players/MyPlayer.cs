@@ -115,7 +115,7 @@ namespace RappleMod{
 		
 		private void OuroborosEffect(){
 			for (int i = 0; i < Main.maxNPCs; i++){
-				if (Main.npc[i].HasBuff(BuffID.OnFire) || Main.npc[i].HasBuff(BuffID.OnFire3))
+				if ((Main.npc[i].HasBuff(BuffID.OnFire) || Main.npc[i].HasBuff(BuffID.OnFire3)) && Main.npc[i].active)
 					counter++;
 			}
 			amountEnemiesOnFire = counter;

@@ -4,30 +4,36 @@
     
     Currently also adds some hybrid set bonuses:
     (Ranged)
-        Necro + Fossil 
-        Cobalt + Palladium + Frost
-        Orichalcum + Mythril + Frost
-        Titanium + Adamantite + Frost
+        Necro + Fossil
+        Cobalt/Palladium + Frost
+        Orichalcum/Mythril + Frost
+        Titanium/Adamantite + Frost
         Hallowed + Chlorophyte
+        Chlorophyte + Shroomite
+        Shroomite + Vortex
         
     (Melee)
-        Cobalt + Palladium + Frost
-        Orichalcum + Mythril + Frost
-        Titanium + Adamantite + Frost
+        Molten + Shadow
+        Molten + Crimson
+        Cobalt/Palladium + Frost
+        Orichalcum/Mythril + Frost
+        Titanium/Adamantite + Frost
         Hallowed + Chlorophyte
 
-    For the frost armor sets combinations, you cant get the hybrid set bonus with *only* the frost helmet since its 2 classes.
-    Also needs atleast 1 frost armor piece to get the hybrid set bonus.
+    For the frost armor sets combinations, you require atleast 1 non-frost helmet to define what class it is.
 
-    Currently most weapons are craftable (im bad at having ideas on drop locations lmao if you have any just let me know :D )
-
+    
     Weapon drop locations:
+
     Bonetrousle has 20% drop chance from Skeletron's lootbag (Expert only)
     Linoge has 20% drop chance from Golem's lootbag (Expert only)
     Dark Army has 20% drop chance from Plantera
     Relogic Feather has 2% drop chance from Harpies
     Ale has 100% drop chance from Tavernkeeper
-    Meat Shield has 5% drop chance from Diabolists and Ragged Casters 
+    Meat Shield has 5% drop chance from Diabolists and Ragged Casters
+    Relogic Feather has 2% drop chance from Harpies
+    Spilled Beer has has 100% drop chance from Tavernkeeper
+    Meat Shield has 5% drop chance from Diabolists and Ragged Casters
     Anarchist Cookbook has 25% drop chance from Undead Miners
     Wax Quail now also obtainable from Zoologist after defeating Brain of Cthulhu or Eater of Worlds
     Purgatory has a 4% drop chance from Dungeon Spirits

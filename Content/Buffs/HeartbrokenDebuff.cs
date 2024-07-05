@@ -1,5 +1,5 @@
 using Microsoft.Xna.Framework;
-using RappleMod.Content.GlobalNPCandProj;
+using RappleMod.Content.Globals;
 using RappleMod.Content.GoreAndDust;
 using Terraria;
 using Terraria.ID;

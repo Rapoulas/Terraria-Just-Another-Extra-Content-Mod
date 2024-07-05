@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
-namespace RappleMod.Content.GlobalNPCandProj
+namespace RappleMod.Content.Globals
 {
 	public class MyGlobalProjectiles : GlobalProjectile
 	{

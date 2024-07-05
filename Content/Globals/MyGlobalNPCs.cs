@@ -5,7 +5,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace RappleMod.Content.GlobalNPCandProj
+namespace RappleMod.Content.Globals
 {
     public class MyGlobalNPCs : GlobalNPC
     {

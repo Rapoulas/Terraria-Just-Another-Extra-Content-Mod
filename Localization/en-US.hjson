@@ -160,6 +160,8 @@ Mods: {
 					'''
 					Has a magazine size of 8
 					Reloading throws a drone that homes into nearby enemies and periodically shoots
+
+					[c/FF2020:Kiki got a shotgun!]
 					'''
 			}
 
@@ -172,7 +174,7 @@ Mods: {
 					Damage is increased by both Ranged and Summon bonuses
 					Consumes ammo to shoot
 
-					'I am the gun'
+					[c/FF2020:I am the gun.]
 					'''
 			}
 
