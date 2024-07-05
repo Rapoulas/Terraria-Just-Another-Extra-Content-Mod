@@ -27,7 +27,7 @@ namespace RappleMod.Content.UI.ChargeBarUI
 
 		public override void OnInitialize() {
 			Player player = Main.LocalPlayer;
-			barPosition = new Vector2(player.Center.X + 800, player.Center.Y + 330);
+			barPosition = new Vector2(Main.MouseScreen.X, Main.MouseScreen.Y + 25);
 			barFrame = ModContent.Request<Texture2D>("RappleMod/Content/UI/ChargeBarUI/ChargeBarSprite", AssetRequestMode.ImmediateLoad).Value;
 
 		}
@@ -45,7 +45,7 @@ namespace RappleMod.Content.UI.ChargeBarUI
 
         public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
+			barPosition = new Vector2(Main.MouseScreen.X, Main.MouseScreen.Y + 25);
         }
 
 		private static void DrawChargeBar(SpriteBatch spriteBatch){

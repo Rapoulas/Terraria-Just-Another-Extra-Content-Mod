@@ -33,7 +33,7 @@ namespace RappleMod.Content.SetBonusChanges
         public override void UpdateArmorSet(Player player, string set)
         {
             if (set == "MeleeHallowedChlorophyteSet"){
-                player.setBonus = "Melee attacks surrounds the player damaging aura\n";
+                player.setBonus = "Melee attacks blesses the player with the power of nature\n";
                 player.GetModPlayer<SetBonusChangesPlayer>().MeleeHallowedChlorophyteSet = true;
             }
         }

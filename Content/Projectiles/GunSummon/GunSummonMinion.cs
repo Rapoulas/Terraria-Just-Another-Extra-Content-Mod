@@ -237,10 +237,10 @@ namespace RappleMod.Content.Projectiles.GunSummon
 		}
 
 		private void ShootingHandler(NPC target, Player owner, int amountBullets, float projSpeedMultiplier, int projToShoot, float knockBack, float degreesRotation, float speedVariation, int amountPenetration, int damage){
-			float baseBonus = owner.GetDamage(DamageClass.Summon).Base + owner.GetDamage(DamageClass.Ranged).Base;
-			float addBonus = owner.GetDamage(DamageClass.Summon).Additive + owner.GetDamage(DamageClass.Ranged).Additive -1;
-			float multBonus = owner.GetDamage(DamageClass.Summon).Multiplicative + owner.GetDamage(DamageClass.Ranged).Multiplicative -1;
-			float flatBonus = owner.GetDamage(DamageClass.Summon).Flat + owner.GetDamage(DamageClass.Ranged).Flat;
+			float baseBonus = owner.GetDamage(DamageClass.Summon).Base;
+			float addBonus = owner.GetDamage(DamageClass.Summon).Additive;
+			float multBonus = owner.GetDamage(DamageClass.Summon).Multiplicative;
+			float flatBonus = owner.GetDamage(DamageClass.Summon).Flat;
 
 			float finalDamage = ((damage + baseBonus) * addBonus * multBonus) + flatBonus;
 			

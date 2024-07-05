@@ -25,8 +25,10 @@ namespace RappleMod.Content.UI.DeliveranceUI
 
             text.Width.Set(32, 0);
             text.Height.Set(32, 0);
-            text.Top.Set(Main.screenHeight/2 + 10, 0);
-            text.Left.Set(Main.screenWidth/2 - 70, 0);
+            // text.Top.Set(Main.screenHeight/2 + 10, 0);
+            // text.Left.Set(Main.screenWidth/2 - 70, 0);
+			text.Left.Set(Main.mouseX, 0f);
+			text.Top.Set(Main.mouseY, 0f);
 
             Append(text);
         }
@@ -68,6 +70,10 @@ namespace RappleMod.Content.UI.DeliveranceUI
 				text.SetText($"  [{ammo}/8]");
 				timer = 0;
 			}
+
+			text.Left.Set(Main.mouseX - 25, 0f);
+			text.Top.Set(Main.mouseY + 25, 0f);
+			
 			base.Update(gameTime);
 		}
     }

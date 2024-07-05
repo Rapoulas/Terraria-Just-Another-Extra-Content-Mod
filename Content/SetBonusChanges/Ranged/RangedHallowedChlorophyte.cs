@@ -33,7 +33,7 @@ namespace RappleMod.Content.SetBonusChanges
         public override void UpdateArmorSet(Player player, string set)
         {
             if (set == "RangedHallowedChlorophyteSet"){
-                player.setBonus = "Ranged attacks surrounds the enemy hit in a damaging aura\n";
+                player.setBonus = "Ranged attacks curses the enemy with the power of nature\n";
                 player.GetModPlayer<SetBonusChangesPlayer>().RangedHallowedChlorophyteSet = true;
             }
         }

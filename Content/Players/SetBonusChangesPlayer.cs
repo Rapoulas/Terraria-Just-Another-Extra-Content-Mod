@@ -23,6 +23,7 @@ namespace RappleMod{
 		public bool RangedHallowedChlorophyteSet;
 		public bool ChlorophyteShroomiteSet;
 		public bool ShroomiteVortexSet;
+		public bool MoltenShadowSet;
 		public bool MeleeHCSetReapply = false;
 		public int maxHitCountRangedOMFSet;
 		public int timer;
@@ -40,6 +41,7 @@ namespace RappleMod{
 			RangedHallowedChlorophyteSet = false;
 			ShroomiteVortexSet = false;
 			ChlorophyteShroomiteSet = false;
+			MoltenShadowSet = false;
 			maxHitCountRangedOMFSet = 0;
         }
 
