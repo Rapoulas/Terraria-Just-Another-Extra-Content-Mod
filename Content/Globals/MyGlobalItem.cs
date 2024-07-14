@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using RappleMod.Content.Weapons;
 using Terraria;
 using Terraria.ID;
@@ -9,6 +10,21 @@ namespace RappleMod.Content.Globals
 {
     public class MyGlobalItems : GlobalItem
     {
+        public override float UseTimeMultiplier(Item item, Player player)
+        {
+            if (item.type == ItemID.MagicMirror || item.type == ItemID.CellPhone || item.type == ItemID.IceMirror || item.type == ItemID.Shellphone || item.type == ItemID.DemonConch || item.type == ItemID.MagicConch)
+                return 0.3f;
+			
+            return base.UseTimeMultiplier(item, player);
+        }
+
+        public override float UseAnimationMultiplier(Item item, Player player)
+        {
+            if (item.type == ItemID.MagicMirror || item.type == ItemID.CellPhone || item.type == ItemID.IceMirror || item.type == ItemID.Shellphone || item.type == ItemID.DemonConch || item.type == ItemID.MagicConch)
+                return 0.3f;
+			
+            return base.UseAnimationMultiplier(item, player);
+        }
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {

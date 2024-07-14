@@ -261,5 +261,7 @@ Mods: {
 			HeartbreakerBullet.DisplayName: Heartbreaker Bullet
 			ShroomiteVortexProj.DisplayName: Shroomite Vortex Proj
 		}
+
+		UI.EnergyShieldBar: "{0} / {1}"
 	}
 }

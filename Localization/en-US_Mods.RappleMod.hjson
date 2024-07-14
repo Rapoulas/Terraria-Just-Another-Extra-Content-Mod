@@ -70,3 +70,5 @@ Projectiles: {
 	SpiritStaffProjectile.DisplayName: Spirit Staff Projectile
 	PurgatoryProjectile.DisplayName: Purgatory Projectile
 }
+
+UI.ExampleResource: Mods.RappleMod.UI.ExampleResource
