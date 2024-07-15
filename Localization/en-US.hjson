@@ -193,6 +193,11 @@ Mods: {
 				DisplayName: Zenith Bow?
 				Tooltip: ""
 			}
+
+			ThunderGauntlet: {
+				DisplayName: Thunder Gauntlet
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

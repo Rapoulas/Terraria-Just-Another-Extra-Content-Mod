@@ -72,3 +72,4 @@ Projectiles: {
 }
 
 UI.ExampleResource: Mods.RappleMod.UI.ExampleResource
+Keybinds.ThunderGauntletGrappleKeybind.DisplayName: Thunder Gauntlet Grapple Keybind
