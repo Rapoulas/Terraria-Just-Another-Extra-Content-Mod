@@ -43,7 +43,7 @@ namespace RappleMod.Content.Weapons{
 		}
 	}
 
-    public class ExampleKeybindPlayer : ModPlayer
+    public class GauntletKeybindModPlayer : ModPlayer
 	{
 		public override void ProcessTriggers(TriggersSet triggersSet) {
 			if (GauntletGrapple.GrappleKeybind.JustPressed && Main.LocalPlayer.HeldItem.type == ModContent.ItemType<ThunderGauntlet>()) {
