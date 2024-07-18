@@ -46,7 +46,8 @@ namespace RappleMod.Content.Weapons{
     public class GauntletKeybindModPlayer : ModPlayer
 	{
 		public override void ProcessTriggers(TriggersSet triggersSet) {
-			if (GauntletGrapple.GrappleKeybind.JustPressed && Main.LocalPlayer.HeldItem.type == ModContent.ItemType<ThunderGauntlet>()) {
+			if (GauntletGrapple.GrappleKeybind.JustPressed && Main.LocalPlayer.HeldItem.ModItem is ThunderGauntlet) {
+				//GauntletGrapple.GrappleKeybind.Current for checking if key being held down
 				Main.NewText("Test");
 			}
 		}
