@@ -6,6 +6,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameInput;
+using RappleMod.Content.Projectiles.ThunderGauntletHook;
 
 namespace RappleMod.Content.Weapons{
     
@@ -46,9 +47,11 @@ namespace RappleMod.Content.Weapons{
     public class GauntletKeybindModPlayer : ModPlayer
 	{
 		public override void ProcessTriggers(TriggersSet triggersSet) {
-			if (GauntletGrapple.GrappleKeybind.JustPressed && Main.LocalPlayer.HeldItem.ModItem is ThunderGauntlet) {
+			if (GauntletGrapple.GrappleKeybind.JustPressed && Main.LocalPlayer.HeldItem.ModItem is ThunderGauntlet && Player.ownedProjectileCounts[ModContent.ProjectileType<ThunderGauntletHookProjectile>()] < 1) {
 				//GauntletGrapple.GrappleKeybind.Current for checking if key being held down
-				Main.NewText("Test");
+				Vector2 velocity = Player.DirectionTo(Main.MouseWorld);
+				velocity *= 30f;
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, velocity, ModContent.ProjectileType<ThunderGauntletHookProjectile>(), 0, 0);
 			}
 		}
 	}

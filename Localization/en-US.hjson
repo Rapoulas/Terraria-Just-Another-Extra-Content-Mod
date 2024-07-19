@@ -265,6 +265,7 @@ Mods: {
 			GunSummonMinion.DisplayName: Gun Summon Minion
 			HeartbreakerBullet.DisplayName: Heartbreaker Bullet
 			ShroomiteVortexProj.DisplayName: Shroomite Vortex Proj
+			ThunderGauntletHookProjectile.DisplayName: Thunder Gauntlet Hook Projectile
 		}
 
 		UI.EnergyShieldBar: "{0} / {1}"

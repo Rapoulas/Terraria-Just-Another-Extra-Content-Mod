@@ -9,16 +9,15 @@ namespace RappleMod{
     public class EnergyShieldPlayer : ModPlayer {
         public int energyShield = 0;
         public int energyShieldMax = 100;
-        public int energyShieldRate = 200;
+        public int energyShieldRate = 6;
         public int energyShieldRecharge = 300;
         public int timeSinceLastHit = 0;
-        public int idleTimer = 180;
         public bool dodgeHitAbsorbed = false;
 
         public override void ResetEffects()
         {
             energyShieldMax = 100;
-            energyShieldRate = 200; 
+            energyShieldRate = 6; 
             energyShieldRecharge = 300;
         }
 
