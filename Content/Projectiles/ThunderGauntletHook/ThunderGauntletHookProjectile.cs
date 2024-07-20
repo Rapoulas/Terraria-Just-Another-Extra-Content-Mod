@@ -44,8 +44,8 @@ namespace RappleMod.Content.Projectiles.ThunderGauntletHook
 
 		public override void SetDefaults() {
 			Projectile.netImportant = true;
-			Projectile.width = 18;
-			Projectile.height = 18;
+			Projectile.width = 16;
+			Projectile.height = 16;
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;
 			Projectile.tileCollide = false;
@@ -64,8 +64,9 @@ namespace RappleMod.Content.Projectiles.ThunderGauntletHook
 				Projectile.Kill();
 				return;
 			}
-			
-			Vector2 BetweenOwner = Owner.Center - Projectile.Center;
+
+            Vector2 BetweenOwner = Owner.Center - Projectile.Center;
+            Projectile.rotation = BetweenOwner.ToRotation() - MathHelper.PiOver2;
 
 			if (State == HookState.Thrown){
                 //Retract if too far.
@@ -75,7 +76,7 @@ namespace RappleMod.Content.Projectiles.ThunderGauntletHook
                 CheckTile();
             }
 			else if (State == HookState.Retracting){
-                Projectile.velocity = BetweenOwner.SafeNormalize(Vector2.One) * 20f;
+                Projectile.velocity = BetweenOwner.SafeNormalize(Vector2.One) * 45f;
                 Projectile.Center += Vector2.UnitY * 0.5f;
 
                 if (BetweenOwner.Length() < 25f)
@@ -96,8 +97,10 @@ namespace RappleMod.Content.Projectiles.ThunderGauntletHook
                 Projectile.velocity = Vector2.Zero;
 
 				float playerSpeed = (float)Math.Sqrt(Owner.velocity.X * Owner.velocity.X + Owner.velocity.Y * Owner.velocity.Y);
+                playerSpeed *= 1.7f;
+                Owner.velocity *= 1.01f;
 				Vector2 directionToHook = Owner.DirectionTo(Projectile.Center);
-				Owner.velocity = Vector2.Lerp(Owner.velocity, new(directionToHook.X * 10f, directionToHook.Y * 10f), 0.05f);
+				Owner.velocity = Vector2.Lerp(Owner.velocity, new(directionToHook.X * playerSpeed, directionToHook.Y * playerSpeed), 0.085f + (Vector2.Distance(Owner.Center, Projectile.Center) * 0.000055f));
 				
 			}
 
@@ -155,7 +158,7 @@ namespace RappleMod.Content.Projectiles.ThunderGauntletHook
             Projectile.netUpdate = true;
             NetMessage.SendData(MessageID.PlayerControls, -1, -1, null, Owner.whoAmI);
         }
-		
+
 		public override bool PreDrawExtras() {
 			Vector2 playerCenter = Main.player[Projectile.owner].MountedCenter;
 			Vector2 center = Projectile.Center;
@@ -180,58 +183,4 @@ namespace RappleMod.Content.Projectiles.ThunderGauntletHook
 			return false;
 		}
 	}
-
-	public class VerletSimulatedSegment
-    {
-        public Vector2 position, oldPosition;
-        public bool locked;
-
-        public VerletSimulatedSegment(Vector2 _position, bool _locked = false)
-        {
-            position = _position;
-            oldPosition = _position;
-            locked = _locked;
-        }
-
-        public static List<VerletSimulatedSegment> SimpleSimulation(List<VerletSimulatedSegment> segments, float segmentDistance, int loops = 10, float gravity = 0.3f)
-        {
-            //https://youtu.be/PGk0rnyTa1U?t=400 verlet integration chains reference here
-            foreach (VerletSimulatedSegment segment in segments)
-            {
-                if (!segment.locked)
-                {
-                    Vector2 positionBeforeUpdate = segment.position;
-
-                    segment.position += (segment.position - segment.oldPosition); // This adds conservation of energy to the segments. This makes it super bouncy and shouldnt be used but it's really funny
-                    segment.position += Vector2.UnitY * gravity; //=> This adds gravity to the segments. 
-
-                    segment.oldPosition = positionBeforeUpdate;
-                }
-            }
-
-            int segmentCount = segments.Count;
-
-            for (int k = 0; k < loops; k++)
-            {
-                for (int j = 0; j < segmentCount - 1; j++)
-                {
-                    VerletSimulatedSegment pointA = segments[j];
-                    VerletSimulatedSegment pointB = segments[j + 1];
-                    Vector2 segmentCenter = (pointA.position + pointB.position) / 2f;
-                    Vector2 segmentDirection = Terraria.Utils.SafeNormalize(pointA.position - pointB.position, Vector2.UnitY);
-
-                    if (!pointA.locked)
-                        pointA.position = segmentCenter + segmentDirection * segmentDistance / 2f;
-
-                    if (!pointB.locked)
-                        pointB.position = segmentCenter - segmentDirection * segmentDistance / 2f;
-
-                    segments[j] = pointA;
-                    segments[j + 1] = pointB;
-                }
-            }
-
-            return segments;
-        }
-    }
 }
