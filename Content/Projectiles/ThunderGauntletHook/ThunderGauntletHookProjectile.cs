@@ -98,10 +98,13 @@ namespace RappleMod.Content.Projectiles.ThunderGauntletHook
 
 				float playerSpeed = (float)Math.Sqrt(Owner.velocity.X * Owner.velocity.X + Owner.velocity.Y * Owner.velocity.Y);
                 playerSpeed *= 1.7f;
-                Owner.velocity *= 1.01f;
+                if (Math.Abs(Owner.velocity.X) >= Math.Abs(Owner.velocity.Y))
+                    Owner.velocity.X *= 1.035f;
+                else
+                    Owner.velocity.Y *= 1.035f;
+                
 				Vector2 directionToHook = Owner.DirectionTo(Projectile.Center);
-				Owner.velocity = Vector2.Lerp(Owner.velocity, new(directionToHook.X * playerSpeed, directionToHook.Y * playerSpeed), 0.085f + (Vector2.Distance(Owner.Center, Projectile.Center) * 0.000055f));
-				
+				Owner.velocity = Vector2.Lerp(Owner.velocity, new(directionToHook.X * playerSpeed, directionToHook.Y * playerSpeed), 0.055f + (Vector2.Distance(Owner.Center, Projectile.Center) * 0.000025f));
 			}
 
 			Timer++;
