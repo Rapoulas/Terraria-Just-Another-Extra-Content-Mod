@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RappleMod.Content.Weapons;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace RappleMod.Content.Projectiles.ThunderGauntletHook
+namespace RappleMod.Content.Projectiles.ThunderGauntlet
 {
 	public class ThunderGauntletHookProjectile : ModProjectile
 	{
@@ -28,10 +29,10 @@ namespace RappleMod.Content.Projectiles.ThunderGauntletHook
         }
 		private static Asset<Texture2D> chainTexture;
 		public Player Owner => Main.player[Projectile.owner];
-		 public static float MaxReach = 800;
+		readonly float MaxReach = 800;
 
 		public override void Load() {
-			chainTexture = ModContent.Request<Texture2D>("RappleMod/Content/Projectiles/ThunderGauntletHook/ThunderGauntletHookChain");
+			chainTexture = ModContent.Request<Texture2D>("RappleMod/Content/Projectiles/ThunderGauntlet/ThunderGauntletHookChain");
 		}
 
 		public override void Unload() {
@@ -50,63 +51,72 @@ namespace RappleMod.Content.Projectiles.ThunderGauntletHook
 			Projectile.penetrate = -1;
 			Projectile.tileCollide = false;
 			Projectile.timeLeft *= 10;
+            Projectile.extraUpdates = 3;
 		}
 
 		public override bool PreAI() => false;
 
         public override void PostAI(){
-			if (Main.player[Projectile.owner].dead || Main.player[Projectile.owner].stoned || Main.player[Projectile.owner].webbed || Main.player[Projectile.owner].frozen){
-				Projectile.Kill();
-				return;
-			}
-
-			if (Projectile.velocity == Vector2.Zero && Main.player[Projectile.owner].controlJump){
-				Projectile.Kill();
-				return;
-			}
-
             Vector2 BetweenOwner = Owner.Center - Projectile.Center;
-            Projectile.rotation = BetweenOwner.ToRotation() - MathHelper.PiOver2;
 
-			if (State == HookState.Thrown){
-                //Retract if too far.
-                if (MaxReach < BetweenOwner.Length())
-                    State = HookState.Retracting;
-				
+            if (Main.player[Projectile.owner].dead || Main.player[Projectile.owner].stoned || Main.player[Projectile.owner].webbed || Main.player[Projectile.owner].frozen){
+                Projectile.Kill();
+                return;
+            }
+            if (Projectile.velocity == Vector2.Zero && Main.player[Projectile.owner].controlJump){
+                Projectile.Kill();
+                return;
+            }
+            if (State == HookState.Grappling && (GauntletGrapple.GrappleKeybind.JustReleased || !GauntletGrapple.GrappleKeybind.Current)){
+                Projectile.Kill();
+                return;
+            }
+            if (State == HookState.Retracting && BetweenOwner.Length() < 25f){      
+                Projectile.Kill();
+                return;
+            }
+            
+            if (Timer % 4 == 0){
+                Projectile.rotation = BetweenOwner.ToRotation() - MathHelper.PiOver2;
+
+                if (State == HookState.Thrown){
+                    //Retract if too far.
+                    if (MaxReach < BetweenOwner.Length())
+                        State = HookState.Retracting;
+                    
+                    CheckTile();
+                }
+                else if (State == HookState.Retracting){
+                    Projectile.velocity = BetweenOwner.SafeNormalize(Vector2.One) * 11.25f;
+                    Projectile.Center += Vector2.UnitY * 0.5f;
+                }
+                else{
+                    Point tilePos = Projectile.Center.ToTileCoordinates();
+                    Tile tile = Main.tile[tilePos];
+                    if (!tile.HasUnactuatedTile || !CanTileBeLatchedOnTo(tile) || Owner.IsBlacklistedForGrappling(tilePos))
+                        State = HookState.Retracting;
+
+                    Projectile.velocity = Vector2.Zero;
+
+                    float playerSpeed = (float)Math.Sqrt(Owner.velocity.X * Owner.velocity.X + Owner.velocity.Y * Owner.velocity.Y);
+                    playerSpeed *= 1.7f;
+                    if (Math.Abs(Owner.velocity.X) >= Math.Abs(Owner.velocity.Y))
+                        Owner.velocity.X *= 1.02f;
+                    else
+                        Owner.velocity.Y *= 1.02f;
+                    
+                    Vector2 directionToHook = Owner.DirectionTo(Projectile.Center);
+                    Owner.velocity = Vector2.Lerp(Owner.velocity, new(directionToHook.X * playerSpeed, directionToHook.Y * playerSpeed), 0.055f + (Vector2.Distance(Owner.Center, Projectile.Center) * 0.000025f));
+                    
+                    if (MaxReach < BetweenOwner.Length()){
+                        Owner.velocity = Owner.Center.DirectionTo(Projectile.Center) * 4f;
+                    }
+                }
+            }
+
+            if (State == HookState.Thrown)
                 CheckTile();
-            }
-			else if (State == HookState.Retracting){
-                Projectile.velocity = BetweenOwner.SafeNormalize(Vector2.One) * 45f;
-                Projectile.Center += Vector2.UnitY * 0.5f;
-
-                if (BetweenOwner.Length() < 25f)
-                    Projectile.Kill();
-            }
-			else{
-                float LengthToOwner = BetweenOwner.Length();
-
-                if (LengthToOwner > (Owner.Center - Projectile.Center).Length() + 60f)
-                    Projectile.Kill();
-                
-
-                Point tilePos = Projectile.Center.ToTileCoordinates();
-                Tile tile = Main.tile[tilePos];
-                if (!tile.HasUnactuatedTile || !CanTileBeLatchedOnTo(tile) || Owner.IsBlacklistedForGrappling(tilePos))
-                    State = HookState.Retracting;
-
-                Projectile.velocity = Vector2.Zero;
-
-				float playerSpeed = (float)Math.Sqrt(Owner.velocity.X * Owner.velocity.X + Owner.velocity.Y * Owner.velocity.Y);
-                playerSpeed *= 1.7f;
-                if (Math.Abs(Owner.velocity.X) >= Math.Abs(Owner.velocity.Y))
-                    Owner.velocity.X *= 1.035f;
-                else
-                    Owner.velocity.Y *= 1.035f;
-                
-				Vector2 directionToHook = Owner.DirectionTo(Projectile.Center);
-				Owner.velocity = Vector2.Lerp(Owner.velocity, new(directionToHook.X * playerSpeed, directionToHook.Y * playerSpeed), 0.055f + (Vector2.Distance(Owner.Center, Projectile.Center) * 0.000025f));
-			}
-
+            
 			Timer++;
         }
 

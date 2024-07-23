@@ -69,6 +69,7 @@ Projectiles: {
 	BonetrousleSpiritProjectile.DisplayName: Bonetrousle Spirit Projectile
 	SpiritStaffProjectile.DisplayName: Spirit Staff Projectile
 	PurgatoryProjectile.DisplayName: Purgatory Projectile
+	ThunderGauntletHoldOut.DisplayName: Thunder Gauntlet Hold Out
 }
 
 UI.ExampleResource: Mods.RappleMod.UI.ExampleResource

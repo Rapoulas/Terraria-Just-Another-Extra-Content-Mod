@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameInput;
-using RappleMod.Content.Projectiles.ThunderGauntletHook;
+using RappleMod.Content.Projectiles.ThunderGauntlet;
 
 namespace RappleMod.Content.Weapons{
     
@@ -25,9 +25,11 @@ namespace RappleMod.Content.Weapons{
 			Item.knockBack = 5f; 
 			Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
-            Item.shoot = ProjectileID.PurificationPowder;
+            Item.shoot = ModContent.ProjectileType<ThunderGauntletHoldOut>();
             Item.shootSpeed = 10f;
             Item.channel = true;
+			Item.noMelee = true;
+            Item.noUseGraphic = true;
 		}
     }
 
@@ -49,15 +51,15 @@ namespace RappleMod.Content.Weapons{
 		Projectile proj = null;
 		public override void ProcessTriggers(TriggersSet triggersSet) {
 			if (GauntletGrapple.GrappleKeybind.JustPressed && Main.LocalPlayer.HeldItem.ModItem is ThunderGauntlet && Player.ownedProjectileCounts[ModContent.ProjectileType<ThunderGauntletHookProjectile>()] < 1) {
-				//GauntletGrapple.GrappleKeybind.Current for checking if key being held down
 				Vector2 velocity = Player.DirectionTo(Main.MouseWorld);
-				velocity *= 40f;
+				velocity *= 10f;
 				proj = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, velocity, ModContent.ProjectileType<ThunderGauntletHookProjectile>(), 0, 0);
 			}
 		}
 
         public override void PreUpdate(){
-			if(Main.LocalPlayer.HeldItem.ModItem is not ThunderGauntlet && proj.type == ModContent.ProjectileType<ThunderGauntletHookProjectile>() && proj.active) proj.Kill();
+			if(Main.LocalPlayer.HeldItem.ModItem is not ThunderGauntlet && proj.type == ModContent.ProjectileType<ThunderGauntletHookProjectile>() && proj.active) 
+				proj.Kill();
 
             base.PreUpdate();
         }
