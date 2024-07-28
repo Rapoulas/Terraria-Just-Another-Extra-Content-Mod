@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,6 +12,10 @@ namespace RappleMod.Content.Projectiles.ThunderGauntlet
 {
 	public class ThunderGauntletHoldOut : ModProjectile
 	{
+		private float ChargeTime {
+			get => Projectile.ai[0];
+			set => Projectile.ai[0] = value;
+		}
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.NeedsUUID[Projectile.type] = true;
 			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
@@ -25,12 +30,8 @@ namespace RappleMod.Content.Projectiles.ThunderGauntlet
 			Projectile.timeLeft = 2;
 			Projectile.ownerHitCheck = true;
 			Projectile.usesLocalNPCImmunity = true;
-		}
-
-
-		private float ChargeTime {
-			get => Projectile.ai[0];
-			set => Projectile.ai[0] = value;
+			Projectile.friendly = true;
+			Projectile.localNPCHitCooldown = 10;
 		}
 
 		public override void AI() {
@@ -42,13 +43,26 @@ namespace RappleMod.Content.Projectiles.ThunderGauntlet
 			if (Projectile.owner == Main.myPlayer) {
 				UpdateAim(rrp, player.HeldItem.shootSpeed);
 			}
-
-			Projectile.timeLeft = 2;
 			
-			if (Charge(player)) {
-				Projectile.Kill();
+			if (!Charge(player)) {			
+				if (ChargeTime > 0){
+					float speedBonus = 0.1f + player.velocity.Length() / 7f * 0.9f;
+					float knockbackBonus = Projectile.knockBack * player.velocity.Length() / 7f;
+					Vector2 velocityLaunch = Projectile.velocity;
+					velocityLaunch.Normalize();
+
+					Main.NewText(player.velocity.Length() + " , " + speedBonus);
+
+					Projectile.damage = (int)(Projectile.damage * (1 + ChargeTime/60f) * (1 + speedBonus));
+					Projectile.knockBack = knockbackBonus;
+
+					player.velocity = velocityLaunch * 10f * (ChargeTime/60f);
+				}
+				ChargeTime = 0;
+				Projectile.friendly = true;
 				return;
 			}
+			else Projectile.timeLeft = 60;
 		}
 
         public override bool PreDraw(ref Color lightColor) => false;
@@ -65,15 +79,18 @@ namespace RappleMod.Content.Projectiles.ThunderGauntlet
 	
         private bool Charge(Player player) {
 			if (!player.channel) {
-				return true;
+				return false;
 			}
 
-			ChargeTime++;
+			Projectile.friendly = false;
+			if (ChargeTime < 210) {
+				ChargeTime++;
+			}
 
 			player.itemAnimation = player.itemAnimationMax;
 			player.itemTime = player.itemTimeMax;
 
-			return false;
+			return true;
 		}
 
 		private void UpdateAim(Vector2 source, float speed) {

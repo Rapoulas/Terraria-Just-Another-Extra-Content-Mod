@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RappleMod")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fde39135cf8f41b4b685eae75b9787d2eab9e004")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0603ecc66dd42f2fb4af4941bd14c255f9df313f")]
 [assembly: System.Reflection.AssemblyProductAttribute("RappleMod")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RappleMod")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

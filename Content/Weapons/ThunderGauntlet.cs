@@ -48,20 +48,23 @@ namespace RappleMod.Content.Weapons{
 
     public class GauntletKeybindModPlayer : ModPlayer
 	{
-		Projectile proj = null;
 		public override void ProcessTriggers(TriggersSet triggersSet) {
 			if (GauntletGrapple.GrappleKeybind.JustPressed && Main.LocalPlayer.HeldItem.ModItem is ThunderGauntlet && Player.ownedProjectileCounts[ModContent.ProjectileType<ThunderGauntletHookProjectile>()] < 1) {
 				Vector2 velocity = Player.DirectionTo(Main.MouseWorld);
 				velocity *= 10f;
-				proj = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, velocity, ModContent.ProjectileType<ThunderGauntletHookProjectile>(), 0, 0);
+				Projectile proj = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, velocity, ModContent.ProjectileType<ThunderGauntletHookProjectile>(), 0, 0);
 			}
 		}
 
-        public override void PreUpdate(){
-			if(Main.LocalPlayer.HeldItem.ModItem is not ThunderGauntlet && proj.type == ModContent.ProjectileType<ThunderGauntletHookProjectile>() && proj.active) 
-				proj.Kill();
+        public override void PostUpdate()
+    	{
+			foreach (Projectile proj in Main.projectile){
+				if(proj.type == ModContent.ProjectileType<ThunderGauntletHookProjectile>() && proj.active) 
+					if (Main.LocalPlayer.HeldItem.ModItem is not ThunderGauntlet)
+						proj.Kill();
+			}
 
-            base.PreUpdate();
+            base.PostUpdate();
         }
     }
 }

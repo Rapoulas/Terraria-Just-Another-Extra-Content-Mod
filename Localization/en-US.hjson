@@ -186,12 +186,9 @@ Mods: {
 					Heartbeat frequency based on how low the Player's hp is
 					Enemies hit by the Heartbeat gets inflicted with Heartbroken
 					Heartbroken enemies deal less damage
-					'''
-			}
 
-			ZenithBow: {
-				DisplayName: Zenith Bow?
-				Tooltip: ""
+					'I don't want to set the world on fire...'
+					'''
 			}
 
 			ThunderGauntlet: {
