@@ -22,7 +22,7 @@ namespace RappleMod.Content.Weapons{
             Item.value = Item.buyPrice(0, 20, 0, 0);
 			Item.DamageType = DamageClass.Melee; 
 			Item.damage = 100; 
-			Item.knockBack = 5f; 
+			Item.knockBack = 12f; 
 			Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<ThunderGauntletHoldOut>();

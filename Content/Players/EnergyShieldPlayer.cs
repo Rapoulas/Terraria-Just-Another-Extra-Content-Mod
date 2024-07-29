@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 namespace RappleMod{
     public class EnergyShieldPlayer : ModPlayer {
         public int energyShield = 0;
-        public int energyShieldMax = 100;
+        public int energyShieldMax = 0;
         public int energyShieldRate = 6;
         public int energyShieldRecharge = 300;
         public int timeSinceLastHit = 0;
@@ -16,7 +16,7 @@ namespace RappleMod{
 
         public override void ResetEffects()
         {
-            energyShieldMax = 100;
+            energyShieldMax = 0;
             energyShieldRate = 6; 
             energyShieldRecharge = 300;
         }

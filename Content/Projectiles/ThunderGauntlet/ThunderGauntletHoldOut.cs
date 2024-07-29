@@ -31,12 +31,13 @@ namespace RappleMod.Content.Projectiles.ThunderGauntlet
 			Projectile.ownerHitCheck = true;
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.friendly = true;
-			Projectile.localNPCHitCooldown = 10;
 		}
 
 		public override void AI() {
 			Player player = Main.player[Projectile.owner];
 			Vector2 rrp = player.RotatedRelativePoint(player.MountedCenter, true);
+			player.heldProj = Projectile.whoAmI;
+			DrawHeldProjInFrontOfHeldItemAndArms = true;
 
 			UpdatePlayerVisuals(player, rrp);
 
@@ -47,16 +48,13 @@ namespace RappleMod.Content.Projectiles.ThunderGauntlet
 			if (!Charge(player)) {			
 				if (ChargeTime > 0){
 					float speedBonus = 0.1f + player.velocity.Length() / 7f * 0.9f;
-					float knockbackBonus = Projectile.knockBack * player.velocity.Length() / 7f;
 					Vector2 velocityLaunch = Projectile.velocity;
 					velocityLaunch.Normalize();
 
-					Main.NewText(player.velocity.Length() + " , " + speedBonus);
-
 					Projectile.damage = (int)(Projectile.damage * (1 + ChargeTime/60f) * (1 + speedBonus));
-					Projectile.knockBack = knockbackBonus;
+					Projectile.knockBack = Projectile.knockBack * player.velocity.Length() / 7f;
 
-					player.velocity = velocityLaunch * 10f * (ChargeTime/60f);
+					player.velocity += velocityLaunch * 10f * (ChargeTime/60f);
 				}
 				ChargeTime = 0;
 				Projectile.friendly = true;
@@ -99,7 +97,7 @@ namespace RappleMod.Content.Projectiles.ThunderGauntlet
 				aim = -Vector2.UnitY;
 			}
 
-			aim = Vector2.Normalize(Vector2.Lerp(Vector2.Normalize(Projectile.velocity), aim, 0.08f));
+			aim = Vector2.Normalize(Vector2.Lerp(Vector2.Normalize(Projectile.velocity), aim, 0.12f));
 			aim *= speed;
 
 			if (aim != Projectile.velocity) {
