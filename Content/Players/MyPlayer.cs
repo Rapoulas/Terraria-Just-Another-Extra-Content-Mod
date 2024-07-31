@@ -11,6 +11,7 @@ using RappleMod.Content.Projectiles.PurgatoryProjectile;
 namespace RappleMod{
     public class MyPlayer : ModPlayer {
         #region item field
+		public Item hasAntagonist;
         public Item hasZetaReference;
 		public Item hasMeatShield;
 		public Item hasBuffer;
@@ -28,7 +29,7 @@ namespace RappleMod{
 		public float hitClass;
 		public int deliveranceAmmo = 8;
 		Player player = Main.LocalPlayer;
-		public bool[] gunSummonSpawnCheck = {false, false, false, false};
+		public bool[] gunSummonSpawnCheck = [false, false, false, false];
         public override void ResetEffects(){
             hasAbsorbTeamDamageEffect = false;
 			defendedByAbsorbTeamDamageEffect = false;
@@ -38,6 +39,7 @@ namespace RappleMod{
 			hasBuffer = null;
 			hasOuroboros = null;
 			hasPurgatory = null;
+			hasAntagonist = null;
 			hitClass = 0;
         }
 
