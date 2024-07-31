@@ -5,7 +5,6 @@ using Terraria.ModLoader;
 using RappleMod.Content.Acessories;
 using RappleMod.Content.Buffs;
 using Terraria.DataStructures;
-using RappleMod.Content.Weapons;
 using RappleMod.Content.Projectiles.PurgatoryProjectile;
 
 namespace RappleMod{
@@ -28,6 +27,7 @@ namespace RappleMod{
 		public float anarchistCookbookCounter = 0;
 		public float hitClass;
 		public int deliveranceAmmo = 8;
+		public bool AntagonistRand;
 		Player player = Main.LocalPlayer;
 		public bool[] gunSummonSpawnCheck = [false, false, false, false];
         public override void ResetEffects(){
@@ -44,11 +44,32 @@ namespace RappleMod{
         }
 
         public override void ModifyHurt(ref Player.HurtModifiers modifiers) {
+			Player owner = Main.LocalPlayer;
+			EnergyShieldPlayer ESP = owner.GetModPlayer<EnergyShieldPlayer>();
+
 			if (defendedByAbsorbTeamDamageEffect && Player == Main.LocalPlayer && TeammateCanAbsorbDamage()) {
 				modifiers.FinalDamage *= 1f - MeatShield.DamageAbsorptionMultiplier;
 			}
+
+			if (ESP.energyShieldMax > 0 && ESP.energyShield > 0 && hasAntagonist != null && Main.rand.NextBool(1)){
+				AntagonistRand = true;
+				modifiers.FinalDamage /= 2;
+			}
 		}
-        
+
+        public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
+        {
+			if (AntagonistRand){
+				//Fix not accounting for when energyshield > damageTaken
+				Projectile x = Projectile.NewProjectileDirect(player.GetSource_FromThis(), proj.position, proj.velocity * -1, proj.type, proj.damage, proj.knockBack);
+				x.friendly = true;
+				x.hostile = false;
+				AntagonistRand = false;
+			}
+
+            base.OnHitByProjectile(proj, hurtInfo);
+        }
+
         public override void OnHurt(Player.HurtInfo info) {
             ZetaReferenceOnHurt(info);
 			MeatShieldOnHurt(info);

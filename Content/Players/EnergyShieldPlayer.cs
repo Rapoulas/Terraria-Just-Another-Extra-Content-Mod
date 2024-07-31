@@ -1,8 +1,11 @@
 using System;
+using System.Media;
 using Humanizer;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace RappleMod{
@@ -10,7 +13,7 @@ namespace RappleMod{
         public int energyShield = 0;
         public int energyShieldMax = 0;
         public int energyShieldRate = 6;
-        public int energyShieldRecharge = 300;
+        public int energyShieldRecharge = 0;
         public int timeSinceLastHit = 0;
         public bool dodgeHitAbsorbed = false;
 
@@ -18,7 +21,7 @@ namespace RappleMod{
         {
             energyShieldMax = 0;
             energyShieldRate = 6; 
-            energyShieldRecharge = 300;
+            energyShieldRecharge = 0;
         }
 
         public override void UpdateBadLifeRegen()
@@ -44,6 +47,10 @@ namespace RappleMod{
 					}
                 }
             }
+
+            if (energyShield > energyShieldMax){
+                energyShield = energyShieldMax;
+            }
         }
 
         public override bool FreeDodge(Player.HurtInfo info){
@@ -54,9 +61,8 @@ namespace RappleMod{
             return base.FreeDodge(info);
         }
 
-        public override void ModifyHurt(ref Player.HurtModifiers modifiers)
-        {
-            if (energyShield > 0){
+        public override void ModifyHurt(ref Player.HurtModifiers modifiers){
+            if (energyShield > 0 && energyShieldMax > 0){
                 modifiers.ModifyHurtInfo += ReduceBarrier;
             }
             
@@ -64,26 +70,25 @@ namespace RappleMod{
         }
 
         public void ReduceBarrier(ref Player.HurtInfo info){
-            if (energyShield > 0){
-                if (energyShield > info.Damage){
-                    CombatText.NewText(Player.Hitbox, Color.Cyan, info.Damage);
-                    energyShield -= info.Damage;
-                    dodgeHitAbsorbed = true;
+            if (energyShield > info.Damage){
+                CombatText.NewText(Player.Hitbox, Color.Cyan, info.Damage);
+                energyShield -= info.Damage;
+                dodgeHitAbsorbed = true;
 
-                    if (info.Knockback != 0f && info.HitDirection != 0 && (!Player.mount.Active || !Player.mount.Cart)){
-                        Player.velocity.X = info.Knockback * (float)info.HitDirection;
-                        Player.velocity.Y = info.Knockback * -7f / 9f;
-                        Player.fallStart = (int)(Player.position.Y / 16f);
-                    }
+                if (info.Knockback != 0f && info.HitDirection != 0 && (!Player.mount.Active || !Player.mount.Cart)){
+                    Player.velocity.X = info.Knockback * (float)info.HitDirection;
+                    Player.velocity.Y = info.Knockback * -7f / 9f;
+                    Player.fallStart = (int)(Player.position.Y / 16f);
                 }
-                else {
-                    CombatText.NewText(Player.Hitbox, Color.Cyan, energyShield);
-                    info.Damage -= energyShield;
-                    energyShield = 0;
-                }
-
-                GiveInvincibility(Player, Player.longInvince ? 100 : 60, true);
+                SoundEngine.PlaySound(SoundID.PlayerHit, Player.position);
             }
+            else {
+                CombatText.NewText(Player.Hitbox, Color.Cyan, energyShield);
+                info.Damage -= energyShield;
+                energyShield = 0;
+            }
+
+            GiveInvincibility(Player, Player.longInvince ? 100 : 60, true);
         }
 
         public static bool GiveInvincibility(Player player, int frames, bool blink = false){
