@@ -1,6 +1,7 @@
 using System;
 using System.Media;
 using Humanizer;
+using Iced.Intel;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -12,16 +13,16 @@ namespace RappleMod{
     public class EnergyShieldPlayer : ModPlayer {
         public int energyShield = 0;
         public int energyShieldMax = 0;
-        public int energyShieldRate = 6;
-        public int energyShieldRecharge = 0;
+        public int energyShieldRate = 40; // 6
+        public int energyShieldRecharge = 0;  // 300
         public int timeSinceLastHit = 0;
         public bool dodgeHitAbsorbed = false;
 
         public override void ResetEffects()
         {
             energyShieldMax = 0;
-            energyShieldRate = 6; 
-            energyShieldRecharge = 0;
+            energyShieldRate = 40;  // 6
+            energyShieldRecharge = 0; // 300
         }
 
         public override void UpdateBadLifeRegen()
@@ -54,8 +55,19 @@ namespace RappleMod{
         }
 
         public override bool FreeDodge(Player.HurtInfo info){
+            Player player = Main.LocalPlayer;
+
             if (dodgeHitAbsorbed){
                 dodgeHitAbsorbed = false;
+
+                if (info.DamageSource.TryGetCausingEntity(out Entity entity) && entity is Projectile proj && player.GetModPlayer<MyPlayer>().AntagonistRand){
+                    Projectile x = Projectile.NewProjectileDirect(player.GetSource_FromThis(), proj.position, proj.velocity * -1, proj.type, (int)(info.Damage * 9.8f), proj.knockBack);
+                    x.friendly = true;
+                    x.hostile = false;
+                    proj.Kill();
+                    player.GetModPlayer<MyPlayer>().AntagonistRand = false;
+                }
+
                 return true;
             }
             return base.FreeDodge(info);

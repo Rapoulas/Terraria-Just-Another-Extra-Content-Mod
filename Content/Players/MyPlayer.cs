@@ -30,6 +30,7 @@ namespace RappleMod{
 		public bool AntagonistRand;
 		Player player = Main.LocalPlayer;
 		public bool[] gunSummonSpawnCheck = [false, false, false, false];
+		
         public override void ResetEffects(){
             hasAbsorbTeamDamageEffect = false;
 			defendedByAbsorbTeamDamageEffect = false;
@@ -60,10 +61,10 @@ namespace RappleMod{
         public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
         {
 			if (AntagonistRand){
-				//Fix not accounting for when energyshield > damageTaken
-				Projectile x = Projectile.NewProjectileDirect(player.GetSource_FromThis(), proj.position, proj.velocity * -1, proj.type, proj.damage, proj.knockBack);
+				Projectile x = Projectile.NewProjectileDirect(player.GetSource_FromThis(), proj.position, proj.velocity * -1, proj.type, (int)(hurtInfo.Damage * 9.8f), proj.knockBack);
 				x.friendly = true;
 				x.hostile = false;
+				proj.Kill();
 				AntagonistRand = false;
 			}
 
