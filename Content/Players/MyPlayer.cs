@@ -52,7 +52,7 @@ namespace RappleMod{
 				modifiers.FinalDamage *= 1f - MeatShield.DamageAbsorptionMultiplier;
 			}
 
-			if (ESP.energyShieldMax > 0 && ESP.energyShield > 0 && hasAntagonist != null && Main.rand.NextBool(1)){
+			if (ESP.energyShieldMax > 0 && ESP.energyShield > 0 && hasAntagonist != null && Main.rand.NextBool(2)){
 				AntagonistRand = true;
 				modifiers.FinalDamage /= 2;
 			}
@@ -60,13 +60,7 @@ namespace RappleMod{
 
         public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
         {
-			if (AntagonistRand){
-				Projectile x = Projectile.NewProjectileDirect(player.GetSource_FromThis(), proj.position, proj.velocity * -1, proj.type, (int)(hurtInfo.Damage * 9.8f), proj.knockBack);
-				x.friendly = true;
-				x.hostile = false;
-				proj.Kill();
-				AntagonistRand = false;
-			}
+			AntagonistReflection(proj, hurtInfo);
 
             base.OnHitByProjectile(proj, hurtInfo);
         }
@@ -99,6 +93,20 @@ namespace RappleMod{
 			}
             return base.Shoot(item, source, position, velocity, type, damage, knockback);
         }
+
+		public void AntagonistReflection(Projectile proj, Player.HurtInfo hurtInfo){
+			if (hasAntagonist == null){
+				return;
+			}
+			
+			if (AntagonistRand){
+				Projectile x = Projectile.NewProjectileDirect(player.GetSource_FromThis(), proj.position, proj.velocity * -1, proj.type, (int)(hurtInfo.Damage * 10f), proj.knockBack);
+				x.friendly = true;
+				x.hostile = false;
+				proj.Kill();
+				AntagonistRand = false;
+			}
+		}
 
 		private void PurgatoryOnKill(NPC target, NPC.HitInfo hit, int damageDone){
 			if (hasPurgatory == null){
