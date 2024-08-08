@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace RappleMod.Content.Acessories
 {
-    public class Antagonist : ModItem
+    public class InfernalWish : ModItem
 	{ 
         public override void SetDefaults() {
 			Item.DefaultToAccessory(26, 34);
@@ -17,7 +17,7 @@ namespace RappleMod.Content.Acessories
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
-			player.GetModPlayer<MyPlayer>().hasAntagonist = Item;
+			player.GetModPlayer<MyPlayer>().hasInfernalWish= Item;
 			player.GetModPlayer<EnergyShieldPlayer>().energyShieldMax += 200;
 		}
     }

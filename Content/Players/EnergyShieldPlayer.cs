@@ -9,7 +9,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace RappleMod{
+namespace RappleMod.Content.Players{
     public class EnergyShieldPlayer : ModPlayer {
         public int energyShield = 0;
         public int energyShieldMax = 0;
@@ -59,7 +59,7 @@ namespace RappleMod{
 
             if (dodgeHitAbsorbed){
                 if (info.DamageSource.TryGetCausingEntity(out Entity entity) && entity is Projectile proj){
-                    player.GetModPlayer<MyPlayer>().AntagonistReflection(proj, info);
+                    player.GetModPlayer<MyPlayer>().ProjectileReflection(proj, info);
                 }
                 
                 dodgeHitAbsorbed = false;

@@ -6,6 +6,7 @@ using RappleMod.Content.Acessories;
 using RappleMod.Content.Buffs;
 using Terraria.DataStructures;
 using RappleMod.Content.Projectiles.PurgatoryProjectile;
+using RappleMod.Content.Players;
 
 namespace RappleMod{
     public class MyPlayer : ModPlayer {
@@ -16,6 +17,7 @@ namespace RappleMod{
 		public Item hasBuffer;
 		public Item hasOuroboros;
 		public Item hasPurgatory;
+		public Item hasInfernalWish;
         #endregion
 
         public bool hasAbsorbTeamDamageEffect;
@@ -41,6 +43,7 @@ namespace RappleMod{
 			hasOuroboros = null;
 			hasPurgatory = null;
 			hasAntagonist = null;
+			hasInfernalWish = null;
 			hitClass = 0;
         }
 
@@ -60,7 +63,7 @@ namespace RappleMod{
 
         public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
         {
-			AntagonistReflection(proj, hurtInfo);
+			ProjectileReflection(proj, hurtInfo);
 
             base.OnHitByProjectile(proj, hurtInfo);
         }
@@ -91,16 +94,23 @@ namespace RappleMod{
 			if (hasOuroboros != null){
 				OuroborosEffect();
 			}
+
+			if (hasInfernalWish != null){
+				InfernalWishEffect(source, position, velocity, type, damage, knockback);
+			}
             return base.Shoot(item, source, position, velocity, type, damage, knockback);
         }
+		
+		public void InfernalWishEffect(EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback){
 
-		public void AntagonistReflection(Projectile proj, Player.HurtInfo hurtInfo){
+		}
+		public void ProjectileReflection(Projectile proj, Player.HurtInfo hurtInfo){
 			if (hasAntagonist == null){
 				return;
 			}
 			
 			if (AntagonistRand){
-				Projectile x = Projectile.NewProjectileDirect(player.GetSource_FromThis(), proj.position, proj.velocity * -1, proj.type, (int)(hurtInfo.Damage * 10f), proj.knockBack);
+				Projectile x = Projectile.NewProjectileDirect(player.GetSource_FromThis(), proj.position, proj.velocity * -1, proj.type, (int)(hurtInfo.Damage * 5f), proj.knockBack);
 				x.friendly = true;
 				x.hostile = false;
 				proj.Kill();
