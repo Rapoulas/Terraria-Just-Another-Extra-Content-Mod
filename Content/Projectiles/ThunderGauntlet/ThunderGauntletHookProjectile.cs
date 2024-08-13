@@ -45,8 +45,8 @@ namespace RappleMod.Content.Projectiles.ThunderGauntlet
 
 		public override void SetDefaults() {
 			Projectile.netImportant = true;
-			Projectile.width = 16;
-			Projectile.height = 16;
+			Projectile.width = 26;
+			Projectile.height = 30;
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;
 			Projectile.tileCollide = false;

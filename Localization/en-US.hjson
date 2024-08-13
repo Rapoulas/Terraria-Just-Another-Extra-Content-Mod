@@ -193,7 +193,13 @@ Mods: {
 
 			ThunderGauntlet: {
 				DisplayName: Thunder Gauntlet
-				Tooltip: ""
+				Tooltip:
+					'''
+					Charge up your Gauntlet to increase its damage and launch you forward
+					Damage also increased by your movement speed
+					You are invincible while being launched forward
+					Press [KEY] to shoot a grappling hook
+					'''
 			}
 
 			Antagonist: {
@@ -269,7 +275,5 @@ Mods: {
 			ShroomiteVortexProj.DisplayName: Shroomite Vortex Proj
 			ThunderGauntletHookProjectile.DisplayName: Thunder Gauntlet Hook Projectile
 		}
-
-		UI.EnergyShieldBar: "{0} / {1}"
 	}
 }

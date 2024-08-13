@@ -21,6 +21,10 @@ namespace RappleMod.Content.Drops
             if (item.type == ItemID.PlanteraBossBag){
                 loot.Add(ItemDropRule.Common(ModContent.ItemType<GunSummon>(), 5));
             }
+
+            if (item.type == ItemID.QueenSlimeBossBag){
+                loot.Add(ItemDropRule.Common(ModContent.ItemType<ThunderGauntlet>(), 5));
+            }
         }
     }
 
@@ -29,6 +33,10 @@ namespace RappleMod.Content.Drops
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 			if (npc.type == NPCID.Plantera) {
 				npcLoot.Add(ItemDropRule.ByCondition(new Conditions.NotExpert(), ModContent.ItemType<GunSummon>(), 5));
+			}
+
+			if (npc.type == NPCID.QueenSlimeBoss) {
+				npcLoot.Add(ItemDropRule.ByCondition(new Conditions.NotExpert(), ModContent.ItemType<ThunderGauntlet>(), 5));
 			}
 
             if (npc.type == NPCID.Harpy){

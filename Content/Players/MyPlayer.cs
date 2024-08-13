@@ -6,18 +6,15 @@ using RappleMod.Content.Acessories;
 using RappleMod.Content.Buffs;
 using Terraria.DataStructures;
 using RappleMod.Content.Projectiles.PurgatoryProjectile;
-using RappleMod.Content.Players;
 
 namespace RappleMod{
     public class MyPlayer : ModPlayer {
         #region item field
-		public Item hasAntagonist;
         public Item hasZetaReference;
 		public Item hasMeatShield;
 		public Item hasBuffer;
 		public Item hasOuroboros;
 		public Item hasPurgatory;
-		public Item hasInfernalWish;
         #endregion
 
         public bool hasAbsorbTeamDamageEffect;
@@ -29,7 +26,6 @@ namespace RappleMod{
 		public float anarchistCookbookCounter = 0;
 		public float hitClass;
 		public int deliveranceAmmo = 8;
-		public bool AntagonistRand;
 		Player player = Main.LocalPlayer;
 		public bool[] gunSummonSpawnCheck = [false, false, false, false];
 		
@@ -42,31 +38,14 @@ namespace RappleMod{
 			hasBuffer = null;
 			hasOuroboros = null;
 			hasPurgatory = null;
-			hasAntagonist = null;
-			hasInfernalWish = null;
 			hitClass = 0;
         }
 
         public override void ModifyHurt(ref Player.HurtModifiers modifiers) {
-			Player owner = Main.LocalPlayer;
-			EnergyShieldPlayer ESP = owner.GetModPlayer<EnergyShieldPlayer>();
-
 			if (defendedByAbsorbTeamDamageEffect && Player == Main.LocalPlayer && TeammateCanAbsorbDamage()) {
 				modifiers.FinalDamage *= 1f - MeatShield.DamageAbsorptionMultiplier;
 			}
-
-			if (ESP.energyShieldMax > 0 && ESP.energyShield > 0 && hasAntagonist != null && Main.rand.NextBool(2)){
-				AntagonistRand = true;
-				modifiers.FinalDamage /= 2;
-			}
 		}
-
-        public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
-        {
-			ProjectileReflection(proj, hurtInfo);
-
-            base.OnHitByProjectile(proj, hurtInfo);
-        }
 
         public override void OnHurt(Player.HurtInfo info) {
             ZetaReferenceOnHurt(info);
@@ -94,29 +73,8 @@ namespace RappleMod{
 			if (hasOuroboros != null){
 				OuroborosEffect();
 			}
-
-			if (hasInfernalWish != null){
-				InfernalWishEffect(source, position, velocity, type, damage, knockback);
-			}
             return base.Shoot(item, source, position, velocity, type, damage, knockback);
         }
-		
-		public void InfernalWishEffect(EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback){
-
-		}
-		public void ProjectileReflection(Projectile proj, Player.HurtInfo hurtInfo){
-			if (hasAntagonist == null){
-				return;
-			}
-			
-			if (AntagonistRand){
-				Projectile x = Projectile.NewProjectileDirect(player.GetSource_FromThis(), proj.position, proj.velocity * -1, proj.type, (int)(hurtInfo.Damage * 5f), proj.knockBack);
-				x.friendly = true;
-				x.hostile = false;
-				proj.Kill();
-				AntagonistRand = false;
-			}
-		}
 
 		private void PurgatoryOnKill(NPC target, NPC.HitInfo hit, int damageDone){
 			if (hasPurgatory == null){

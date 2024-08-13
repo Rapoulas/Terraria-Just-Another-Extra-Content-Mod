@@ -7,12 +7,13 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameInput;
 using RappleMod.Content.Projectiles.ThunderGauntlet;
+using System.Collections.Generic;
+using System.Text;
 
 namespace RappleMod.Content.Weapons{
     
     public class ThunderGauntlet : ModItem
     {
-        public override string Texture => $"Terraria/Images/Item_{ItemID.FireGauntlet}";
         public override void SetDefaults() {
 			Item.width = 64;
 			Item.height = 36;
@@ -30,6 +31,10 @@ namespace RappleMod.Content.Weapons{
             Item.channel = true;
 			Item.noMelee = true;
             Item.noUseGraphic = true;
+		}
+
+		public override void ModifyTooltips(List<TooltipLine> list) {
+			list.IntegrateHotkey(GauntletGrapple.GrappleKeybind);
 		}
     }
 

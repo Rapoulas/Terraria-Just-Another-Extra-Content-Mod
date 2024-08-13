@@ -1,10 +1,10 @@
 using System;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Utilities;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Graphics.CameraModifiers;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -12,6 +12,8 @@ namespace RappleMod.Content.Projectiles.ThunderGauntlet
 {
 	public class ThunderGauntletHoldOut : ModProjectile
 	{
+		SlotId soundSlot;
+		int timer = 0;
 		private float ChargeTime {
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
@@ -30,19 +32,31 @@ namespace RappleMod.Content.Projectiles.ThunderGauntlet
 			Projectile.timeLeft = 2;
 			Projectile.ownerHitCheck = true;
 			Projectile.usesLocalNPCImmunity = true;
-			Projectile.friendly = true;
+			Projectile.extraUpdates = 4;
 		}
 
 		public override void AI() {
+			timer++;
+			SoundStyle loopChargeSound = new($"{nameof(RappleMod)}/Assets/Sounds/ThunderGauntletChargeLoop");
+			SoundStyle chargeSoundRelease = new($"{nameof(RappleMod)}/Assets/Sounds/ThunderGauntletChargeRelease");
 			Player player = Main.player[Projectile.owner];
 			Vector2 rrp = player.RotatedRelativePoint(player.MountedCenter, true);
 			player.heldProj = Projectile.whoAmI;
 			DrawHeldProjInFrontOfHeldItemAndArms = true;
-
+		
 			UpdatePlayerVisuals(player, rrp);
-
-			if (Projectile.owner == Main.myPlayer) {
+			if (Projectile.owner == Main.myPlayer && timer % 5 == 0) {
 				UpdateAim(rrp, player.HeldItem.shootSpeed);
+			}
+
+			if (!SoundEngine.TryGetActiveSound(soundSlot, out var _)) {
+				var tracker = new ProjectileAudioTracker(Projectile);
+				soundSlot = SoundEngine.PlaySound(loopChargeSound, player.Center, soundInstance => {
+					soundInstance.Position = player.Center;
+					return tracker.IsActiveAndInGame();
+				});
+				loopChargeSound.IsLooped = true;
+				loopChargeSound.MaxInstances = 1;
 			}
 			
 			if (!Charge(player)) {			
@@ -51,17 +65,41 @@ namespace RappleMod.Content.Projectiles.ThunderGauntlet
 					Vector2 velocityLaunch = Projectile.velocity;
 					velocityLaunch.Normalize();
 
-					Projectile.damage = (int)(Projectile.damage * (1 + ChargeTime/60f) * (1 + speedBonus));
+					Projectile.damage = (int)(Projectile.damage * (1 + ChargeTime/300f) * (1 + speedBonus));
 					Projectile.knockBack = Projectile.knockBack * player.velocity.Length() / 7f;
 
-					player.velocity += velocityLaunch * 10f * (ChargeTime/60f);
+					player.velocity += velocityLaunch * 10f * (ChargeTime/300f);
+
+					if (SoundEngine.TryGetActiveSound(soundSlot, out var activeSound)) {
+						activeSound.Stop();
+					}	
+					chargeSoundRelease.MaxInstances = 1;
+					soundSlot = SoundEngine.PlaySound(chargeSoundRelease, player.Center);
 				}
+				player.noKnockback = true;
 				ChargeTime = 0;
 				Projectile.friendly = true;
+				player.immune = true;
+				player.immuneNoBlink = true;
+				player.immuneTime = 10;
 				return;
 			}
-			else Projectile.timeLeft = 60;
+			else Projectile.timeLeft = 300;
 		}
+
+        public override void OnSpawn(IEntitySource source)
+        {
+			Player player = Main.player[Projectile.owner];
+            SoundStyle chargeSound = new($"{nameof(RappleMod)}/Assets/Sounds/ThunderGauntletCharge"){
+                MaxInstances = 1
+            };
+
+			var tracker = new ProjectileAudioTracker(Projectile);
+            soundSlot = SoundEngine.PlaySound(chargeSound, player.Center, soundInstance => {
+				soundInstance.Position = player.Center;
+				return tracker.IsActiveAndInGame();
+			});
+        }
 
         public override bool PreDraw(ref Color lightColor) => false;
 
@@ -81,7 +119,7 @@ namespace RappleMod.Content.Projectiles.ThunderGauntlet
 			}
 
 			Projectile.friendly = false;
-			if (ChargeTime < 210) {
+			if (ChargeTime < 1050) {
 				ChargeTime++;
 			}
 
@@ -113,8 +151,8 @@ namespace RappleMod.Content.Projectiles.ThunderGauntlet
 
 			player.ChangeDir(Projectile.direction);
 			player.heldProj = Projectile.whoAmI;
-			player.itemTime = 2;
-			player.itemAnimation = 2;
+			player.itemTime = 11;
+			player.itemAnimation = 11;
 			player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
 		}
 

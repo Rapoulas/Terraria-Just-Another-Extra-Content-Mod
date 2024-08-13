@@ -43,6 +43,11 @@ Items: {
 
 	Bonetrousle: {
 	}
+
+	InfernalWish: {
+		DisplayName: Infernal Wish
+		Tooltip: ""
+	}
 }
 
 Buffs: {
@@ -72,5 +77,4 @@ Projectiles: {
 	ThunderGauntletHoldOut.DisplayName: Thunder Gauntlet Hold Out
 }
 
-UI.ExampleResource: Mods.RappleMod.UI.ExampleResource
-Keybinds.ThunderGauntletGrappleKeybind.DisplayName: Thunder Gauntlet Grapple Keybind
+Keybinds.ThunderGauntletGrappleKeybind.DisplayName: Thunder Gauntlet Hook
